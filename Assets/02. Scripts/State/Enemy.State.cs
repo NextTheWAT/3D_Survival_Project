@@ -29,7 +29,6 @@ public partial class Enemy
             Debug.Log("attack 상태");
             if (Component.findPlayer)
             {
-                //Component.transform.LookAt(LookTarget());
                 //적이 시야 범위 내에 있을 경우
                 if(Component.targetDistance > Component._attackDistance)
                 {
@@ -47,11 +46,6 @@ public partial class Enemy
                 //적이 범위에서 벗어났을 시
                 Component._fsm.ChangeTo(0);
             }
-        }
-
-        public Vector3 LookTarget()
-        {
-            return new Vector3(Component.target.position.x, 0, Component.target.position.z);
         }
     }
 
