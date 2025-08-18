@@ -1,59 +1,77 @@
-using UnityEngine;
+ï»¿using System;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryUI : BaseUI
 {
-    // ¼±ÅÃµÈ ¾ÆÀÌÅÛ Á¤º¸ Ç¥½Ã¿ë UI ¿ä¼Ò
+    // ì„ íƒëœ ì•„ì´í…œ ì •ë³´ í‘œì‹œìš© UI ìš”ì†Œ
     public TextMeshProUGUI selectedItemName;
     public TextMeshProUGUI selectedItemDescription;
     public TextMeshProUGUI selectedItemStatName;
     public TextMeshProUGUI selectedItemStatValue;
 
-    // ¾ÆÀÌÅÛ Á¶ÀÛ ¹öÆ°
+    // ì•„ì´í…œ ì¡°ì‘ ë²„íŠ¼
     [SerializeField] private Button useButton;
     [SerializeField] private Button EquipButton;
     [SerializeField] private Button unEquipButton;
     [SerializeField] private Button dropButton;
 
+    public event Action<int> OnItemClicked;
+    public event Action OnUseClicked;
+    public event Action OnEquipClicked;
+    public event Action OnDropClicked;
+
+    private int? selectedItemId;
+
     protected override void Awake()
     {
         base.Awake();
 
-        // ¹öÆ° ÀÌº¥Æ® ¿¬°á (ÇöÀç´Â Debug.Log¸¸ Ãâ·Â)
-        if (useButton) useButton.onClick.AddListener(() => Debug.Log("Use"));
-        if (EquipButton) EquipButton.onClick.AddListener(() => Debug.Log("Equip"));
-        if (unEquipButton) unEquipButton.onClick.AddListener(() => Debug.Log("UnEquip"));
-        if (dropButton) dropButton.onClick.AddListener(() => Debug.Log("Drop"));
+        // ë²„íŠ¼ ì´ë²¤íŠ¸ ì—°ê²° (í˜„ì¬ëŠ” Debug.Logë§Œ ì¶œë ¥)
+        if (useButton) useButton.onClick.AddListener(() => OnUseClicked?.Invoke());
+        if (EquipButton) EquipButton.onClick.AddListener(() => OnEquipClicked?.Invoke());
+        //if (unEquipButton) unEquipButton.onClick.AddListener(() => OnEquipClicked?.Invoke()); //ì¼ë‹¨ EquipClicked í•˜ë‚˜ë¡œë§Œ ë˜ëŠ”ì§€ ë³´ê³ , 
+        if (dropButton) dropButton.onClick.AddListener(() => OnDropClicked?.Invoke());
 
-        // Ã³À½ ½ÃÀÛÇÒ ¶§ ¹öÆ°/ÅØ½ºÆ® ºñÈ°¼ºÈ­
+        // ì²˜ìŒ ì‹œì‘í•  ë•Œ ë²„íŠ¼/í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
         UnActive();
     }
 
-    // ½ÃÀÛÇÒ ¶§ ÅØ½ºÆ®, ¹öÆ° ºñÈ°¼ºÈ­ Ã³¸®
+    // ì‹œì‘í•  ë•Œ í…ìŠ¤íŠ¸, ë²„íŠ¼ ë¹„í™œì„±í™” ì²˜ë¦¬
     public override void UnActive()
     {
         base.UnActive();
 
-        // ¼±ÅÃ ¾ÆÀÌÅÛ ÅØ½ºÆ® ÃÊ±âÈ­
+        // ì„ íƒ ì•„ì´í…œ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
         if (selectedItemName) selectedItemName.text = string.Empty;
         if (selectedItemDescription) selectedItemDescription.text = string.Empty;
         if (selectedItemStatName) selectedItemStatName.text = string.Empty;
         if (selectedItemStatValue) selectedItemStatValue.text = string.Empty;
 
-        // ¹öÆ° ¼û±â±â
+        // ë²„íŠ¼ ìˆ¨ê¸°ê¸°
         useButton.gameObject.SetActive(false);
         EquipButton.gameObject.SetActive(false);
         unEquipButton.gameObject.SetActive(false);
         dropButton.gameObject.SetActive(false);
     }
 
-    // ¿ÜºÎ¿¡¼­ ¾ÆÀÌÅÛ Á¤º¸ ¹ÙÀÎµù
+    // ì™¸ë¶€ì—ì„œ ì•„ì´í…œ ì •ë³´ ë°”ì¸ë”©
     public void BindItem(string name, string desc)
     {
         if (selectedItemName) selectedItemName.text = name;
         if (selectedItemDescription) selectedItemDescription.text = desc;
-        if (selectedItemStatName) selectedItemStatName.text = "Stat Name";   // TODO: ½ÇÁ¦ ½ºÅÈ ÀÌ¸§ ¹ÙÀÎµù
-        if (selectedItemStatValue) selectedItemStatValue.text = "Stat Value"; // TODO: ½ÇÁ¦ ½ºÅÈ °ª ¹ÙÀÎµù
+        if (selectedItemStatName) selectedItemStatName.text = "Stat Name";   // TODO: ì‹¤ì œ ìŠ¤íƒ¯ ì´ë¦„ ë°”ì¸ë”©
+        if (selectedItemStatValue) selectedItemStatValue.text = "Stat Value"; // TODO: ì‹¤ì œ ìŠ¤íƒ¯ ê°’ ë°”ì¸ë”©
+    }
+
+    public void RenderList(List<ItemData> itemDatas)
+    { 
+        //to do: ì—…ë°ì´íŠ¸ëœ ì•„ì´í…œ ë°ì´í„° ë¦¬ìŠ¤íŠ¸ë¡œ ë Œë” ë‹¤ì‹œí•˜ê¸°
+    }
+    public void ClearSelection()
+    {
+        //to do: ì„ íƒí•œ ì•„ì´í…œ ì—†ìŒ ìƒíƒœ.
     }
 }
