@@ -59,6 +59,14 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
         Detect();
     }
 
+    public void OnAttack()
+    {
+        Debug.Log("공격 성공"); //피격 판정낼게 필요
+        //애니메이션 이벤트 쓸듯?
+        //IValueChangable player = Component.target.gameObject.GetComponent<IValueChangable>();
+        //player.ValueChanged(-Component._damage);
+    }
+
     public void Detect()
     {
         Collider[] check = Physics.OverlapSphere(transform.position, radius, targetMask);

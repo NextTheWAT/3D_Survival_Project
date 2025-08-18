@@ -9,13 +9,14 @@ public partial class Enemy
     class AttackState : BaseState<Enemy>
     {
         public AttackState(Enemy component) : base(component) { }
+        private float waitTimer = 0f;
 
         public override void End()
         {
             Debug.Log("attack 끝");
             Component._agent.speed = Component._walkSpeed;
             Component._agent.isStopped = true;
-            Component._anim.SetBool("Run Forward", false);
+            Component._anim.SetBool(EnemyAnimParam.Run, false);
         }
 
         public override void Start()
@@ -23,12 +24,13 @@ public partial class Enemy
             Debug.Log("attack 진입");
             Component._agent.speed = Component._runSpeed;
             Component._agent.isStopped = false;
-            Component._anim.SetBool("Run Forward", true);
+            Component._anim.SetBool(EnemyAnimParam.Run, true);
         }
 
         public override void Update()
         {
             Debug.Log("attack 상태");
+            waitTimer += Time.deltaTime;
             if (Component.findPlayer)
             {
                 //적이 시야 범위 내에 있을 경우
@@ -36,14 +38,18 @@ public partial class Enemy
                 {
                     Component._agent.isStopped = false;
                     Component._agent.SetDestination(Component.target.position);
+                    Component._anim.SetBool(EnemyAnimParam.Run, true);
                 }
                 else
                 {
                     Component._agent.isStopped = true;
-                    Component._anim.SetTrigger("Attack1");
-                    //IValueChangable player = Component.target.gameObject.GetComponent<IValueChangable>();
-                    //player.ValueChanged(-Component._damage);
-                    Debug.Log("공격 (딜레이 필요)");
+                    Component._anim.SetBool(EnemyAnimParam.Run, false);
+
+                    if (waitTimer > Component._attackRate)
+                    {
+                        Component._anim.SetTrigger(EnemyAnimParam.Attack);
+                        waitTimer = 0f;
+                    }
                 }
             }
             else
@@ -51,14 +57,6 @@ public partial class Enemy
                 //적이 범위에서 벗어났을 시
                 Component._fsm.ChangeTo(0);
             }
-        }
-
-        public IEnumerator Attack()
-        {
-            while (Component.findPlayer) {
-                //애니메이션 재생?
-            }
-            yield return null;
         }
     }
 
@@ -73,7 +71,7 @@ public partial class Enemy
             Debug.Log("wait 끝");
             Component._agent.speed = Component._walkSpeed;
             Component._agent.isStopped = true;
-            Component._anim.SetBool("Idle", false);
+            Component._anim.SetBool(EnemyAnimParam.Idle, false);
         }
 
         public override void Start()
@@ -81,7 +79,7 @@ public partial class Enemy
             Debug.Log("wait 진입");
             waitTimer = 0f;
             Component._agent.isStopped = false;
-            Component._anim.SetBool("Idle", true);
+            Component._anim.SetBool(EnemyAnimParam.Idle, true);
         }
 
         public override void Update()
@@ -114,7 +112,7 @@ public partial class Enemy
             Debug.Log("Move 끝");
             Component._agent.speed = Component._walkSpeed;
             Component._agent.isStopped = true;
-            Component._anim.SetBool("WalkForward", false);
+            Component._anim.SetBool(EnemyAnimParam.Walk, false);
         }
 
         public override void Start()
@@ -122,7 +120,7 @@ public partial class Enemy
             Debug.Log("Move 진입");
             Component._agent.isStopped = false;
             Component._agent.SetDestination(MovePosition());
-            Component._anim.SetBool("WalkForward", true);
+            Component._anim.SetBool(EnemyAnimParam.Walk, true);
         }
 
         public override void Update()
