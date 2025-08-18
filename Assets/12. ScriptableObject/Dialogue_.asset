@@ -12,21 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5c5a22be6f8c4ea130acca2554ba7, type: 3}
   m_Name: Dialogue_
   m_EditorClassIdentifier: 
-  startNode: 0
+  startNode: start
   nodes:
-  - id: 0
+  - id: start
     speakerName: NPC
     text: "\uC548\uB155!"
     choices:
-    - label: 
-      next: 
-    next: 2
-  - id: 0
+    - label: "\uC7A1\uB2F4"
+      next: tall
+    - label: "\uADF8\uB9CC"
+      next: end
+    next: ask
+  - id: talk
     speakerName: NPC
-    text: "\uC548\uB155!\u314E\u314E"
+    text: "\uC7A1\uB2F4\uC744 \uB5A8\uC5B4\uBCFC\uAE4C\uB098"
     choices:
-    - label: 
-      next: 
-    - label: 
-      next: 
-    next: 3
+    - label: "\uC7A1\uB2F4"
+      next: tall
+    - label: "\uADF8\uB9CC"
+      next: end
+    next: ask
+  - id: end
+    speakerName: NPC
+    text: "\uC5EC\uAE30\uAE4C\uC9C0!"
+    choices:
+    - label: "\uC7A1\uB2F4"
+      next: tall
+    - label: "\uADF8\uB9CC"
+      next: end
+    next: ask

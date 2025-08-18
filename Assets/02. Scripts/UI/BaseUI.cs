@@ -35,7 +35,13 @@ public abstract class BaseUI : MonoBehaviour
 
     protected virtual void Awake()
     {
-        rect = (RectTransform)transform;
+        rect = GetComponent<RectTransform>();
+        if (rect == null)
+        {
+            Debug.LogError($"[BaseUI] {name}에는 RectTransform이 필요합니다. Canvas 하위 UI로 배치하세요.");
+            rect = gameObject.AddComponent<RectTransform>(); // 임시 복구(가능하면 Canvas 아래로 옮기기)
+        }
+
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
 

@@ -7,7 +7,7 @@ public class DialogueRunner : MonoBehaviour
     DialogueSO so;
     DialogueSO.Node cur;
 
-    public void Start(DialogueSO data)
+    public void Run(DialogueSO data)
     {
         so = data;
         view.Show();
