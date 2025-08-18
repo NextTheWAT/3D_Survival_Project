@@ -20,11 +20,11 @@ public abstract class BaseUI : MonoBehaviour
     [Header("Start State")]
     [SerializeField] private bool startHidden = true;
 
-    [Header("Events")]
-    public UnityEvent OnOpenStarted;
-    public UnityEvent OnOpened;
-    public UnityEvent OnCloseStarted;
-    public UnityEvent OnClosed;
+    //[Header("Events")]
+    //public UnityEvent OnOpenStarted;
+    //public UnityEvent OnOpened;
+    //public UnityEvent OnCloseStarted;
+    //public UnityEvent OnClosed;
 
     protected CanvasGroup canvasGroup;
     protected RectTransform rect;
@@ -70,7 +70,7 @@ public abstract class BaseUI : MonoBehaviour
 
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
-        OnOpenStarted?.Invoke();
+        //OnOpenStarted?.Invoke();
 
         seq = DOTween.Sequence().SetUpdate(ignoreTimeScale);
         AppendOpenTween(seq);
@@ -80,7 +80,7 @@ public abstract class BaseUI : MonoBehaviour
                isOpen = true;
                canvasGroup.blocksRaycasts = true;
                canvasGroup.interactable = true;
-               OnOpened?.Invoke();
+               //OnOpened?.Invoke();
            });
     }
 
@@ -91,7 +91,7 @@ public abstract class BaseUI : MonoBehaviour
 
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
-        OnCloseStarted?.Invoke();
+        //OnCloseStarted?.Invoke();
 
         seq = DOTween.Sequence().SetUpdate(ignoreTimeScale);
         AppendCloseTween(seq);
@@ -100,7 +100,7 @@ public abstract class BaseUI : MonoBehaviour
            {
                isOpen = false;
                gameObject.SetActive(false);
-               OnClosed?.Invoke();
+               //OnClosed?.Invoke();
            });
     }
 
