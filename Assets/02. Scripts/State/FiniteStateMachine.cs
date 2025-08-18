@@ -15,6 +15,7 @@ public class FiniteStateMachine
 
     public void Run()
     {
+        _currentState = _states[0];
         Update();
     }
 
