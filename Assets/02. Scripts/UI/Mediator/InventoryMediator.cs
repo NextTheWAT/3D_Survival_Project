@@ -1,48 +1,65 @@
-using System.Linq;
+ï»¿using System.Linq;
 using UnityEngine;
 
-/// UI ¡ê Model(±×¸®°í Player ±ÔÄ¢) »çÀÌ¸¦ °¡º±°Ô ÁßÀç
-public class InventoryMediator : MonoBehaviour
+public enum InventoryEventType
+{
+    InventoryChanged,
+    ItemDroppRequested,
+    ItemEquipRequested,
+    ItemUseRequested
+}
+public interface IInventoryMediator
+{
+    void Notify(object sender, InventoryEventType eventType, object data = null);
+}
+/// UI â†” Model(ê·¸ë¦¬ê³  Player ê·œì¹™) ì‚¬ì´ë¥¼ ê°€ë³ê²Œ ì¤‘ìž¬
+public class InventoryMediator : MonoBehaviour, IInventoryMediator
 {
     [Header("Refs")]
-    [SerializeField] private InventoryUI ui;          // View
-    //[SerializeField] private InventoryModel model;    // Model
-    //[SerializeField] private PlayerInventory player;  // ÇÃ·¹ÀÌ¾î ±ÔÄ¢(»ç¿ë/ÀåÂø)
+    [SerializeField] private InventoryUI ui;
+    [SerializeField] private InventoryManager manager;
 
     private int? selectedId;
 
     //private void Awake()
     //{
-    //    // BaseUI ¶óÀÌÇÁ»çÀÌÅ¬¿¡ ¸ÂÃç ¿­¸± ¶§/´ÝÈú ¶§ Ã³¸®ÇÏ°í ½Í´Ù¸é:
+    //    // BaseUI ë¼ì´í”„ì‚¬ì´í´ì— ë§žì¶° ì—´ë¦´ ë•Œ/ë‹«íž ë•Œ ì²˜ë¦¬í•˜ê³  ì‹¶ë‹¤ë©´:
     //    ui.OnOpened.AddListener(Open);
     //    ui.OnClosed.AddListener(Close);
     //}
 
-    //private void OnEnable()
-    //{
-    //    // UI ÀÔ·Â ÀÌº¥Æ®
-    //    ui.OnItemClicked += HandleSelect;
-    //    ui.OnUseClicked += HandleUse;
-    //    ui.OnEquipClicked += HandleEquip;
-    //    ui.OnUnEquipClicked += HandleUnEquip;
-    //    ui.OnDropClicked += HandleDrop;
+    private void OnEnable()
+    {
+        // UI ìž…ë ¥ ì´ë²¤íŠ¸
+        ui.OnItemClicked += HandleSelect;
+        ui.OnUseClicked += HandleUse;
+        ui.OnEquipClicked += HandleEquip;
+        //ui.OnUnEquipClicked += HandleUnEquip;
+        ui.OnDropClicked += HandleDrop;
 
-    //    // Model º¯°æ ¡æ ¸®½ºÆ® °»½Å
-    //    model.Changed += RefreshList;
-    //}
+        manager.SetMediator(this);
+    }
 
-    //private void OnDisable()
-    //{
-    //    ui.OnItemClicked -= HandleSelect;
-    //    ui.OnUseClicked -= HandleUse;
-    //    ui.OnEquipClicked -= HandleEquip;
-    //    ui.OnUnEquipClicked -= HandleUnEquip;
-    //    ui.OnDropClicked -= HandleDrop;
+    private void OnDisable()
+    {
+        ui.OnItemClicked -= HandleSelect;
+        ui.OnUseClicked -= HandleUse;
+        ui.OnEquipClicked -= HandleEquip;
+        //ui.OnUnEquipClicked -= HandleUnEquip;
+        ui.OnDropClicked -= HandleDrop;
+    }
 
-    //    model.Changed -= RefreshList;
-    //}
+    public void Notify(object sender, InventoryEventType eventType, object data = null)
+    {
+        switch(eventType)
+        {
+            case InventoryEventType.InventoryChanged:
+                RefreshList();
+                break;
+        }
+    }
 
-    //// ===== ¶óÀÌÇÁ»çÀÌÅ¬ =====
+    //// ===== ë¼ì´í”„ì‚¬ì´í´ =====
     //public void Open()
     //{
     //    selectedId = null;
@@ -50,56 +67,58 @@ public class InventoryMediator : MonoBehaviour
     //    ui.SetButtonsActive(false, false, false, false);
     //    RefreshList();
     //}
-    //public void Close() { /* ÇÊ¿ä ½Ã Á¤¸® */ }
+    //public void Close() { /* í•„ìš” ì‹œ ì •ë¦¬ */ }
 
-    //// ===== È­¸é °»½Å =====
-    //private void RefreshList()
-    //{
-    //    var items = model.GetAllItemIds()
-    //                     .Distinct()
-    //                     .Select(id => (id,
-    //                                    model.GetItemById(id).displayName,
-    //                                    model.GetAmountById(id)));
-    //    ui.RenderList(items); // UI°¡ ½ºÅ©·Ñºä/¾ÆÀÌÅÛ¹öÆ° ·»´õ¸µ
-    //}
+    // ===== í™”ë©´ ê°±ì‹  =====
+    private void RefreshList()
+    {
+        var itemDatas = manager.GetAllItemData();
+        ui.RenderList(itemDatas); // UIê°€ ìŠ¤í¬ë¡¤ë·°/ì•„ì´í…œë²„íŠ¼ ë Œë”ë§
+    }
 
-    //// ===== ÀÔ·Â Ã³¸® =====
-    //private void HandleSelect(int id)
-    //{
-    //    selectedId = id;
-    //    model.selectedItem = id;
+    // ===== ìž…ë ¥ ì²˜ë¦¬ =====
+    private void HandleSelect(int id)
+    {
+        selectedId = id;
+        //model.selectedItem = id;
 
-    //    var data = model.GetItemById(id);
-    //    ui.SetItemDetail(data.displayName, data.description, data.statName, data.statValueText);
+        //var data = model.GetItemById(id);
+        //ui.SetItemDetail(data.displayName, data.description, data.statName, data.statValueText);
 
-    //    ui.SetButtonsActive(
-    //        player.CanUse(data),
-    //        player.CanEquip(data),
-    //        player.CanUnEquip(data),
-    //        model.GetAmountById(id) > 0
-    //    );
-    //}
+        //ui.SetButtonsActive(
+        //    player.CanUse(data),
+        //    player.CanEquip(data),
+        //    player.CanUnEquip(data),
+        //    model.GetAmountById(id) > 0
+        //);
+    }
 
-    //private void HandleUse()
-    //{
-    //    if (selectedId == null) return;
-    //    var data = model.GetItemById(selectedId.Value);
-    //    if (!player.CanUse(data)) return;
+    private void HandleUse()
+    {
+        if (selectedId != null) manager.UseItem(selectedId.Value);
+        //if (selectedId == null) return;
+        //var data = model.GetItemById(selectedId.Value);
+        //if (!player.CanUse(data)) return;
 
-    //    player.Use(data);
-    //    model.RemoveItem(selectedId.Value); // 1°³ ¼Ò¸ð
-    //    PostActionRefresh();
-    //}
+        //player.Use(data);
+        //model.RemoveItem(selectedId.Value); // 1ê°œ ì†Œëª¨
+        //PostActionRefresh();
+    }
 
-    //private void HandleEquip()
-    //{
-    //    if (selectedId == null) return;
-    //    var data = model.GetItemById(selectedId.Value);
-    //    if (!player.CanEquip(data)) return;
+    private void HandleEquip()
+    {
+        if(selectedId !=null)
+        {
+            // to do: Inventory Managerì—ê²Œ ìž¥ì°© ìš”ì²­í•˜ê¸°
+            Debug.Log($"Equip requested for item {selectedId.Value}");
+        }
+        //if (selectedId == null) return;
+        //var data = model.GetItemById(selectedId.Value);
+        //if (!player.CanEquip(data)) return;
 
-    //    player.Equip(data);
-    //    PostActionRefresh();
-    //}
+        //player.Equip(data);
+        //PostActionRefresh();
+    }
 
     //private void HandleUnEquip()
     //{
@@ -111,22 +130,28 @@ public class InventoryMediator : MonoBehaviour
     //    PostActionRefresh();
     //}
 
-    //private void HandleDrop()
-    //{
-    //    if (selectedId == null) return;
-    //    model.DropItem(selectedId.Value); // Àü·® ¹ö¸²
-    //    PostActionRefresh();
-    //    selectedId = null;
-    //    ui.ClearSelection();
-    //    ui.SetButtonsActive(false, false, false, false);
-    //}
+    private void HandleDrop()
+    {
+        if (selectedId != null)
+        {
+            manager.DropItem(selectedId.Value);
+            selectedId = null;
+            ui.ClearSelection();
+        }
+        //if (selectedId == null) return;
+        //model.DropItem(selectedId.Value); // ì „ëŸ‰ ë²„ë¦¼
+        //PostActionRefresh();
+        //selectedId = null;
+        //ui.ClearSelection();
+        //ui.SetButtonsActive(false, false, false, false);
+    }
 
     //private void PostActionRefresh()
     //{
     //    RefreshList();
     //    if (selectedId != null && model.GetAmountById(selectedId.Value) > 0)
     //    {
-    //        // »ó¼¼/¹öÆ° »óÅÂ Àç°è»ê
+    //        // ìƒì„¸/ë²„íŠ¼ ìƒíƒœ ìž¬ê³„ì‚°
     //        HandleSelect(selectedId.Value);
     //    }
     //}

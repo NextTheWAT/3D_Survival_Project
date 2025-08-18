@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7fa6e14ce4211845b3ee9a547878802, type: 3}
+  m_Name: Resource_Tree
+  m_EditorClassIdentifier: 
+  displayName: Tree
+  description: chop chop chop
+  resourcePrefab: {fileID: 2238610949371264636, guid: 1bb54cfc08cc8a945b298118bdeba40e, type: 3}
+  dropItems:
+  - itemId: 1
+    dropRate: 0.886
+  - itemId: 2
+    dropRate: 0.114
+  maxAmount: 10
+  respawnTime: 10
