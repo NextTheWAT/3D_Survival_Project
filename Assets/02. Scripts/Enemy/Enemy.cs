@@ -9,6 +9,7 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
     [SerializeField] private float _moveDistance;
     [SerializeField] private float _walkSpeed;
     [SerializeField] private float _runSpeed;
+    [SerializeField] private float _waitDuration;
 
     [Header("Combat")]
     [SerializeField] private int _damage;
@@ -29,8 +30,12 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
     [SerializeField] private LayerMask targetMask;
     [SerializeField] private LayerMask obstacleMask;
 
+    [Header("Test")]
+    protected Animator _anim;
+
     private void Awake()
     {
+        _anim = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
 
         _states = new List<IState>

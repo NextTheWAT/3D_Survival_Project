@@ -15,6 +15,7 @@ public partial class Enemy
             Debug.Log("attack 끝");
             Component._agent.speed = Component._walkSpeed;
             Component._agent.isStopped = true;
+            Component._anim.SetBool("Run Forward", false);
         }
 
         public override void Start()
@@ -22,6 +23,7 @@ public partial class Enemy
             Debug.Log("attack 진입");
             Component._agent.speed = Component._runSpeed;
             Component._agent.isStopped = false;
+            Component._anim.SetBool("Run Forward", true);
         }
 
         public override void Update()
@@ -38,6 +40,7 @@ public partial class Enemy
                 else
                 {
                     Component._agent.isStopped = true;
+                    Component._anim.SetTrigger("Attack1");
                     //IValueChangable player = Component.target.gameObject.GetComponent<IValueChangable>();
                     //player.ValueChanged(-Component._damage);
                     Debug.Log("공격 (딜레이 필요)");
@@ -63,17 +66,22 @@ public partial class Enemy
     {
         public WaitState(Enemy component) : base(component) { }
 
+        private float waitTimer = 0f;
+
         public override void End()
         {
             Debug.Log("wait 끝");
             Component._agent.speed = Component._walkSpeed;
             Component._agent.isStopped = true;
+            Component._anim.SetBool("Idle", false);
         }
 
         public override void Start()
         {
             Debug.Log("wait 진입");
+            waitTimer = 0f;
             Component._agent.isStopped = false;
+            Component._anim.SetBool("Idle", true);
         }
 
         public override void Update()
@@ -83,8 +91,12 @@ public partial class Enemy
             if (Component.findPlayer) {
                 //적 발견
                 Component._fsm.ChangeTo(1);
+                return;
             }
-            else
+
+            waitTimer += Time.deltaTime;
+
+            if (waitTimer >= Component._waitDuration)
             {
                 //적 발견 x 이동
                 Component._fsm.ChangeTo(2);
@@ -102,6 +114,7 @@ public partial class Enemy
             Debug.Log("Move 끝");
             Component._agent.speed = Component._walkSpeed;
             Component._agent.isStopped = true;
+            Component._anim.SetBool("WalkForward", false);
         }
 
         public override void Start()
@@ -109,6 +122,7 @@ public partial class Enemy
             Debug.Log("Move 진입");
             Component._agent.isStopped = false;
             Component._agent.SetDestination(MovePosition());
+            Component._anim.SetBool("WalkForward", true);
         }
 
         public override void Update()
