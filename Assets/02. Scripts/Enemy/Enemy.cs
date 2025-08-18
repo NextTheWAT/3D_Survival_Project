@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public partial class Enemy : MonoBehaviour
+public partial class Enemy : MonoBehaviour//Character, IValueChangable
 {
     [Header("Stats")]
     [SerializeField] private float _moveDistance;

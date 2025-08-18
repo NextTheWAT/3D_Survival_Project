@@ -38,6 +38,8 @@ public partial class Enemy
                 else
                 {
                     Component._agent.isStopped = true;
+                    //IValueChangable player = Component.target.gameObject.GetComponent<IValueChangable>();
+                    //player.ValueChanged(-Component._damage);
                     Debug.Log("공격 (딜레이 필요)");
                 }
             }
@@ -46,6 +48,14 @@ public partial class Enemy
                 //적이 범위에서 벗어났을 시
                 Component._fsm.ChangeTo(0);
             }
+        }
+
+        public IEnumerator Attack()
+        {
+            while (Component.findPlayer) {
+                //애니메이션 재생?
+            }
+            yield return null;
         }
     }
 
