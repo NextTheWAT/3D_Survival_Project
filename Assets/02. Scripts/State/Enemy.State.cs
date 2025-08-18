@@ -33,6 +33,7 @@ public partial class Enemy
                 //적이 시야 범위 내에 있을 경우
                 if(Component.targetDistance > Component._attackDistance)
                 {
+                    Component._agent.isStopped = false;
                     Component._agent.SetDestination(Component.target.position);
                 }
                 else
@@ -40,11 +41,10 @@ public partial class Enemy
                     Component._agent.isStopped = true;
                     Debug.Log("공격 (딜레이 필요)");
                 }
-                Component._agent.isStopped = false;
             }
             else
             {
-                //적이 범위에서 벗어났을 시 (유예 시간이 필요할듯?)
+                //적이 범위에서 벗어났을 시
                 Component._fsm.ChangeTo(0);
             }
         }
@@ -104,7 +104,7 @@ public partial class Enemy
         {
             Debug.Log("Move 진입");
             Component._agent.isStopped = false;
-            Move();
+            Component._agent.SetDestination(MovePosition());
         }
 
         public override void Update()
@@ -122,11 +122,6 @@ public partial class Enemy
             {
                 Component._fsm.ChangeTo(0);
             }
-        }
-
-        public void Move()
-        {
-            Component._agent.SetDestination(MovePosition());
         }
 
         Vector3 MovePosition()
