@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public class InventoryModel : MonoBehaviour
+[Serializable]
+public class InventoryModel
 {
     private List<int> inventory = new List<int>();  // collect itemIds owned
-    public int selectedItemId;
 
-    public void AddItem(int itemId)
-    {
-        inventory.Add(itemId);
-        PrintInventory();
-    }
+    public void AddItem(int itemId) => inventory.Add(itemId);
     public void RemoveItem(int itemId)
     {
         if(inventory.Contains(itemId))
@@ -23,39 +20,37 @@ public class InventoryModel : MonoBehaviour
         {
             Debug.Log(itemId + " is not in your inventory.");
         }
-        PrintInventory();
     }
 
-    public void DropItem(int itemId)    //thinking about implementing this method in inventory ui or somewhere not here.
-    {
+    //public void DropItem(int itemId)    //thinking about implementing this method in inventory ui or somewhere not here.
+    //{
 
-    }
+    //}
 
-    public ItemData GetItemById(int itemId)
-    {
-        // to do
-        // database에서 아이템 골라... return 하기.
-        return new ItemData();
-    }
+    //public ItemData GetItemById(int itemId)
+    //{
+    //    // to do
+    //    // database에서 아이템 골라... return 하기.
+    //    return new ItemData();
+    //}
 
-    public int GetAmountById(int itemId)
-    {
-        return inventory.FindAll(x => x == itemId).Count;
-    }
+    public int GetAmountById(int itemId) => inventory.FindAll(x => x == itemId).Count;
 
-    public void ProcessItem(int itemId) //왜 만들었더라? 
-    {
+    //public void ProcessItem(int itemId) //왜 만들었더라? 
+    //{
 
-    }
+    //}
 
-    // for test
-    void PrintInventory()
-    {
-        string ids = "";
-        foreach (int itemId in inventory)
-        {
-            ids += itemId + ", ";
-        }
-        Debug.Log("Current Inventory: " + ids);
-    }
+    public List<int> GetAllIds() => new List<int>(inventory);
+
+    //// for test
+    //void PrintInventory()
+    //{
+    //    string ids = "";
+    //    foreach (int itemId in inventory)
+    //    {
+    //        ids += itemId + ", ";
+    //    }
+    //    Debug.Log("Current Inventory: " + ids);
+    //}
 }

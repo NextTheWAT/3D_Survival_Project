@@ -7,15 +7,15 @@ public class TestManager : MonoBehaviour
     public ItemDatabase itemDatabase;
     public ResourceObject resourceObject;
     public Transform dropPosition;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RunTest();
+            ResourceHarvestTest();
         }
-
     }
-    void RunTest()
+    void ResourceHarvestTest()
     {
         int id = 0;
         if (resourceObject.TryHarvest(out id))
