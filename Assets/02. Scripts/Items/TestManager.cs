@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class TestManager : MonoBehaviour
 {
+    public ItemDatabase itemDatabase;
     public ResourceObject resourceObject;
+    public Transform dropPosition;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -16,8 +18,14 @@ public class TestManager : MonoBehaviour
     void RunTest()
     {
         int id = 0;
-        resourceObject.TryHarvest(out id);
-        Debug.Log("TryHarvest: "+ id);
-
+        if (resourceObject.TryHarvest(out id))
+        {
+            Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
+            Debug.Log("TryHarvest: " + id);
+        }
+        else
+        { 
+            Debug.Log("Out of resource");
+        }
     }
 }

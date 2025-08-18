@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour, IInteractable
 {
-    public ItemDataBase data;
+    public ItemData data;
     public string GetInteractPrompt()
     {
         // To do

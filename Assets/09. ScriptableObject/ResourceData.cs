@@ -12,7 +12,7 @@ public class DropItem
         dropRate = Mathf.Clamp(dropRate, 0f, 1f);
     }
 }
-[CreateAssetMenu(fileName = "ResourceData", menuName = "New Resource")]
+[CreateAssetMenu(fileName = "Resource_", menuName = "Resource/New Resource")]
 public class ResourceData : ScriptableObject
 {
     [Header("Infomation")]

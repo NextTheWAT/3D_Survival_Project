@@ -1,16 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public abstract class ItemDataBase : ScriptableObject
+[CreateAssetMenu(fileName = "ItemDatabase", menuName = "Database/ItemDatabase")]
+public class ItemDatabase : ScriptableObject
 {
-    
-    [Header("Infomation")]
-    private int id; //To do: double check if unity has any API for automatic id generation.
-    public string displayName;
-    public string description;
-    public int maxStack;
+    public List<ItemData> items;
 
-    [Header("Source")]
-    public Sprite icon;
-    public GameObject inGamePrefab;   // prefab reference
-
+    public ItemData GetItemById(int id)
+    {
+        return items.Find(item => item.id == id);
+    }
 }

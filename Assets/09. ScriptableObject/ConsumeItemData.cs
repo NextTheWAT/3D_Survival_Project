@@ -9,8 +9,8 @@ public class Restoration
     public int amount;
 }
 
-[CreateAssetMenu(fileName = "ConsumeItem", menuName = "New Consume Item")]
-public class ConsumeItemData : ItemDataBase
+[CreateAssetMenu(fileName = "ConsumeItem", menuName = "Item/New Consume Item")]
+public class ConsumeItemData : ItemData
 {
     [Header("Attributes")]
     public Restoration[] restorations;

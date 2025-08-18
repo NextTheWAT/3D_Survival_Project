@@ -8,8 +8,8 @@ public class Enhancement
     public int amount;
 }
 
-[CreateAssetMenu(fileName = "EquipItem", menuName = "New Equip Item")]
-public class EquipItemData : ItemDataBase
+[CreateAssetMenu(fileName = "EquipItem", menuName = "Item/New Equip Item")]
+public class EquipItemData : ItemData
 {
     public GameObject equipPrefab;   // prefab reference
 
