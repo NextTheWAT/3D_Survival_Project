@@ -5,7 +5,12 @@ using UnityEngine;
 public class DropItem
 {
     public int itemId;
-    public float dropRate;
+    [Range(0f, 1f)]
+    public float dropRate; 
+    public void OnValidate()
+    {
+        dropRate = Mathf.Clamp(dropRate, 0f, 1f);
+    }
 }
 [CreateAssetMenu(fileName = "ResourceData", menuName = "New Resource")]
 public class ResourceData : ScriptableObject
@@ -18,6 +23,23 @@ public class ResourceData : ScriptableObject
     public GameObject resourcePrefab;   // prefab reference
 
     [Header("Attributes")]    // ya: any restriction like tool types
+    public DropItem[] dropItems;
     public int maxAmount;
     public float respawnTime;
+
+    public int GetAnItemIdByDropRate()
+    {
+        float total = 0f;
+        foreach (var drop in dropItems) total += drop.dropRate;
+
+        float rand = UnityEngine.Random.value * total;
+        foreach (var drop in dropItems)
+        {
+            rand -= drop.dropRate;
+            if (rand <= 0f)
+                return drop.itemId;
+        }
+
+        return dropItems[dropItems.Length - 1].itemId; // fallback: return last item in the array.
+    }
 }
