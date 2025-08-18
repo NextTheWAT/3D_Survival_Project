@@ -6,31 +6,32 @@ using DG.Tweening;
 [DisallowMultipleComponent]
 public abstract class BaseUI : MonoBehaviour
 {
-    // 어떤 애니메이션을 사용할지 결정하는 열거형
-    public enum AnimType { None, Fade, Scale }
+    public enum AnimType { None, Fade, SlideFromTop, SlideFromBottom, SlideFromLeft, SlideFromRight }
 
     [Header("Animation")]
-    [SerializeField] private AnimType animType = AnimType.Fade;   // 애니메이션 타입
-    [SerializeField, Min(0f)] private float duration = 0.25f;     // 애니메이션 재생 시간
-    [SerializeField] private float scaleFactor = 0f;              // Scale 애니메이션 시 최종 크기 (닫힐 때 사용)
-    [SerializeField] private Ease ease = Ease.Linear;             // DOTween 이징 함수
+    [SerializeField] private AnimType animType = AnimType.Fade;
+    [SerializeField, Min(0f)] private float duration = 0.25f;
+    [SerializeField] private Ease ease = Ease.OutCubic;
     [Tooltip("Time.timeScale=0 이어도 애니메이션 동작")]
-    [SerializeField] private bool ignoreTimeScale = true;         // 일시정지 중에도 애니메이션 동작 여부
+    [SerializeField] private bool ignoreTimeScale = true;
+    [Tooltip("슬라이드 시 이동 거리(0이면 자동으로 rect 크기 사용)")]
+    [SerializeField] private float slideDistance = 0f;
 
     [Header("Start State")]
-    [SerializeField] private bool startHidden = true;             // 시작 시 숨겨둘지 여부
+    [SerializeField] private bool startHidden = true;
 
     [Header("Events")]
-    public UnityEvent OnOpened;   // 열림 완료 이벤트
-    public UnityEvent OnClosed;   // 닫힘 완료 이벤트
+    public UnityEvent OnOpenStarted;
+    public UnityEvent OnOpened;
+    public UnityEvent OnCloseStarted;
+    public UnityEvent OnClosed;
 
-    // UI 요소 캐싱
     protected CanvasGroup canvasGroup;
     protected RectTransform rect;
-    protected bool isOpen;        // 현재 열림 상태인지 여부
+    protected bool isOpen;
 
-    Sequence seq;                 // DOTween 시퀀스
-    Vector2 cachedAnchoredPos;    // 원래 anchoredPosition 저장
+    Sequence seq;
+    Vector2 cachedAnchoredPos;
 
     protected virtual void Awake()
     {
@@ -40,7 +41,7 @@ public abstract class BaseUI : MonoBehaviour
 
         cachedAnchoredPos = rect.anchoredPosition;
 
-        // 시작 상태 세팅
+        // 초기 상태 설정
         if (startHidden)
         {
             ApplyHiddenImmediate();
@@ -56,66 +57,65 @@ public abstract class BaseUI : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        KillTween(); // 꺼질 때 애니메이션 중단
+        KillTween();
     }
 
-    // UI 열기
     public virtual void Open()
     {
-        if (isOpen) return;   // 이미 열려있으면 무시
+        if (isOpen) return;
         KillTween();
 
         gameObject.SetActive(true);
-        PrepareForOpen();     // 열기 전 초기 세팅
+        PrepareForOpen();
 
-        // 애니메이션 동안 UI 클릭 불가 처리
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
+        OnOpenStarted?.Invoke();
 
-        // DOTween 시퀀스 시작
         seq = DOTween.Sequence().SetUpdate(ignoreTimeScale);
-        AppendOpenTween(seq); // 열림 애니메이션 추가
+        AppendOpenTween(seq);
         seq.SetEase(ease)
            .OnComplete(() =>
            {
                isOpen = true;
                canvasGroup.blocksRaycasts = true;
                canvasGroup.interactable = true;
-               OnOpened?.Invoke(); // 이벤트 발동
+               OnOpened?.Invoke();
            });
     }
 
-    // UI 닫기
     public virtual void Close()
     {
-        if (!isOpen) return;  // 이미 닫혀있으면 무시
+        if (!isOpen) return;
         KillTween();
 
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
+        OnCloseStarted?.Invoke();
 
         seq = DOTween.Sequence().SetUpdate(ignoreTimeScale);
-        AppendCloseTween(seq); // 닫힘 애니메이션 추가
+        AppendCloseTween(seq);
         seq.SetEase(ease)
            .OnComplete(() =>
            {
                isOpen = false;
                gameObject.SetActive(false);
-               OnClosed?.Invoke(); // 이벤트 발동
+               OnClosed?.Invoke();
            });
     }
 
-    // 자식 클래스에서 필요 시 텍스트, 버튼 비활성화 (필요할때 활성화시키기 위해서)
-    public virtual void UnActive() { }
+    public virtual void UnActive()
+    {
 
-    // 현재 실행 중인 애니메이션 정리
+    }
+
+
     void KillTween()
     {
         if (seq != null && seq.IsActive()) seq.Kill();
         seq = null;
     }
 
-    // Open 전에 상태 준비
     void PrepareForOpen()
     {
         switch (animType)
@@ -123,19 +123,22 @@ public abstract class BaseUI : MonoBehaviour
             case AnimType.None:
                 ApplyShownImmediate();
                 break;
+
             case AnimType.Fade:
                 canvasGroup.alpha = 0f;
                 rect.anchoredPosition = cachedAnchoredPos;
                 break;
-            case AnimType.Scale:
+
+            case AnimType.SlideFromTop:
+            case AnimType.SlideFromBottom:
+            case AnimType.SlideFromLeft:
+            case AnimType.SlideFromRight:
                 canvasGroup.alpha = 1f;
-                rect.localScale = Vector3.one;
-                rect.anchoredPosition = cachedAnchoredPos;
+                rect.anchoredPosition = cachedAnchoredPos + GetSlideOffset(animType, true);
                 break;
         }
     }
 
-    // Open 애니메이션 추가
     void AppendOpenTween(Sequence s)
     {
         switch (animType)
@@ -143,16 +146,20 @@ public abstract class BaseUI : MonoBehaviour
             case AnimType.None:
                 ApplyShownImmediate();
                 break;
+
             case AnimType.Fade:
                 s.Append(canvasGroup.DOFade(1f, duration));
                 break;
-            case AnimType.Scale:
-                s.Append(rect.DOScale(1f, duration));
+
+            case AnimType.SlideFromTop:
+            case AnimType.SlideFromBottom:
+            case AnimType.SlideFromLeft:
+            case AnimType.SlideFromRight:
+                s.Append(rect.DOAnchorPos(cachedAnchoredPos, duration));
                 break;
         }
     }
 
-    // Close 애니메이션 추가
     void AppendCloseTween(Sequence s)
     {
         switch (animType)
@@ -160,16 +167,42 @@ public abstract class BaseUI : MonoBehaviour
             case AnimType.None:
                 ApplyHiddenImmediate();
                 break;
+
             case AnimType.Fade:
                 s.Append(canvasGroup.DOFade(0f, duration));
                 break;
-            case AnimType.Scale:
-                s.Append(rect.DOScale(scaleFactor, duration));
+
+            case AnimType.SlideFromTop:
+            case AnimType.SlideFromBottom:
+            case AnimType.SlideFromLeft:
+            case AnimType.SlideFromRight:
+                s.Append(rect.DOAnchorPos(cachedAnchoredPos + GetSlideOffset(animType, false), duration));
                 break;
         }
     }
 
-    // 즉시 보여주기 (애니메이션 없이)
+    Vector2 GetSlideOffset(AnimType type, bool forOpenPhase)
+    {
+        float d = slideDistance;
+        if (Mathf.Approximately(d, 0f))
+        {
+            // 자동 거리: rect 크기 + 100 여유
+            Vector2 size = rect.rect.size;
+            d = (type == AnimType.SlideFromLeft || type == AnimType.SlideFromRight)
+                ? size.x + 100f
+                : size.y + 100f;
+        }
+
+        return type switch
+        {
+            AnimType.SlideFromTop => new Vector2(0, +d),
+            AnimType.SlideFromBottom => new Vector2(0, -d),
+            AnimType.SlideFromLeft => new Vector2(-d, 0),
+            AnimType.SlideFromRight => new Vector2(+d, 0),
+            _ => Vector2.zero
+        };
+    }
+
     void ApplyShownImmediate()
     {
         gameObject.SetActive(true);
@@ -180,7 +213,6 @@ public abstract class BaseUI : MonoBehaviour
         canvasGroup.interactable = true;
     }
 
-    // 즉시 숨기기 (애니메이션 없이)
     void ApplyHiddenImmediate()
     {
         canvasGroup.alpha = 0f;
