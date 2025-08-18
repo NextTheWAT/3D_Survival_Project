@@ -14,7 +14,7 @@ public class InventoryUI : BaseUI
 
     // 아이템 조작 버튼
     [SerializeField] private Button useButton;
-    [SerializeField] private Button EquipButton;
+    [SerializeField] private Button equipButton;
     [SerializeField] private Button unEquipButton;
     [SerializeField] private Button dropButton;
 
@@ -31,7 +31,7 @@ public class InventoryUI : BaseUI
 
         // 버튼 이벤트 연결 (현재는 Debug.Log만 출력)
         if (useButton) useButton.onClick.AddListener(() => OnUseClicked?.Invoke());
-        if (EquipButton) EquipButton.onClick.AddListener(() => OnEquipClicked?.Invoke());
+        if (equipButton) equipButton.onClick.AddListener(() => OnEquipClicked?.Invoke());
         //if (unEquipButton) unEquipButton.onClick.AddListener(() => OnEquipClicked?.Invoke()); //일단 EquipClicked 하나로만 되는지 보고, 
         if (dropButton) dropButton.onClick.AddListener(() => OnDropClicked?.Invoke());
 
@@ -52,16 +52,16 @@ public class InventoryUI : BaseUI
 
         // 버튼 숨기기
         useButton.gameObject.SetActive(false);
-        EquipButton.gameObject.SetActive(false);
+        equipButton.gameObject.SetActive(false);
         unEquipButton.gameObject.SetActive(false);
         dropButton.gameObject.SetActive(false);
     }
 
     // 외부에서 아이템 정보 바인딩
-    public void BindItem(string name, string desc)
+    public void BindItem(ItemData data)
     {
-        if (selectedItemName) selectedItemName.text = name;
-        if (selectedItemDescription) selectedItemDescription.text = desc;
+        if (selectedItemName) selectedItemName.text = data.name;
+        if (selectedItemDescription) selectedItemDescription.text = data.description;
         if (selectedItemStatName) selectedItemStatName.text = "Stat Name";   // TODO: 실제 스탯 이름 바인딩
         if (selectedItemStatValue) selectedItemStatValue.text = "Stat Value"; // TODO: 실제 스탯 값 바인딩
     }
@@ -73,5 +73,22 @@ public class InventoryUI : BaseUI
     public void ClearSelection()
     {
         //to do: 선택한 아이템 없음 상태.
+        selectedItemId = null;
+        if (selectedItemName) selectedItemName.text = "";
+        if (selectedItemDescription) selectedItemDescription.text = "";
+        if (selectedItemStatName) selectedItemStatName.text = "";
+        if (selectedItemStatValue) selectedItemStatValue.text = "";
+        SetButtonsActive(false, false, false);
+    }
+    public void SetButtonsActive(bool use, bool equip, bool drop)    //개별로 필요한 버튼 on/off하는 방식인데 case로 아이템 유형에 따라하는 것(과제처럼)이 나을지도 모르겠음.
+    {
+        useButton.gameObject.SetActive(use);
+        equipButton.gameObject.SetActive(equip);
+        dropButton.gameObject.SetActive(drop);
+    }
+    public void SelectItem(int itemId)
+    {
+        selectedItemId = itemId;
+        OnItemClicked?.Invoke(itemId);
     }
 }

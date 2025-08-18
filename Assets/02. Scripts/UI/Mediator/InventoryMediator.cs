@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum InventoryEventType
@@ -12,12 +13,13 @@ public interface IInventoryMediator
 {
     void Notify(object sender, InventoryEventType eventType, object data = null);
 }
-/// UI ↔ Model(그리고 Player 규칙) 사이를 가볍게 중재
+/// UI와 Manager를 단방향으로 중재
 public class InventoryMediator : MonoBehaviour, IInventoryMediator
 {
     [Header("Refs")]
     [SerializeField] private InventoryUI ui;
     [SerializeField] private InventoryManager manager;
+    [SerializeField] private List<ItemData> itemDatabase;
 
     private int? selectedId;
 
@@ -51,7 +53,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     public void Notify(object sender, InventoryEventType eventType, object data = null)
     {
-        switch(eventType)
+        switch (eventType)
         {
             case InventoryEventType.InventoryChanged:
                 RefreshList();
@@ -80,6 +82,14 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     private void HandleSelect(int id)
     {
         selectedId = id;
+        var data = itemDatabase.FirstOrDefault(x => x.id == id);
+        if (data != null) ui.BindItem(data);
+        // To do
+        //이거 아님. 이거 아이템 타입에 따라 자동으로 아게끔. InventoryUI 내에서도 바꾸기 SetButtonsActive 말하는 거임.
+        ui.SetButtonsActive(manager.GetItemAmount(id) > 0, true, manager.GetItemAmount(id) > 0);    //Todo
+
+
+
         //model.selectedItem = id;
 
         //var data = model.GetItemById(id);
@@ -95,7 +105,12 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     private void HandleUse()
     {
-        if (selectedId != null) manager.UseItem(selectedId.Value);
+        if (selectedId != null)
+        {
+            manager.UseItem(selectedId.Value);
+            selectedId = null;
+            RefreshUI();
+        }
         //if (selectedId == null) return;
         //var data = model.GetItemById(selectedId.Value);
         //if (!player.CanUse(data)) return;
@@ -107,7 +122,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     private void HandleEquip()
     {
-        if(selectedId !=null)
+        if (selectedId != null)
         {
             // to do: Inventory Manager에게 장착 요청하기
             Debug.Log($"Equip requested for item {selectedId.Value}");
@@ -136,7 +151,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         {
             manager.DropItem(selectedId.Value);
             selectedId = null;
-            ui.ClearSelection();
+            RefreshUI();
         }
         //if (selectedId == null) return;
         //model.DropItem(selectedId.Value); // 전량 버림
@@ -155,4 +170,11 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     //        HandleSelect(selectedId.Value);
     //    }
     //}
+    private void RefreshUI()
+    {
+        if (selectedId != null && manager.GetItemAmount(selectedId.Value) > 0)
+            HandleSelect(selectedId.Value);
+        else
+            ui.ClearSelection();
+    }
 }
