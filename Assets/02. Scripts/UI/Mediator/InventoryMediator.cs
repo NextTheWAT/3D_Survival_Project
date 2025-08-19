@@ -42,7 +42,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.OnItemClicked -= HandleSelect;
         ui.OnUseClicked -= HandleUse;
         ui.OnEquipClicked -= HandleEquip;
-        ui.OnUnEquipClicked -= HandleUnEquip;
+        ui.OnUnequipClicked -= HandleUnequip;
         ui.OnDropClicked -= HandleDrop;
     }
 

@@ -40,7 +40,7 @@ public class InventoryUI : BaseUI
         // 버튼 이벤트 연결 (현재는 Debug.Log만 출력)
         if (useButton) useButton.onClick.AddListener(() => OnUseClicked?.Invoke());
         if (equipButton) equipButton.onClick.AddListener(() => OnEquipClicked?.Invoke());
-        if (unEquipButton) unEquipButton.onClick.AddListener(() => OnUnequipClicked?.Invoke());, 
+        if (unEquipButton) unEquipButton.onClick.AddListener(() => OnUnequipClicked?.Invoke()); 
         if (dropButton) dropButton.onClick.AddListener(() => OnDropClicked?.Invoke());
 
         // 처음 시작할 때 버튼/텍스트 비활성화
