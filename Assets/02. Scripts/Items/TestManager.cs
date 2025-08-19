@@ -7,12 +7,18 @@ public class TestManager : MonoBehaviour
     public ItemDatabase itemDatabase;
     public ResourceObject resourceObject;
     public Transform dropPosition;
+    public InventoryUI inventoryUI;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResourceHarvestTest();
+        }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            inventoryUI.Open();
+            Debug.Log("Activate UI");
         }
     }
     void ResourceHarvestTest()

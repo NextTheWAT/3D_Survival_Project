@@ -18,9 +18,17 @@ public class InventoryUI : BaseUI
     [SerializeField] private Button unEquipButton;
     [SerializeField] private Button dropButton;
 
+    [Header("Slot Setting")]
+    [SerializeField] private Transform slotParent;
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] private int maxSlotCount = 14;
+
+    private List<InventorySlotUI> slots = new();
+
     public event Action<int> OnItemClicked;
     public event Action OnUseClicked;
     public event Action OnEquipClicked;
+    public event Action OnUnequipClicked;
     public event Action OnDropClicked;
 
     private int? selectedItemId;
@@ -32,11 +40,21 @@ public class InventoryUI : BaseUI
         // 버튼 이벤트 연결 (현재는 Debug.Log만 출력)
         if (useButton) useButton.onClick.AddListener(() => OnUseClicked?.Invoke());
         if (equipButton) equipButton.onClick.AddListener(() => OnEquipClicked?.Invoke());
-        //if (unEquipButton) unEquipButton.onClick.AddListener(() => OnEquipClicked?.Invoke()); //일단 EquipClicked 하나로만 되는지 보고, 
+        if (unEquipButton) unEquipButton.onClick.AddListener(() => OnUnequipClicked?.Invoke());, 
         if (dropButton) dropButton.onClick.AddListener(() => OnDropClicked?.Invoke());
 
         // 처음 시작할 때 버튼/텍스트 비활성화
         UnActive();
+
+        //슬롯 생성
+        for (int i = 0; i < maxSlotCount; i++)
+        {
+            GameObject slotObj = Instantiate(slotPrefab, slotParent);
+            InventorySlotUI slotUI = slotObj.GetComponent<InventorySlotUI>();
+
+            slotObj.SetActive(false); // 처음엔 꺼둠
+            slots.Add(slotUI);
+        }
     }
 
     // 시작할 때 텍스트, 버튼 비활성화 처리
@@ -56,7 +74,11 @@ public class InventoryUI : BaseUI
         unEquipButton.gameObject.SetActive(false);
         dropButton.gameObject.SetActive(false);
     }
-
+    public void Init(List<InventorySlotData> initialSlots)
+    {
+        RenderList(initialSlots);
+        ClearSelection();
+    }
     // 외부에서 아이템 정보 바인딩
     public void BindItem(ItemData data)
     {
@@ -66,9 +88,20 @@ public class InventoryUI : BaseUI
         if (selectedItemStatValue) selectedItemStatValue.text = "Stat Value"; // TODO: 실제 스탯 값 바인딩
     }
 
-    public void RenderList(List<ItemData> itemDatas)
-    { 
+    public void RenderList(List<InventorySlotData> slotDatas)
+    {
         //to do: 업데이트된 아이템 데이터 리스트로 렌더 다시하기
+        foreach (var slot in slots)
+            slot.gameObject.SetActive(false);
+
+        for (int i = 0; i < slotDatas.Count && i < slots.Count; i++)
+        {
+            slots[i].gameObject.SetActive(true);
+            slots[i].Bind(slotDatas[i]);
+
+            var capturedIndex = i;
+            slots[i].onClick = () => SelectItem(slotDatas[capturedIndex].itemData.id);
+        }
     }
     public void ClearSelection()
     {
