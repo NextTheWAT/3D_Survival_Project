@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +12,9 @@ public class DialogueViewUI : BaseUI
     [SerializeField] Button nextButton;
     [SerializeField] Button closeButton;
 
-    [Header("Choices (°íÁ¤ °³¼ö)")]
-    [SerializeField] Button[] choiceButtons;          // ¹Ì¸® ¸¸µç ¹öÆ°µé
-    [SerializeField] TextMeshProUGUI[] choiceLabels;  // °¢ ¹öÆ°ÀÇ ¶óº§
+    [Header("Choices (ê³ ì • ê°œìˆ˜)")]
+    [SerializeField] Button[] choiceButtons;          // ë¯¸ë¦¬ ë§Œë“  ë²„íŠ¼ë“¤
+    [SerializeField] TextMeshProUGUI[] choiceLabels;  // ê° ë²„íŠ¼ì˜ ë¼ë²¨
 
     public void BindNext(UnityEngine.Events.UnityAction action)
     {
@@ -41,25 +41,42 @@ public class DialogueViewUI : BaseUI
 
     public void ShowChoices(string[] labels)
     {
-        // Next ¼û±â°í, ¼±ÅÃÁö È°¼ºÈ­
         if (nextButton) nextButton.gameObject.SetActive(false);
+
         for (int i = 0; i < choiceButtons.Length; i++)
         {
             bool on = i < labels.Length;
-            choiceButtons[i].gameObject.SetActive(on);
-            if (on && i < choiceLabels.Length) choiceLabels[i].text = labels[i];
+
+            // ë²„íŠ¼ on/off
+            if (choiceButtons[i]) choiceButtons[i].gameObject.SetActive(on);
+
+            // ë¼ë²¨ on/off + í…ìŠ¤íŠ¸
+            if (i < choiceLabels.Length && choiceLabels[i])
+            {
+                var labelGO = choiceLabels[i].gameObject;
+                if (labelGO) labelGO.SetActive(on);
+                choiceLabels[i].text = on ? labels[i] : string.Empty;
+            }
         }
     }
 
     public void ClearChoices()
     {
-        // Next º¸ÀÌ±â, ¼±ÅÃÁö ¼û±è
         if (nextButton) nextButton.gameObject.SetActive(true);
+
         for (int i = 0; i < choiceButtons.Length; i++)
-            choiceButtons[i].gameObject.SetActive(false);
+        {
+            if (choiceButtons[i]) choiceButtons[i].gameObject.SetActive(false);
+            if (i < choiceLabels.Length && choiceLabels[i])
+            {
+                choiceLabels[i].gameObject.SetActive(false);
+                choiceLabels[i].text = string.Empty;
+            }
+        }
     }
 
-    // BaseUI ·¡ÇÎ
+
+    // BaseUI ë˜í•‘
     public void Show() => Open();
     public void Hide() => Close();
 }

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Dialogue_", menuName = "Game/Dialogue")]
@@ -13,8 +13,8 @@ public class DialogueSO : ScriptableObject
         public string id;
         public string speakerName;
         [TextArea] public string text;
-        public Choice[] choices;  // ¾øÀ¸¸é Next »ç¿ë
-        public string next;       // choices°¡ ¾øÀ» ¶§ ´ÙÀ½ ³ëµå
+        public Choice[] choices;  // ì—†ìœ¼ë©´ Next ì‚¬ìš©
+        public string next;       // choicesê°€ ì—†ì„ ë•Œ ë‹¤ìŒ ë…¸ë“œ
     }
 
     [Serializable]
@@ -28,5 +28,18 @@ public class DialogueSO : ScriptableObject
     {
         foreach (var n in nodes) if (n.id == id) return n;
         return null;
+    }
+
+    // ì‹œì‘ ë…¸ë“œ ê¸°ì¤€ ìŠ¤í”¼ì»¤ ì´ë¦„
+    public string GetDefaultSpeaker()
+    {
+        var n = GetNode(startNode);
+        if (n != null && !string.IsNullOrEmpty(n.speakerName)) return n.speakerName;
+
+        // í´ë°±: ì²« ë²ˆì§¸ë¡œ ë°œê²¬ë˜ëŠ” ìœ íš¨ ìŠ¤í”¼ì»¤
+        foreach (var node in nodes)
+            if (!string.IsNullOrEmpty(node.speakerName)) return node.speakerName;
+
+        return "NPC";
     }
 }
