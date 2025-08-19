@@ -16,6 +16,12 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
     [SerializeField] private float _attackRate;
     [SerializeField] public float _attackDistance;
 
+    [Header("HitBox")]
+    public Transform hitbox;
+    public Vector3 hitboxSize;
+    private bool _isAttackActive = false;
+    [SerializeField] private List<Collider> _hittedTarget = new();
+
     [Header("AI")]
     protected NavMeshAgent _agent;
     protected FiniteStateMachine _fsm;
@@ -42,7 +48,8 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
         {
             new WaitState(this),
             new AttackState(this),
-            new MoveState(this)
+            new MoveState(this),
+            new DeathState(this)
         };
 
         _fsm = new FiniteStateMachine(_states);
@@ -59,12 +66,40 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
         Detect();
     }
 
-    public void OnAttack()
+    private void FixedUpdate()
     {
-        Debug.Log("공격 성공"); //피격 판정낼게 필요
-        //애니메이션 이벤트 쓸듯?
-        //IValueChangable player = Component.target.gameObject.GetComponent<IValueChangable>();
-        //player.ValueChanged(-Component._damage);
+        if (!_isAttackActive) {
+            return;
+        }
+
+        CheckOverlap();
+    }
+
+    public void OnEnableAttack()
+    {
+        _isAttackActive = true;
+        _hittedTarget.Clear();
+        Debug.Log("hitbox 활성화");
+    }
+
+    public void OnDisableAttack()
+    {
+        _isAttackActive = false;
+        Debug.Log("hitbox 비활성화");
+    }
+
+    public void CheckOverlap()
+    {
+        Collider[] hitTarget = Physics.OverlapBox(hitbox.position, hitboxSize/2, hitbox.rotation, targetMask);
+        Debug.Log("OverlapBox 감지된 타겟 수: " + hitTarget.Length);
+        if (hitTarget.Length != 0)
+        {
+            if (!_hittedTarget.Contains(hitTarget[0]))
+            {
+                Debug.Log(hitTarget[0].name + "데미지 주기"); //데미지 주는 로직 작성
+                _hittedTarget.Add(hitTarget[0]);
+            }
+        }
     }
 
     public void Detect()

@@ -149,4 +149,28 @@ public partial class Enemy
             return hit.position;
         }
     }
+
+    class DeathState : BaseState<Enemy>
+    {
+        public DeathState(Enemy component) : base(component){}
+
+        public override void End()
+        {
+            
+        }
+
+        public override void Start()
+        {
+            Component._agent.isStopped = true;
+            Component._agent.ResetPath();
+            Component._agent.enabled = false;
+
+            Component._anim.SetBool(EnemyAnimParam.Death, true);
+        }
+
+        public override void Update()
+        {
+            
+        }
+    }
 }
