@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Toggle",
+                    "name": "SwitchCursorState",
                     "type": "Button",
                     "id": "db2031f6-8fa9-425f-9963-ab371bf3f62d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchPerspectiveMode",
+                    "type": "Button",
+                    "id": "daa61fd0-a823-4c9d-8b88-44ca6ea470a1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -123,11 +132,22 @@
                 {
                     "name": "",
                     "id": "f20bb36c-6f53-48a1-9270-d601a3d726ca",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/f1",
                     "interactions": "",
                     "processors": "",
                     "groups": "Desktop",
-                    "action": "Toggle",
+                    "action": "SwitchCursorState",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31df1385-b9bc-4ff9-8406-f09c1c10f445",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "SwitchPerspectiveMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
