@@ -5,6 +5,7 @@ using UnityEngine;
 public class CraftSystem
 {
     private List<RecipeData> recipes = new List<RecipeData>();
+    private bool isCrafting = false;
 
     private InventoryManager manager;
 
@@ -63,6 +64,16 @@ public class CraftSystem
     }
     public IEnumerator CraftCoroutine(RecipeData recipe)
     {
+        if (isCrafting)
+        {
+            Debug.Log($"Try again after finishing previous crafting.");
+
+            yield break;
+        }
+
+        isCrafting = true;
+
+
         Debug.Log($"Crafting started: output {recipe.outputItemId}");
 
         foreach (var resource in recipe.resources)
@@ -75,5 +86,6 @@ public class CraftSystem
         Debug.Log($"Crafting finished: crafted {recipe.outputItemId}");
 
         manager.CraftFinished(recipe);
+        isCrafting = false;
     }
 }

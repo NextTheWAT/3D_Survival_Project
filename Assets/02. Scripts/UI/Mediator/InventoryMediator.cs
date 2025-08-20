@@ -106,6 +106,11 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     private void HandleCraft()
     {
+        if(manager.GetSlotDatas().Count >= 14)
+        {
+            Debug.Log("you need at least 1 empty slot in your inventory.");
+            return;
+        }
         CraftSystem craftSystem =  manager.CraftSystem();
         RecipeData recipeData = craftSystem.GetTransformRecipe(selectedId.Value);
         //현재 단일 아이템 선택 시 진행하는 중..
