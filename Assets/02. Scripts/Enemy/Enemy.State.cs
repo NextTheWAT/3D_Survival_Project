@@ -48,6 +48,7 @@ public partial class Enemy
             else
             {
                 Component._agent.isStopped = true;
+                //Component._agent.velocity = Vector3.zero; //바로 정지
                 Component._anim.SetBool(EnemyAnimParam.Run, false);
 
                 waitTimer += Time.deltaTime;

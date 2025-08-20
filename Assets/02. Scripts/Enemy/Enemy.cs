@@ -127,7 +127,10 @@ public partial class Enemy : MonoBehaviour, test.value.IValueChangable//Characte
         {
             if (!_hittedTarget.Contains(hitTarget[0]))
             {
-                hitTarget[0].GetComponent<IValueChangable>().ValueChanged(-_damage);
+                if(hitTarget[0].TryGetComponent<IValueChangable>(out IValueChangable target))
+                {
+                    target.ValueChanged(-_damage);
+                }
                 Debug.Log(hitTarget[0].name + "데미지 주기"); //데미지 주는 로직 작성
                 _hittedTarget.Add(hitTarget[0]);
             }
