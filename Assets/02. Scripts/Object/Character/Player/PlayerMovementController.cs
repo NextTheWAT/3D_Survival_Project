@@ -106,6 +106,11 @@ namespace Object.Character.Player
 
         private void Jump(InputAction.CallbackContext context)
         {
+            if (isJumping)
+            {
+                return;
+            }
+
             var mass = _rigidbody.mass;
             var gravity = -Physics.gravity.y;
             var force = Mathf.Sqrt(gravity * jumpingForce) * mass;
