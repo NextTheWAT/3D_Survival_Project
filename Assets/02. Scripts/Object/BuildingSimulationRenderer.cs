@@ -5,12 +5,6 @@ namespace Object
     [RequireComponent(typeof(CollisionDetector))]
     public class BuildingSimulationRenderer : MonoBehaviour
     {
-        #region CONSTANT FIELD API
-
-        private const string RenderingModePropertyName = "_Mode";
-
-        #endregion
-
         [Header("Renderer Settings")]
         [Range(0f, 1f)]
         [SerializeField] private float alpha = 0.4f;
