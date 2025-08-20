@@ -20,6 +20,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     [Header("Refs")]
     [SerializeField] private InventoryUI ui;
     [SerializeField] private InventoryManager manager;
+    [SerializeField] private CraftUI craftUI;
 
     private int? selectedId;
 
@@ -37,6 +38,9 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
         // 초기 렌더링
         ui.Init(manager.GetSlotDatas());
+
+        // 가공창 결과(확정) 콜백 구독
+        if (craftUI) craftUI.OnProcess += HandleCraftConfirmed;
     }
 
     private void OnDisable()
@@ -47,6 +51,9 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.OnUnequipClicked -= HandleUnequip;
         ui.OnCraftClicked -= HandleCraft;
         ui.OnDropClicked -= HandleDrop;
+
+        // 구독 해제
+        if (craftUI) craftUI.OnProcess -= HandleCraftConfirmed;
     }
 
     public void Notify(object sender, InventoryEventType eventType, object data = null)
@@ -106,23 +113,23 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     private void HandleCraft()
     {
-        if(manager.GetSlotDatas().Count >= 14)
+        if (manager.GetSlotDatas().Count >= 14)
         {
             Debug.Log("you need at least 1 empty slot in your inventory.");
             return;
         }
-        CraftSystem craftSystem =  manager.CraftSystem();
-        RecipeData recipeData = craftSystem.GetTransformRecipe(selectedId.Value);
-        //현재 단일 아이템 선택 시 진행하는 중..
-        if (selectedId != null && recipeData != null)
-        {
-            if (recipeData != null)
-            {
-                // 제작 코루틴 실행
-                StartCoroutine(craftSystem.CraftCoroutine(recipeData));
-            }
-        }
+        if (selectedId == null) return; // 먼저 체크하고
+
+        var craftSystem = manager.CraftSystem();
+        var recipe = craftSystem.GetTransformRecipe(selectedId.Value);
+        if (recipe == null) return;
+
+        var itemData = manager.GetItemDataById(selectedId.Value);
+
+        // 바로 코루틴 실행하지 말고 CraftUI 오픈
+        if (craftUI) craftUI.OpenWith(itemData, recipe);
     }
+
     private void HandleDrop()
     {
         if (selectedId != null)
@@ -144,4 +151,12 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
             ui.ClearSelection();
         }
     }
+
+    // CraftUI 확정 콜백에서 실제 제작 실행
+    private void HandleCraftConfirmed(ItemData input, RecipeData recipe)
+    {
+        StartCoroutine(manager.CraftSystem().CraftCoroutine(recipe));
+        if (craftUI) craftUI.Close();
+    }
+
 }
