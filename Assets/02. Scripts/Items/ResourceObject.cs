@@ -46,6 +46,11 @@ public class ResourceObject : MonoBehaviour, IInteractable
         itemId = 0;
         return false;
     }
+    public Vector3 GetDropPosition()
+    {
+        Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+        return transform.position + randomOffset;
+    }
 
     private int HarvestResource()
     {

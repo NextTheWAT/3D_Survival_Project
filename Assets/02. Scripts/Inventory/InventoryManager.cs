@@ -79,6 +79,13 @@ public class InventoryManager : MonoBehaviour
         var slot = inventoryModel.GetAllSlots().Find(s => s.slotId == slotId);
         if (slot == null) return;
 
+        if (slot.itemData is ConsumeItemData consumeItem)
+        {
+            foreach (var restore in consumeItem.restorations)
+                Debug.Log($"{restore.type}(이)가 {restore.amount}만큼 회복했다.");
+                    //playerCondition.Restore(r.type, r.amount);
+        }
+
         RemoveOneItemFromSlot(slotId);
         Debug.Log($"Used 1 {slot.itemData.name} from slot {slotId}");
     }
