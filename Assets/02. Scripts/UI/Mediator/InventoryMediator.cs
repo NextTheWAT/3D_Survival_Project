@@ -135,9 +135,17 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     {
         if (selectedSlotId != null)
         {
+
+            var slot = manager.GetSlot(selectedSlotId.Value);
+            if (slot == null) return;
+
             manager.DropItem(selectedSlotId.Value);
-            selectedSlotId = null;
-            RefreshUI();
+
+            if (slot.count <= 0)
+            {
+                RefreshUI();
+                selectedSlotId = null;
+            }
         }
     }
 

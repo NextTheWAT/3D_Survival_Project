@@ -58,20 +58,30 @@ public class InventoryManager : MonoBehaviour
     }
     public void RemoveOneItemFromSlot(int slotId)
     {
+        Debug.Log("inside of RemoveOneItemFromSlot");
         inventoryModel.RemoveOneItemFromSlot(slotId);
         mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
     }
     public void DropItem(int slotId)
     {
+        Debug.Log($"DropItem 호출중");
         var slot = inventoryModel.GetAllSlots().Find(s => s.slotId == slotId);
-        if (slot == null) return;
+        if (slot == null)
+        {
+            Debug.Log($"slot is null");
+            return;
+        }
+
 
         if (equipmentModel.IsEquippedBySlotId(slot.slotId))
-            equipmentModel.UnequipItem(slot.itemData as EquipItemData, slotId);
+        equipmentModel.UnequipItem(slot.itemData as EquipItemData, slotId);
 
+        Vector3 dropPos = TestManager.Instance.playerPosition.position + TestManager.Instance.playerPosition.forward * 1.0f + Vector3.up * 0.5f;
+        Instantiate(slot.itemData.inGamePrefab, dropPos, Quaternion.Euler(Vector3.one * UnityEngine.Random.value * 360));
+
+        Debug.Log($"Trying  RemoveOneItemFromSlot(slotId);");
         RemoveOneItemFromSlot(slotId);
 
-        //to do: 실제 드랍 오브젝트 생성
         Debug.Log($"Dropped 1 {slot.itemData.name} from slot {slotId}");
     }
     public void UseItem(int slotId)
@@ -83,7 +93,6 @@ public class InventoryManager : MonoBehaviour
         {
             foreach (var restore in consumeItem.restorations)
                 Debug.Log($"{restore.type}(이)가 {restore.amount}만큼 회복했다.");
-                    //playerCondition.Restore(r.type, r.amount);
         }
 
         RemoveOneItemFromSlot(slotId);
@@ -126,18 +135,14 @@ public class InventoryManager : MonoBehaviour
                              .Where(s => s.itemData.id == itemId)
                              .Sum(s => s.count);
     }
-    //public List<int> GetAllItemIds() => inventoryModel.GetAllIds();
-    //public ItemData GetItemDataById(int itemId) => itemDatabase.GetItemById(itemId);
-    //public List<ItemData> GetAllItemData()
-    //{
-    //    return inventoryModel.GetAllIds()
-    //                .Select(id => itemDatabase.GetItemById(id))
-    //                .ToList();
-    //}
     public List<InventorySlotData> GetSlotDatas()
     {
         // slotId 포함된 슬롯 리스트 반환
         return inventoryModel.GetAllSlots();
+    }
+    public InventorySlotData GetSlot(int itemId)
+    {
+        return GetSlotDatas().Find(slot => slot.itemData != null && slot.itemData.id == itemId);
     }
 
     public bool IsEquippedBySlotId(int slotId)

@@ -31,7 +31,7 @@ public class TestManager : MonoBehaviour
     public ItemDatabase itemDatabase;
     public ResourceObject resourceObject;
     public ResourceObject resourceObject2;
-    public Transform dropPosition;
+    public Transform playerPosition;
     public InventoryUI inventoryUI;
     public InventoryManager inventoryManager;
 
@@ -53,12 +53,9 @@ public class TestManager : MonoBehaviour
     }
     void ResourceHarvestTest(ResourceObject resourceObject)
     {
-        int id = 0;
-        if (resourceObject.TryHarvest(out id))
+        if (resourceObject.TryHarvestAndSpawn())
         {
-            Vector3 dropPos = resourceObject.GetDropPosition();
-            Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPos, Quaternion.Euler(Vector3.one * Random.value * 360));
-            Debug.Log("TryHarvest: " + id);
+            Debug.Log("Spawned the resource.");
         }
         else
         { 
