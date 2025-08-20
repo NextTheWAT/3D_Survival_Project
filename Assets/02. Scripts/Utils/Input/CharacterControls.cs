@@ -73,6 +73,42 @@ namespace Utils.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build"",
+                    ""type"": ""Button"",
+                    ""id"": ""3cad6783-0b2c-49a3-bac3-7901fddc6e81"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchAxis"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0d162ee-81c7-477d-8ef7-21199ffc59f4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0dd04a69-70b5-4327-b46a-45b21a6b1e04"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7bff4a9-e134-401b-905d-07b820cfeaab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -174,6 +210,50 @@ namespace Utils.Input
                     ""action"": ""SwitchPerspectiveMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfbfa5e0-88a2-49be-904a-0d5c6acf1064"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd429264-ecaf-4c8e-833f-1b20dcde1dc6"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6c32dde-51a4-4aa3-8d4d-913947abb904"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Build"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a158fb1-c0a7-49fe-97db-213da92b8402"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""SwitchAxis"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +284,10 @@ namespace Utils.Input
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_SwitchCursorState = m_Player.FindAction("SwitchCursorState", throwIfNotFound: true);
             m_Player_SwitchPerspectiveMode = m_Player.FindAction("SwitchPerspectiveMode", throwIfNotFound: true);
+            m_Player_Build = m_Player.FindAction("Build", throwIfNotFound: true);
+            m_Player_SwitchAxis = m_Player.FindAction("SwitchAxis", throwIfNotFound: true);
+            m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
+            m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -270,6 +354,10 @@ namespace Utils.Input
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_SwitchCursorState;
         private readonly InputAction m_Player_SwitchPerspectiveMode;
+        private readonly InputAction m_Player_Build;
+        private readonly InputAction m_Player_SwitchAxis;
+        private readonly InputAction m_Player_Rotate;
+        private readonly InputAction m_Player_Cancel;
         public struct PlayerActions
         {
             private @CharacterControls m_Wrapper;
@@ -279,6 +367,10 @@ namespace Utils.Input
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @SwitchCursorState => m_Wrapper.m_Player_SwitchCursorState;
             public InputAction @SwitchPerspectiveMode => m_Wrapper.m_Player_SwitchPerspectiveMode;
+            public InputAction @Build => m_Wrapper.m_Player_Build;
+            public InputAction @SwitchAxis => m_Wrapper.m_Player_SwitchAxis;
+            public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
+            public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -303,6 +395,18 @@ namespace Utils.Input
                 @SwitchPerspectiveMode.started += instance.OnSwitchPerspectiveMode;
                 @SwitchPerspectiveMode.performed += instance.OnSwitchPerspectiveMode;
                 @SwitchPerspectiveMode.canceled += instance.OnSwitchPerspectiveMode;
+                @Build.started += instance.OnBuild;
+                @Build.performed += instance.OnBuild;
+                @Build.canceled += instance.OnBuild;
+                @SwitchAxis.started += instance.OnSwitchAxis;
+                @SwitchAxis.performed += instance.OnSwitchAxis;
+                @SwitchAxis.canceled += instance.OnSwitchAxis;
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -322,6 +426,18 @@ namespace Utils.Input
                 @SwitchPerspectiveMode.started -= instance.OnSwitchPerspectiveMode;
                 @SwitchPerspectiveMode.performed -= instance.OnSwitchPerspectiveMode;
                 @SwitchPerspectiveMode.canceled -= instance.OnSwitchPerspectiveMode;
+                @Build.started -= instance.OnBuild;
+                @Build.performed -= instance.OnBuild;
+                @Build.canceled -= instance.OnBuild;
+                @SwitchAxis.started -= instance.OnSwitchAxis;
+                @SwitchAxis.performed -= instance.OnSwitchAxis;
+                @SwitchAxis.canceled -= instance.OnSwitchAxis;
+                @Rotate.started -= instance.OnRotate;
+                @Rotate.performed -= instance.OnRotate;
+                @Rotate.canceled -= instance.OnRotate;
+                @Cancel.started -= instance.OnCancel;
+                @Cancel.performed -= instance.OnCancel;
+                @Cancel.canceled -= instance.OnCancel;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -355,6 +471,10 @@ namespace Utils.Input
             void OnJump(InputAction.CallbackContext context);
             void OnSwitchCursorState(InputAction.CallbackContext context);
             void OnSwitchPerspectiveMode(InputAction.CallbackContext context);
+            void OnBuild(InputAction.CallbackContext context);
+            void OnSwitchAxis(InputAction.CallbackContext context);
+            void OnRotate(InputAction.CallbackContext context);
+            void OnCancel(InputAction.CallbackContext context);
         }
     }
 }

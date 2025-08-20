@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5788968203526145160}
   - component: {fileID: 5788968203522753704}
   - component: {fileID: 5788968203523720808}
+  - component: {fileID: -3697435896742282291}
+  - component: {fileID: -2303376554521705284}
   m_Layer: 0
   m_Name: FallenBranch
   m_TagString: Untagged
@@ -25,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5788968203525986472}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5788968203522753704
 MeshFilter:
@@ -83,3 +85,30 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-3697435896742282291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5788968203525986472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0.01509055, y: 0.1187468, z: 0.01}
+  size: {x: 1.032725, y: 0.227462, z: 0.18}
+--- !u!114 &-2303376554521705284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5788968203525986472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5f27204bee0d345a041e0cf5915848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alpha: 0.4
