@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 551394989474748768}
   - component: {fileID: -1882541412247421474}
   - component: {fileID: -5063389273305877304}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TreePink1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,8 +122,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: -0.131964, y: 2.551543, z: -0.4229875}
-  size: {x: 3.436559, y: 5.103086, z: 2.680989}
+  center: {x: -0.13196403, y: 2.5515432, z: -0.4229875}
+  size: {x: 3.4365587, y: 5.1030865, z: 2.6809886}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &-5063389273305877304
 MonoBehaviour:
   m_ObjectHideFlags: 0

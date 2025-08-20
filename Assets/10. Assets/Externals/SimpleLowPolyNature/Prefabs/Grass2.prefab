@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 629542536758681526}
   - component: {fileID: 629542536755257238}
   - component: {fileID: 629542536756256086}
+  - component: {fileID: 6994131303723575114}
   - component: {fileID: -7899258469725573933}
   - component: {fileID: 7468655338138984154}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,6 +86,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6994131303723575114
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629542536758182806}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.32371986, y: 0.33278295, z: 0.32115865}
+  m_Center: {x: -0.0058369935, y: 0.16639148, z: -0.002410695}
 --- !u!114 &-7899258469725573933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,8 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: -0.005836993, y: 0.1663915, z: -0.002410695}
-  size: {x: 0.3237199, y: 0.332783, z: 0.3211586}
+  center: {x: -0.0058369935, y: 0.16639148, z: -0.002410695}
+  size: {x: 0.32371986, y: 0.33278295, z: 0.32115865}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &7468655338138984154
 MonoBehaviour:
   m_ObjectHideFlags: 0

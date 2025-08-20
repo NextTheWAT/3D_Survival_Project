@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 64806562698990992}
   - component: {fileID: -8428394601715647303}
   - component: {fileID: 8608703942383125334}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TreeStump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,8 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: -0.005114108, y: 0.185841, z: 0.008936077}
-  size: {x: 0.7683192, y: 0.3852175, z: 0.7503846}
+  center: {x: -0.0051141083, y: 0.18584101, z: 0.008936077}
+  size: {x: 0.7683192, y: 0.38521752, z: 0.75038457}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &8608703942383125334
 MonoBehaviour:
   m_ObjectHideFlags: 0

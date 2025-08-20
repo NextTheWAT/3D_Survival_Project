@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 501295248461903503}
   - component: {fileID: 501295248461903500}
   - component: {fileID: 4134586633405174354}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4917,8 +4917,10 @@ GameObject:
   - component: {fileID: 501295248943452728}
   - component: {fileID: 501295248944255512}
   - component: {fileID: 501295248945221848}
+  - component: {fileID: 8346403297793180949}
   - component: {fileID: 3621136468896063598}
-  m_Layer: 0
+  - component: {fileID: 7267935012153993685}
+  m_Layer: 8
   m_Name: CampFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4991,6 +4993,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8346403297793180949
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501295248943222296}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0856155, y: 0.4652093, z: 0.86354613}
+  m_Center: {x: 0.06976879, y: 0.2259494, z: 0.016719982}
 --- !u!114 &3621136468896063598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5003,5 +5026,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: 0.06976879, y: 0.2259494, z: 0.01671998}
-  size: {x: 1.085616, y: 0.4652093, z: 0.8635461}
+  center: {x: 0.06976879, y: 0.2259494, z: 0.016719982}
+  size: {x: 1.0856155, y: 0.4652093, z: 0.86354613}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
+--- !u!114 &7267935012153993685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501295248943222296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5f27204bee0d345a041e0cf5915848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alpha: 0.4

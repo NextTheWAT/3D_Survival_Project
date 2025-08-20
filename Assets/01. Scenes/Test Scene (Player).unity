@@ -401,8 +401,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 100
-  speed: 0.06
-  prefab: {fileID: 8816085301791691515, guid: 32ad27e7f85303740aeeb909d3da1549, type: 3}
+  speed: 0.1
+  prefab: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
   material: {fileID: 0}
   isSimulating: 0
   isAxisChanged: 0

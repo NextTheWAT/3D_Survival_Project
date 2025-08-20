@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 4674286094358681688}
   - component: {fileID: 4674286094361581688}
   - component: {fileID: 4674286094360582840}
+  - component: {fileID: 6853282787099216821}
   - component: {fileID: 8887937294600062845}
   - component: {fileID: 2961458818627773024}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WoodBoat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,6 +86,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6853282787099216821
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4674286094358643832}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.3110085, y: 0.4004551, z: 2.4622345}
+  m_Center: {x: 0, y: 0.09977247, z: -0.24424326}
 --- !u!114 &8887937294600062845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,8 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: 0, y: 0.09977247, z: -0.2442433}
-  size: {x: 1.311008, y: 0.4004551, z: 2.462234}
+  center: {x: 0, y: 0.09977247, z: -0.24424326}
+  size: {x: 1.3110085, y: 0.4004551, z: 2.4622345}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &2961458818627773024
 MonoBehaviour:
   m_ObjectHideFlags: 0
