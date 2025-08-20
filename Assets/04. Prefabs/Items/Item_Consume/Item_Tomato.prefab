@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3689622471992511430
+--- !u!1 &919239481962150937
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4229324382981491134}
-  - component: {fileID: 6720576552469389073}
-  - component: {fileID: 6478049363862100584}
+  - component: {fileID: 7383817591194604621}
+  - component: {fileID: 7203377156485369800}
+  - component: {fileID: 8148379636133405512}
   m_Layer: 0
-  m_Name: Pepper
+  m_Name: Tomato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4229324382981491134
+--- !u!4 &7383817591194604621
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3689622471992511430}
+  m_GameObject: {fileID: 919239481962150937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4202600789452220540}
+  m_Father: {fileID: 7268587240889457818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6720576552469389073
+--- !u!33 &7203377156485369800
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3689622471992511430}
-  m_Mesh: {fileID: 6187883067242612374, guid: 0483fbf3fcdb60740a9db9ef1f6598ff, type: 3}
---- !u!23 &6478049363862100584
+  m_GameObject: {fileID: 919239481962150937}
+  m_Mesh: {fileID: -1340541719380434750, guid: 9da20384a72bafd4ba5e77eaa896ccd6, type: 3}
+--- !u!23 &8148379636133405512
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3689622471992511430}
+  m_GameObject: {fileID: 919239481962150937}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8548999702865547442
+--- !u!1 &8098025508133016181
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,40 +91,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4202600789452220540}
-  - component: {fileID: 274618749386754439}
-  - component: {fileID: 160111475089153082}
-  - component: {fileID: 5993170767113299677}
+  - component: {fileID: 7268587240889457818}
+  - component: {fileID: 4540596522050391125}
+  - component: {fileID: 5791343226978168486}
+  - component: {fileID: 2732218261585881696}
   m_Layer: 0
-  m_Name: Pepper
+  m_Name: Item_Tomato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4202600789452220540
+--- !u!4 &7268587240889457818
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8548999702865547442}
+  m_GameObject: {fileID: 8098025508133016181}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.946, y: 0, z: 0}
+  m_LocalPosition: {x: 0.838, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4229324382981491134}
+  - {fileID: 7383817591194604621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &274618749386754439
+--- !u!54 &4540596522050391125
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8548999702865547442}
+  m_GameObject: {fileID: 8098025508133016181}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -145,13 +145,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &160111475089153082
+--- !u!65 &5791343226978168486
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8548999702865547442}
+  m_GameObject: {fileID: 8098025508133016181}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -164,18 +164,18 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.08, y: 0.15, z: 0.12}
+  m_Size: {x: 0.1, y: 0.09, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5993170767113299677
+--- !u!114 &2732218261585881696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8548999702865547442}
+  m_GameObject: {fileID: 8098025508133016181}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a543aadecbe0a94caec4d4dff436615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: c79dfc325aaf50f448fe2b3910f9a8d8, type: 2}
+  data: {fileID: 11400000, guid: 15f67eae6f015a14f93f8b8400c1b236, type: 2}

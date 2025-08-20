@@ -18,7 +18,7 @@ MonoBehaviour:
   dropItems:
   - itemId: 1
     dropRate: 0.693
-  - itemId: 4
-    dropRate: 0.01
+  - itemId: 5
+    dropRate: 0.22
   maxAmount: 10
   respawnTime: 10
