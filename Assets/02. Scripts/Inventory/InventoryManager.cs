@@ -140,7 +140,12 @@ public class InventoryManager : MonoBehaviour
         // slotId 포함된 슬롯 리스트 반환
         return inventoryModel.GetAllSlots();
     }
-    public InventorySlotData GetSlot(int itemId)
+    public InventorySlotData GetSlotBySlotId(int slotId)
+    {
+        return GetSlotDatas().Find(slot => slot.slotId == slotId);
+    }
+
+    public InventorySlotData GetSlotByItemId(int itemId)
     {
         return GetSlotDatas().Find(slot => slot.itemData != null && slot.itemData.id == itemId);
     }

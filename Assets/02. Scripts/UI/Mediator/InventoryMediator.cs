@@ -136,7 +136,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         if (selectedSlotId != null)
         {
 
-            var slot = manager.GetSlot(selectedSlotId.Value);
+            var slot = manager.GetSlotBySlotId(selectedSlotId.Value);
             if (slot == null) return;
 
             manager.DropItem(selectedSlotId.Value);
