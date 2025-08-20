@@ -33,6 +33,15 @@ public class EnemySpawnArea : MonoBehaviour
         }
     }
 
+    public void MonsterDeath(int id, GameObject monster)
+    {
+        SpawnAreaData data = spawnAreaData.FirstOrDefault(d => d.id == id);
+        if (data != null && data.spawnedMonster.Contains(monster))
+        {
+            data.spawnedMonster.Remove(monster);
+        }
+    }
+
     public void SpawnMonster(int id)
     {
         SpawnAreaData data = spawnAreaData.FirstOrDefault(d => d.id == id);
@@ -64,9 +73,15 @@ public class EnemySpawnArea : MonoBehaviour
         GameObject randPrefab = data.spawnList[Random.Range(0, data.spawnList.Count)];
         GameObject newMonster = Instantiate(randPrefab, spawnPosition, Quaternion.identity);
 
+        if(newMonster.TryGetComponent<Enemy>(out Enemy enemy))
+        {
+            enemy.SetOwner(this, id);
+        }
+
         data.spawnedMonster.Add(newMonster);
         Debug.Log($"{data.id} 영역의 {newMonster.name} 생성 완료. 전체 생성까지 남은 몬스터 수 {data.maxMonster - data.spawnedMonster.Count}");
     }
+
 
     public void DeSpawnMonster(int id)
     {
@@ -100,7 +115,7 @@ public class EnemySpawnArea : MonoBehaviour
             Gizmos.DrawWireCube(data.spawnAreaCenter, data.spawnAreaSize);
 
             GUIStyle style = new GUIStyle();
-            style.normal.textColor = Color.white;
+            style.normal.textColor = Color.black;
             style.alignment = TextAnchor.UpperCenter;
             Handles.Label(data.spawnAreaCenter, $"ID: {data.id}", style);
         }

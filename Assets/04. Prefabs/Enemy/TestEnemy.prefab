@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &77142376269920099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5996310233947874493}
+  m_Layer: 0
+  m_Name: HitboxLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5996310233947874493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77142376269920099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2561574307083204893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &255309024897707273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,11 +1132,15 @@ MonoBehaviour:
   _damage: 1
   _attackRate: 3
   _attackDistance: 3
-  hitbox: {fileID: 7489448535875393431}
+  hitbox:
+  - {fileID: 7489448535875393431}
+  - {fileID: 5996310233947874493}
+  - {fileID: 3372176350856695695}
+  - {fileID: 5996310233947874493}
   hitboxSize: {x: 0.5, y: 0.5, z: 0.5}
   _hittedTarget: []
   target: {fileID: 0}
-  radius: 6
+  radius: 10
   angle: 70
   findPlayer: 0
   targetDistance: 0
@@ -1231,6 +1266,37 @@ Transform:
   - {fileID: 8278926098817281141}
   m_Father: {fileID: 8713527668419359958}
   m_LocalEulerAnglesHint: {x: -4.1421075, y: 175.86472, z: -120.73793}
+--- !u!1 &5399952599556122716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3372176350856695695}
+  m_Layer: 0
+  m_Name: HitboxHead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3372176350856695695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5399952599556122716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1587800465028839848}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5499729347550044700
 GameObject:
   m_ObjectHideFlags: 0
@@ -1754,6 +1820,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2027249362895261894}
+  - {fileID: 5996310233947874493}
   m_Father: {fileID: 7303377277024844271}
   m_LocalEulerAnglesHint: {x: -0.0717988, y: -0.058534503, z: -134.9428}
 --- !u!1 &7333876832870922080
@@ -2087,7 +2154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7489448535875393431}
   m_Layer: 0
-  m_Name: Hitbox
+  m_Name: HitboxRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2201,6 +2268,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4023146924743969467}
+  - {fileID: 3372176350856695695}
   m_Father: {fileID: 180494221966722667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.1614354}
 --- !u!1 &8140089306119322843

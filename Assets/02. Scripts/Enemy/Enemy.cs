@@ -1,9 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using test.value;
 using UnityEngine;
 using UnityEngine.AI;
 
-public partial class Enemy : MonoBehaviour//Character, IValueChangable
+namespace test.value
+{
+    public interface IValueChangable
+    {
+        float ValueChanged(int amount);
+    }
+}
+
+public partial class Enemy : MonoBehaviour, test.value.IValueChangable//Character
 {
     [Header("Stats")]
     [SerializeField] private float _moveDistance;
@@ -15,9 +25,10 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
     [SerializeField] private int _damage;
     [SerializeField] private float _attackRate;
     [SerializeField] public float _attackDistance;
+    private int _attackCurrentCombo;
 
     [Header("HitBox")]
-    public Transform hitbox;
+    public Transform[] hitbox;
     public Vector3 hitboxSize;
     private bool _isAttackActive = false;
     [SerializeField] private List<Collider> _hittedTarget = new();
@@ -31,13 +42,15 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
     public Transform target;
     public float radius;
     [Range(0, 360)] public float angle;
-    [SerializeField] private bool findPlayer;
-    [SerializeField] private float targetDistance;
+    private bool findPlayer;
+    private float targetDistance;
     [SerializeField] private LayerMask targetMask;
     [SerializeField] private LayerMask obstacleMask;
 
     [Header("Test")]
     protected Animator _anim;
+    private EnemySpawnArea _spawnOwner;
+    private int _spawnOwnerId;
 
     private void Awake()
     {
@@ -75,6 +88,24 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
         CheckOverlap();
     }
 
+    public void SetOwner(EnemySpawnArea owner,int id)
+    {
+        _spawnOwner = owner;
+        _spawnOwnerId = id;
+    }
+
+    public void Die()
+    {
+        if (_spawnOwner != null) {
+            _spawnOwner.MonsterDeath(_spawnOwnerId, this.gameObject);
+            _fsm.ChangeTo(3);
+        }
+    }
+    public float ValueChanged(int amount)
+    {
+        throw new NotImplementedException();
+    }
+
     public void OnEnableAttack()
     {
         _isAttackActive = true;
@@ -90,12 +121,13 @@ public partial class Enemy : MonoBehaviour//Character, IValueChangable
 
     public void CheckOverlap()
     {
-        Collider[] hitTarget = Physics.OverlapBox(hitbox.position, hitboxSize/2, hitbox.rotation, targetMask);
+        Collider[] hitTarget = Physics.OverlapBox(hitbox[_attackCurrentCombo].position, hitboxSize/2, hitbox[_attackCurrentCombo].rotation, targetMask);
         Debug.Log("OverlapBox 감지된 타겟 수: " + hitTarget.Length);
         if (hitTarget.Length != 0)
         {
             if (!_hittedTarget.Contains(hitTarget[0]))
             {
+                hitTarget[0].GetComponent<IValueChangable>().ValueChanged(-_damage);
                 Debug.Log(hitTarget[0].name + "데미지 주기"); //데미지 주는 로직 작성
                 _hittedTarget.Add(hitTarget[0]);
             }

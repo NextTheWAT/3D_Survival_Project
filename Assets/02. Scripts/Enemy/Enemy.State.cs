@@ -24,38 +24,41 @@ public partial class Enemy
             Debug.Log("attack 진입");
             Component._agent.speed = Component._runSpeed;
             Component._agent.isStopped = false;
-            Component._anim.SetBool(EnemyAnimParam.Run, true);
+
+            Component._attackCurrentCombo = 0;
+            waitTimer = Component._attackRate;
         }
 
         public override void Update()
         {
             Debug.Log("attack 상태");
-            waitTimer += Time.deltaTime;
-            if (Component.findPlayer)
+            if (!Component.findPlayer)
             {
-                //적이 시야 범위 내에 있을 경우
-                if(Component.targetDistance > Component._attackDistance)
-                {
-                    Component._agent.isStopped = false;
-                    Component._agent.SetDestination(Component.target.position);
-                    Component._anim.SetBool(EnemyAnimParam.Run, true);
-                }
-                else
-                {
-                    Component._agent.isStopped = true;
-                    Component._anim.SetBool(EnemyAnimParam.Run, false);
+                Component._fsm.ChangeTo(0);
+                return;
+            }
 
-                    if (waitTimer > Component._attackRate)
-                    {
-                        Component._anim.SetTrigger(EnemyAnimParam.Attack);
-                        waitTimer = 0f;
-                    }
-                }
+            //적이 시야 범위 내에 있을 경우
+            if (Component.targetDistance > Component._attackDistance)
+            {
+                Component._agent.isStopped = false;
+                Component._agent.SetDestination(Component.target.position);
+                Component._anim.SetBool(EnemyAnimParam.Run, true);
             }
             else
             {
-                //적이 범위에서 벗어났을 시
-                Component._fsm.ChangeTo(0);
+                Component._agent.isStopped = true;
+                Component._anim.SetBool(EnemyAnimParam.Run, false);
+
+                waitTimer += Time.deltaTime;
+
+                if (waitTimer > Component._attackRate)
+                {
+                    Component._anim.SetTrigger(EnemyAnimParam.Attack[Component._attackCurrentCombo]);
+                    Component._attackCurrentCombo = (Component._attackCurrentCombo + 1) % EnemyAnimParam.Attack.Length;
+
+                    waitTimer = 0f;
+                }
             }
         }
     }
