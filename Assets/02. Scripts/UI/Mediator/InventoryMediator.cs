@@ -106,8 +106,17 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     private void HandleCraft()
     {
-        //to do: 크래프트 진행
-
+        CraftSystem craftSystem =  manager.CraftSystem();
+        RecipeData recipeData = craftSystem.GetTransformRecipe(selectedId.Value);
+        //현재 단일 아이템 선택 시 진행하는 중..
+        if (selectedId != null && recipeData != null)
+        {
+            if (recipeData != null)
+            {
+                // 제작 코루틴 실행
+                StartCoroutine(craftSystem.CraftCoroutine(recipeData));
+            }
+        }
     }
     private void HandleDrop()
     {

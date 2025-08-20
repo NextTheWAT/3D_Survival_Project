@@ -127,23 +127,30 @@ public class InventoryUI : BaseUI
     {
         //to do:
         //recipe에 1:1 가공 가능한 아이템이 있으면 가공버튼 활성화해야함.
+        bool canCraft = false;
+
+        // 1:1 변환 레시피가 있는지 확인
+        RecipeData recipe = TestManager.Instance.inventoryManager.CraftSystem().GetTransformRecipe(itemData.id);
+        if (recipe != null)
+        {
+            canCraft = true;
+        }
+
         if (itemData is ConsumeItemData)  // 소모품이면
         {
             useButton.gameObject.SetActive(true);
             equipButton.gameObject.SetActive(false);
             unEquipButton.gameObject.SetActive(false);
-            craftButton.gameObject.SetActive(false);
+            craftButton.gameObject.SetActive(canCraft);
             dropButton.gameObject.SetActive(true);
         }
         else if (itemData is EquipItemData equipItemData)  // 장비면
         {
-            //to do:
-            ////장착 여부에 따라 장착버튼 탈착버튼 활성화 
             useButton.gameObject.SetActive(false);
-            bool isEquipped = TestManager.Instance.inventoryManager.IsEquipped(equipItemData.id);
+            bool isEquipped = TestManager.Instance.inventoryManager.IsEquippedById(equipItemData.id);
             equipButton.gameObject.SetActive(!isEquipped);
             unEquipButton.gameObject.SetActive(isEquipped);
-            craftButton.gameObject.SetActive(false);
+            craftButton.gameObject.SetActive(canCraft); //??z
             dropButton.gameObject.SetActive(true);
         }
         else  // 그 외 아이템
@@ -151,7 +158,7 @@ public class InventoryUI : BaseUI
             useButton.gameObject.SetActive(false);
             equipButton.gameObject.SetActive(false);
             unEquipButton.gameObject.SetActive(false);
-            craftButton.gameObject.SetActive(false);
+            craftButton.gameObject.SetActive(canCraft);
             dropButton.gameObject.SetActive(true);
         }
     }

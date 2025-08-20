@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
 {
     private static InventoryModel inventoryModel = new InventoryModel();    //solo player
     private static EquipmentModel equipmentModel = new EquipmentModel();    //solo player
+    private CraftSystem craftSystem;
 
     private IInventoryMediator mediator;
 
@@ -20,6 +21,8 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
+        craftSystem = new CraftSystem(this);
+
         //testcode
         inventoryModel.AddItem(1);
         inventoryModel.AddItem(1);
@@ -149,8 +152,21 @@ public class InventoryManager : MonoBehaviour
         return result;
     }
 
-    public bool IsEquipped(int id)
+    public bool IsEquippedById(int id)
     {
         return equipmentModel.IsEquippedById(id);
+    }
+    public bool CanCraft(List<int> items)
+    {
+        return craftSystem.CanCraft(items);
+    }
+    public void CraftFinished(RecipeData recipe)
+    {
+        AddItem(recipe.outputItemId);
+        mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
+    }
+    public CraftSystem CraftSystem()    //임시 접근
+    {
+        return craftSystem;
     }
 }

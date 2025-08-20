@@ -201,6 +201,7 @@ MonoBehaviour:
   resourceObject: {fileID: 1334142816}
   dropPosition: {fileID: 1736666417}
   inventoryUI: {fileID: 2374306221543018770}
+  inventoryManager: {fileID: 1884992782}
 --- !u!4 &166080798
 Transform:
   m_ObjectHideFlags: 0
@@ -1854,6 +1855,7 @@ MonoBehaviour:
   useButton: {fileID: 1390061892256542921}
   equipButton: {fileID: 931283263252510940}
   unEquipButton: {fileID: 6820211661705169332}
+  craftButton: {fileID: 1111521973}
   dropButton: {fileID: 5207435862359494039}
   slotParent: {fileID: 3512017812408426630}
   slotPrefab: {fileID: 3337444532701214557, guid: a2eaeed791ea65d40a232512f515f07f, type: 3}
