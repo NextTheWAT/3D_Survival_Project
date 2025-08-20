@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+
+
+
+/*  유니티 가동 시 오류 방지를 위한 주석 처리
+
+
 public class ConditionUI : MonoBehaviour
 {
     // 각 상태에 해당하는 Condition 컴포넌트(임의로 Condition 이라 명칭)를 연결하는 변수입니다
@@ -16,6 +22,20 @@ public class ConditionUI : MonoBehaviour
         CharacterManager.Instance.Player.condition.uiCondition = this;
     }
 }
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
 
 
 

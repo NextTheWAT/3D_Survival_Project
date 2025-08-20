@@ -8,6 +8,9 @@ public interface IDamagable
 }
 
 
+
+/*  유니티 가동 시 오류 방지를 위한 주석 처리
+
 public class PlayerConditionUI : MonoBehaviour, IDamagable
 {
     
@@ -73,6 +76,14 @@ public class PlayerConditionUI : MonoBehaviour, IDamagable
         Debug.Log("플레이어 사망");
     }
 }
+
+
+*/
+
+
+
+
+
 
 
 
