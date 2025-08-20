@@ -56,7 +56,11 @@ public class TestManager : MonoBehaviour
         int id = 0;
         if (resourceObject.TryHarvest(out id))
         {
-            Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
+            //ResourceObject 주변 랜덤 위치 
+            Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+            Vector3 dropPos = resourceObject.transform.position + randomOffset;
+
+            Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPos, Quaternion.Euler(Vector3.one * Random.value * 360));
             Debug.Log("TryHarvest: " + id);
         }
         else

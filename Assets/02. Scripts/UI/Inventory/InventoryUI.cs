@@ -83,7 +83,7 @@ public class InventoryUI : BaseUI
 
     public void BindItem(ItemData data, int slotId)
     {
-        if (selectedItemName) selectedItemName.text = data.name;
+        if (selectedItemName) selectedItemName.text = data.displayName;
         if (selectedItemDescription) selectedItemDescription.text = data.description;
         if (selectedItemStatName) selectedItemStatName.text = "Stat Name";   // TODO: 실제 스탯 이름 바인딩
         if (selectedItemStatValue) selectedItemStatValue.text = "Stat Value"; // TODO: 실제 스탯 값 바인딩
