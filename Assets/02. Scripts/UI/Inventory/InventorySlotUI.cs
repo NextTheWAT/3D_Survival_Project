@@ -16,7 +16,9 @@ public class InventorySlotUI : MonoBehaviour
     public void Bind(InventorySlotData slotData)
     {
         icon.sprite = slotData.itemData.icon;
-        countText.text = slotData.count > 1 ? slotData.count.ToString() : ""; // 1이면 표시X
+        if (countText)  //null 가드
+            countText.text = slotData.count > 1 ? slotData.count.ToString() : "";
+
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => onClick?.Invoke());

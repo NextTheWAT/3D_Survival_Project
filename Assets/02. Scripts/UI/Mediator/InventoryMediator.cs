@@ -20,6 +20,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     [Header("Refs")]
     [SerializeField] private InventoryUI ui;
     [SerializeField] private InventoryManager manager;
+    [SerializeField] private CraftUI craftUI;
 
     private int? selectedSlotId;
 
@@ -37,6 +38,9 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
         // 초기 렌더링
         ui.Init(manager.GetSlotDatas());
+
+        // 가공창 결과(확정) 콜백 구독
+        if (craftUI) craftUI.OnProcess += HandleCraftConfirmed;
     }
 
     private void OnDisable()
@@ -47,6 +51,9 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.OnUnequipClicked -= HandleUnequip;
         ui.OnCraftClicked -= HandleCraft;
         ui.OnDropClicked -= HandleDrop;
+
+        // 구독 해제
+        if (craftUI) craftUI.OnProcess -= HandleCraftConfirmed;
     }
 
     public void Notify(object sender, InventoryEventType eventType, object data = null)
@@ -108,17 +115,20 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
             return;
         }
 
-        if (selectedSlotId == null) return;
+        if (selectedSlotId == null) return; // slotId 기준
 
-        CraftSystem craftSystem = manager.CraftSystem();
         var slot = manager.GetSlotDatas().Find(s => s.slotId == selectedSlotId.Value);
         if (slot == null) return;
 
-        RecipeData recipeData = craftSystem.GetTransformRecipe(slot.itemData.id); // itemId 기준 레시피 조회
-        if (recipeData != null)
-        {
-            StartCoroutine(craftSystem.CraftCoroutine(recipeData));
-        }
+        var craftSystem = manager.CraftSystem();
+        var recipe = craftSystem.GetTransformRecipe(slot.itemData.id); // itemId 기준 레시피 조회
+        if (recipe == null) return;
+
+        // CraftUI 오픈 처리
+        if (craftUI) 
+            craftUI.OpenWith(slot.itemData, recipe);
+        else
+            StartCoroutine(craftSystem.CraftCoroutine(recipe)); // CraftUI 없으면 바로 제작
     }
 
     private void HandleDrop()
@@ -146,4 +156,12 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.ClearSelection();
         selectedSlotId = null;
     }
+
+    // CraftUI 확정 콜백에서 실제 제작 실행
+    private void HandleCraftConfirmed(ItemData input, RecipeData recipe)
+    {
+        StartCoroutine(manager.CraftSystem().CraftCoroutine(recipe));
+        if (craftUI) craftUI.Close();
+    }
+
 }
