@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7fa6e14ce4211845b3ee9a547878802, type: 3}
-  m_Name: Resource_Tree
+  m_Name: Resource_Rock
   m_EditorClassIdentifier: 
-  displayName: Tree
-  description: chop chop chop
-  resourcePrefab: {fileID: 2238610949371264636, guid: 1bb54cfc08cc8a945b298118bdeba40e, type: 3}
+  displayName: Rock
+  description: clink clink clink
+  resourcePrefab: {fileID: 2238610949371264636, guid: 886ebd7c0cbe32d48961cd39de8f6fc5, type: 3}
   dropItems:
-  - itemId: 1
-    dropRate: 0.693
+  - itemId: 2
+    dropRate: 0.803
   - itemId: 4
-    dropRate: 0.01
+    dropRate: 0.035
   maxAmount: 10
   respawnTime: 10
