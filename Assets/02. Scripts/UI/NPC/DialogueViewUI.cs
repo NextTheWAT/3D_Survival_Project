@@ -1,6 +1,8 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Collections;
 
 public class DialogueViewUI : BaseUI
 {
@@ -15,6 +17,14 @@ public class DialogueViewUI : BaseUI
     [Header("Choices (고정 개수)")]
     [SerializeField] Button[] choiceButtons;          // 미리 만든 버튼들
     [SerializeField] TextMeshProUGUI[] choiceLabels;  // 각 버튼의 라벨
+
+    Coroutine typingCo;
+    string fullSpeaker, fullLine;
+    int showCount;
+    public bool IsTyping { get; private set; }
+    public UnityAction OnTypingCompleted; // 러너가 구독
+
+    [SerializeField] float charsPerSecond = 30f;
 
     public void BindNext(UnityEngine.Events.UnityAction action)
     {
@@ -79,4 +89,50 @@ public class DialogueViewUI : BaseUI
     // BaseUI 래핑
     public void Show() => Open();
     public void Hide() => Close();
+
+    public void SetLineTyping(string speakerStr, string lineStr)
+    {
+        // 버튼/선택지 잠시 비활성 or 다음 버튼 숨김
+        ClearChoices();
+        if (nextButton) nextButton.gameObject.SetActive(true);
+        if (typingCo != null) StopCoroutine(typingCo);
+
+        fullSpeaker = speakerStr ?? "";
+        fullLine = lineStr ?? "";
+        showCount = 0;
+        if (speaker) speaker.text = fullSpeaker;
+        if (line) line.text = "";
+
+        typingCo = StartCoroutine(CoType());
+    }
+
+    IEnumerator CoType()
+    {
+        IsTyping = true;
+        float delay = 1f / Mathf.Max(1f, charsPerSecond);
+
+        while (showCount < fullLine.Length)
+        {
+            showCount++;
+            if (line) line.text = fullLine.Substring(0, showCount);
+            yield return new WaitForSecondsRealtime(delay);
+        }
+
+        IsTyping = false;
+        typingCo = null;
+        OnTypingCompleted?.Invoke(); // 러너에 "다 찍었어!" 알림
+    }
+
+    public void SkipTyping()
+    {
+        if (!IsTyping) return;
+        if (typingCo != null) StopCoroutine(typingCo);
+        typingCo = null;
+        IsTyping = false;
+        if (line) line.text = fullLine;
+        OnTypingCompleted?.Invoke();
+    }
+
+
+
 }
