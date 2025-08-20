@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 public class InventorySlotData
 {
     public ItemData itemData;
@@ -9,7 +10,9 @@ public class InventorySlotData
 }
 public class InventoryManager : MonoBehaviour
 {
-    private static InventoryModel model = new InventoryModel();    //solo player
+    private static InventoryModel inventoryModel = new InventoryModel();    //solo player
+    private static EquipmentModel equipmentModel = new EquipmentModel();    //solo player
+
     private IInventoryMediator mediator;
 
     [SerializeField]
@@ -18,8 +21,25 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         //testcode
-        model.AddItem(1);
-        model.AddItem(2);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(1);
+        inventoryModel.AddItem(2);
+        inventoryModel.AddItem(3);
+        inventoryModel.AddItem(4);
+        inventoryModel.AddItem(4);
     }
     
     public void SetMediator(IInventoryMediator mediator)
@@ -29,24 +49,27 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(int itemId)
     {
-        model.AddItem(itemId);
+        inventoryModel.AddItem(itemId);
         mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
     }
     public void RemoveItem(int itemId)
     {
-        model.RemoveItem(itemId);
+        inventoryModel.RemoveItem(itemId);
         mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
     }
     public void DropItem(int itemId)
     {
-        if(model.GetAmountById(itemId) > 0)
+        if(inventoryModel.GetAmountById(itemId) > 0)
         {
+            if(equipmentModel.IsEquippedById(itemId))
+                equipmentModel.UnequipItem(itemDatabase.GetItemById(itemId) as EquipItemData);
             RemoveItem(itemId);
             mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
             // to do: instantiate new item. player's drop position. or somewhere.
             // Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
             Debug.Log("Dropped: " + itemId);
         }
+        PrintEquippedItems();
     }
     public void UseItem(int itemId)
     {
@@ -55,13 +78,39 @@ public class InventoryManager : MonoBehaviour
         mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
 
     }
+    public void EquipItem(int itemId)
+    {
+        var itemData = itemDatabase.GetItemById(itemId) as EquipItemData;
+        if (itemData == null) return;
 
-    public int GetItemAmount(int itemId) => model.GetAmountById(itemId);
-    public List<int> GetAllItemIds() => model.GetAllIds();
+        equipmentModel.EquipItem(itemData);
+
+        //PrintEquippedItems();
+    }
+    public void UnequipItem(int itemId)
+    {
+        var itemData = itemDatabase.GetItemById(itemId) as EquipItemData;
+        if (itemData == null) return;
+
+        equipmentModel.UnequipItem(itemData);
+
+        //PrintEquippedItems();
+    }
+    //Test Method
+    public void PrintEquippedItems()
+    {
+        Debug.Log("--Current equipment List--");
+        foreach (var item in equipmentModel.GetEquippedItems())
+        {
+            Debug.Log(item.Value.name);
+        }
+    }
+    public int GetItemAmount(int itemId) => inventoryModel.GetAmountById(itemId);
+    public List<int> GetAllItemIds() => inventoryModel.GetAllIds();
     public ItemData GetItemDataById(int itemId) => itemDatabase.GetItemById(itemId);
     public List<ItemData> GetAllItemData()
     {
-        return model.GetAllIds()
+        return inventoryModel.GetAllIds()
                     .Select(id => itemDatabase.GetItemById(id))
                     .ToList();
     }
@@ -69,7 +118,7 @@ public class InventoryManager : MonoBehaviour
     {
         Dictionary<int, int> counts = new();
 
-        foreach (var id in model.GetAllIds())
+        foreach (var id in inventoryModel.GetAllIds())
         {
             if (!counts.ContainsKey(id))
                 counts[id] = 0;
@@ -98,5 +147,10 @@ public class InventoryManager : MonoBehaviour
         }
 
         return result;
+    }
+
+    public bool IsEquipped(int id)
+    {
+        return equipmentModel.IsEquippedById(id);
     }
 }

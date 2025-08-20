@@ -4,10 +4,35 @@ using UnityEngine;
 
 public class TestManager : MonoBehaviour
 {
+    private static TestManager instance;
+    public static TestManager Instance
+    {
+        get
+        {
+            if (null == instance)
+            {
+                instance = new TestManager();
+            }
+            return instance;
+        }
+    }
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public ItemDatabase itemDatabase;
     public ResourceObject resourceObject;
     public Transform dropPosition;
     public InventoryUI inventoryUI;
+    public InventoryManager inventoryManager;
 
     void Update()
     {

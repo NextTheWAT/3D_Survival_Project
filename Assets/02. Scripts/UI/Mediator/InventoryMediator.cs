@@ -7,6 +7,7 @@ public enum InventoryEventType
     InventoryChanged,
     ItemDroppRequested,
     ItemEquipRequested,
+    ItemCraftRequested,
     ItemUseRequested
 }
 public interface IInventoryMediator
@@ -29,6 +30,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.OnUseClicked += HandleUse;
         ui.OnEquipClicked += HandleEquip;
         ui.OnUnequipClicked += HandleUnequip;
+        ui.OnCraftClicked += HandleCraft;
         ui.OnDropClicked += HandleDrop;
 
         manager.SetMediator(this);
@@ -43,6 +45,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.OnUseClicked -= HandleUse;
         ui.OnEquipClicked -= HandleEquip;
         ui.OnUnequipClicked -= HandleUnequip;
+        ui.OnCraftClicked -= HandleCraft;
         ui.OnDropClicked -= HandleDrop;
     }
 
@@ -59,11 +62,12 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     private void HandleSelect(int id)
     {
         selectedId = id;
-        var data = manager.GetItemDataById(id);
-        if (data != null) ui.BindItem(data);
+
+        ui.BindItem(manager.GetItemDataById(selectedId.Value));
+        //var data = manager.GetItemDataById(id);
+        //if (data != null) ui.SelectItem(data);
         // To do
         //이거 아님. 이거 아이템 타입에 따라 자동으로 아게끔. InventoryUI 내에서도 바꾸기 SetButtonsActive 말하는 거임.
-        ui.SetButtonsActive(manager.GetItemAmount(id) > 0, true, manager.GetItemAmount(id) > 0);    //Todo
     }
 
     private void HandleUse()
@@ -84,8 +88,9 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     {
         if (selectedId != null)
         {
-            // to do: Inventory Manager에게 장착 요청하기
             Debug.Log($"Equip requested for item {selectedId.Value}");
+            manager.EquipItem(selectedId.Value);
+            RefreshUI();
         }
     }
     private void HandleUnequip()
@@ -94,7 +99,15 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         {
             // to do: Inventory Manager에게 장착 요청하기
             Debug.Log($"Unquip requested for item {selectedId.Value}");
+            manager.UnequipItem(selectedId.Value);
+            RefreshUI();
         }
+    }
+
+    private void HandleCraft()
+    {
+        //to do: 크래프트 진행
+
     }
     private void HandleDrop()
     {
@@ -109,8 +122,12 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     private void RefreshUI()
     {
         if (selectedId != null && manager.GetItemAmount(selectedId.Value) > 0)
+        {
             HandleSelect(selectedId.Value);
+        }
         else
+        {
             ui.ClearSelection();
+        }
     }
 }
