@@ -1,6 +1,8 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Collections;
 
 public class DialogueViewUI : BaseUI
 {
@@ -12,9 +14,17 @@ public class DialogueViewUI : BaseUI
     [SerializeField] Button nextButton;
     [SerializeField] Button closeButton;
 
-    [Header("Choices (°íÁ¤ °³¼ö)")]
-    [SerializeField] Button[] choiceButtons;          // ¹Ì¸® ¸¸µç ¹öÆ°µé
-    [SerializeField] TextMeshProUGUI[] choiceLabels;  // °¢ ¹öÆ°ÀÇ ¶óº§
+    [Header("Choices (ê³ ì • ê°œìˆ˜)")]
+    [SerializeField] Button[] choiceButtons;          // ë¯¸ë¦¬ ë§Œë“  ë²„íŠ¼ë“¤
+    [SerializeField] TextMeshProUGUI[] choiceLabels;  // ê° ë²„íŠ¼ì˜ ë¼ë²¨
+
+    Coroutine typingCo;
+    string fullSpeaker, fullLine;
+    int showCount;
+    public bool IsTyping { get; private set; }
+    public UnityAction OnTypingCompleted; // ëŸ¬ë„ˆê°€ êµ¬ë…
+
+    [SerializeField] float charsPerSecond = 30f;
 
     public void BindNext(UnityEngine.Events.UnityAction action)
     {
@@ -41,25 +51,88 @@ public class DialogueViewUI : BaseUI
 
     public void ShowChoices(string[] labels)
     {
-        // Next ¼û±â°í, ¼±ÅÃÁö È°¼ºÈ­
         if (nextButton) nextButton.gameObject.SetActive(false);
+
         for (int i = 0; i < choiceButtons.Length; i++)
         {
             bool on = i < labels.Length;
-            choiceButtons[i].gameObject.SetActive(on);
-            if (on && i < choiceLabels.Length) choiceLabels[i].text = labels[i];
+
+            // ë²„íŠ¼ on/off
+            if (choiceButtons[i]) choiceButtons[i].gameObject.SetActive(on);
+
+            // ë¼ë²¨ on/off + í…ìŠ¤íŠ¸
+            if (i < choiceLabels.Length && choiceLabels[i])
+            {
+                var labelGO = choiceLabels[i].gameObject;
+                if (labelGO) labelGO.SetActive(on);
+                choiceLabels[i].text = on ? labels[i] : string.Empty;
+            }
         }
     }
 
     public void ClearChoices()
     {
-        // Next º¸ÀÌ±â, ¼±ÅÃÁö ¼û±è
         if (nextButton) nextButton.gameObject.SetActive(true);
+
         for (int i = 0; i < choiceButtons.Length; i++)
-            choiceButtons[i].gameObject.SetActive(false);
+        {
+            if (choiceButtons[i]) choiceButtons[i].gameObject.SetActive(false);
+            if (i < choiceLabels.Length && choiceLabels[i])
+            {
+                choiceLabels[i].gameObject.SetActive(false);
+                choiceLabels[i].text = string.Empty;
+            }
+        }
     }
 
-    // BaseUI ·¡ÇÎ
+
+    // BaseUI ë˜í•‘
     public void Show() => Open();
     public void Hide() => Close();
+
+    public void SetLineTyping(string speakerStr, string lineStr)
+    {
+        // ë²„íŠ¼/ì„ íƒì§€ ì ì‹œ ë¹„í™œì„± or ë‹¤ìŒ ë²„íŠ¼ ìˆ¨ê¹€
+        ClearChoices();
+        if (nextButton) nextButton.gameObject.SetActive(true);
+        if (typingCo != null) StopCoroutine(typingCo);
+
+        fullSpeaker = speakerStr ?? "";
+        fullLine = lineStr ?? "";
+        showCount = 0;
+        if (speaker) speaker.text = fullSpeaker;
+        if (line) line.text = "";
+
+        typingCo = StartCoroutine(CoType());
+    }
+
+    IEnumerator CoType()
+    {
+        IsTyping = true;
+        float delay = 1f / Mathf.Max(1f, charsPerSecond);
+
+        while (showCount < fullLine.Length)
+        {
+            showCount++;
+            if (line) line.text = fullLine.Substring(0, showCount);
+            yield return new WaitForSecondsRealtime(delay);
+        }
+
+        IsTyping = false;
+        typingCo = null;
+        OnTypingCompleted?.Invoke(); // ëŸ¬ë„ˆì— "ë‹¤ ì°ì—ˆì–´!" ì•Œë¦¼
+    }
+
+    public void SkipTyping()
+    {
+        if (!IsTyping) return;
+        if (typingCo != null) StopCoroutine(typingCo);
+        typingCo = null;
+        IsTyping = false;
+        if (line) line.text = fullLine;
+        OnTypingCompleted?.Invoke();
+    }
+
+
+
 }

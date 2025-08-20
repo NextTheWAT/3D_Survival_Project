@@ -1,4 +1,7 @@
+ï»¿// DialogueRunner.cs
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DialogueRunner : MonoBehaviour
 {
@@ -7,17 +10,41 @@ public class DialogueRunner : MonoBehaviour
     DialogueSO so;
     DialogueSO.Node cur;
 
-    public void Start(DialogueSO data)
+    public void Run(DialogueSO data)
     {
         so = data;
         view.Show();
 
-        // ¹öÆ° ¹ÙÀÎµù(ÀÎ½ºÆåÅÍ ´ë½Å ÄÚµå·Î ÇÑ ¹ø¸¸ ¿¬°á)
-        view.BindNext(Next);
+        view.BindNext(OnClickNext);
         view.BindClose(Stop);
-        for (int i = 0; i < 10; i++) view.BindChoice(i, MakeSelect(i)); // ÃæºÐÈ÷ Å« »óÇÑ
+        for (int i = 0; i < 10; i++) view.BindChoice(i, MakeSelect(i));
+
+        // íƒ€ì´í•‘ ì™„ë£Œ ì½œë°± êµ¬ë…
+        view.OnTypingCompleted = OnTypingCompleted;
 
         MoveTo(so.startNode);
+    }
+
+    void OnTypingCompleted()
+    {
+        // íƒ€ì´í•‘ ëë‚¬ë‹¤ë©´, ì„ íƒì§€ê°€ ìžˆëŠ” ë…¸ë“œë¼ë©´ ì—¬ê¸°ì„œ ë…¸ì¶œ
+        if (cur != null && cur.choices != null && cur.choices.Length > 0)
+        {
+            var labels = new string[cur.choices.Length];
+            for (int i = 0; i < labels.Length; i++) labels[i] = cur.choices[i].label;
+            view.ShowChoices(labels);
+        }
+    }
+
+    void OnClickNext()
+    {
+        // íƒ€ì´í•‘ ì¤‘ì´ë©´ ìŠ¤í‚µ, ì•„ë‹ˆë©´ ë‹¤ìŒìœ¼ë¡œ
+        if (view.IsTyping)
+        {
+            view.SkipTyping();
+            return;
+        }
+        Next();
     }
 
     public void Stop()
@@ -30,7 +57,7 @@ public class DialogueRunner : MonoBehaviour
     public void Next()
     {
         if (cur == null) return;
-        if (cur.choices != null && cur.choices.Length > 0) return; // ¼±ÅÃ ´ë±âÁß
+        if (cur.choices != null && cur.choices.Length > 0) return;
 
         if (string.IsNullOrEmpty(cur.next)) { Stop(); return; }
         MoveTo(cur.next);
@@ -46,29 +73,16 @@ public class DialogueRunner : MonoBehaviour
         MoveTo(next);
     }
 
-    // --- ³»ºÎ ---
     void MoveTo(string id)
     {
         cur = so.GetNode(id);
         if (cur == null) { Debug.LogWarning($"Node not found: {id}"); Stop(); return; }
 
-        view.SetLine(cur.speakerName, cur.text);
+        // í•µì‹¬ ë³€ê²½: ì¦‰ì‹œ SetLine ëŒ€ì‹  íƒ€ì´í•‘ìœ¼ë¡œ ì¶œë ¥
+        view.SetLineTyping(cur.speakerName, cur.text);
 
-        if (cur.choices != null && cur.choices.Length > 0)
-        {
-            var labels = new string[cur.choices.Length];
-            for (int i = 0; i < labels.Length; i++) labels[i] = cur.choices[i].label;
-            view.ShowChoices(labels);
-        }
-        else
-        {
-            view.ClearChoices();
-        }
+        // ì„ íƒì§€ëŠ” íƒ€ì´í•‘ ì™„ë£Œ ì´ë²¤íŠ¸ì—ì„œ ë…¸ì¶œ
     }
 
-    // Å¬·ÎÀú ÇïÆÛ: ¹öÆ° i¿¡ ¿¬°á
-    UnityEngine.Events.UnityAction MakeSelect(int i)
-    {
-        return () => Select(i);
-    }
+    UnityEngine.Events.UnityAction MakeSelect(int i) => () => Select(i);
 }
