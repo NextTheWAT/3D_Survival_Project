@@ -109,6 +109,15 @@ namespace Utils.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""f734122d-7638-4ba3-aac5-8cefd54980df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -254,6 +263,17 @@ namespace Utils.Input
                     ""action"": ""SwitchAxis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b621ca7e-f1fa-4be6-ae39-3a83f65f63b7"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -288,6 +308,7 @@ namespace Utils.Input
             m_Player_SwitchAxis = m_Player.FindAction("SwitchAxis", throwIfNotFound: true);
             m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
             m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+            m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -358,6 +379,7 @@ namespace Utils.Input
         private readonly InputAction m_Player_SwitchAxis;
         private readonly InputAction m_Player_Rotate;
         private readonly InputAction m_Player_Cancel;
+        private readonly InputAction m_Player_Interact;
         public struct PlayerActions
         {
             private @CharacterControls m_Wrapper;
@@ -371,6 +393,7 @@ namespace Utils.Input
             public InputAction @SwitchAxis => m_Wrapper.m_Player_SwitchAxis;
             public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
             public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+            public InputAction @Interact => m_Wrapper.m_Player_Interact;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -407,6 +430,9 @@ namespace Utils.Input
                 @Cancel.started += instance.OnCancel;
                 @Cancel.performed += instance.OnCancel;
                 @Cancel.canceled += instance.OnCancel;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -438,6 +464,9 @@ namespace Utils.Input
                 @Cancel.started -= instance.OnCancel;
                 @Cancel.performed -= instance.OnCancel;
                 @Cancel.canceled -= instance.OnCancel;
+                @Interact.started -= instance.OnInteract;
+                @Interact.performed -= instance.OnInteract;
+                @Interact.canceled -= instance.OnInteract;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -475,6 +504,7 @@ namespace Utils.Input
             void OnSwitchAxis(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
         }
     }
 }
