@@ -57,9 +57,18 @@ namespace Utils.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Toggle"",
+                    ""name"": ""SwitchCursorState"",
                     ""type"": ""Button"",
                     ""id"": ""db2031f6-8fa9-425f-9963-ab371bf3f62d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchPerspectiveMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""daa61fd0-a823-4c9d-8b88-44ca6ea470a1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -147,11 +156,22 @@ namespace Utils.Input
                 {
                     ""name"": """",
                     ""id"": ""f20bb36c-6f53-48a1-9270-d601a3d726ca"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""path"": ""<Keyboard>/f1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
-                    ""action"": ""Toggle"",
+                    ""action"": ""SwitchCursorState"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31df1385-b9bc-4ff9-8406-f09c1c10f445"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""SwitchPerspectiveMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -182,7 +202,8 @@ namespace Utils.Input
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-            m_Player_Toggle = m_Player.FindAction("Toggle", throwIfNotFound: true);
+            m_Player_SwitchCursorState = m_Player.FindAction("SwitchCursorState", throwIfNotFound: true);
+            m_Player_SwitchPerspectiveMode = m_Player.FindAction("SwitchPerspectiveMode", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -247,7 +268,8 @@ namespace Utils.Input
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Jump;
-        private readonly InputAction m_Player_Toggle;
+        private readonly InputAction m_Player_SwitchCursorState;
+        private readonly InputAction m_Player_SwitchPerspectiveMode;
         public struct PlayerActions
         {
             private @CharacterControls m_Wrapper;
@@ -255,7 +277,8 @@ namespace Utils.Input
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
-            public InputAction @Toggle => m_Wrapper.m_Player_Toggle;
+            public InputAction @SwitchCursorState => m_Wrapper.m_Player_SwitchCursorState;
+            public InputAction @SwitchPerspectiveMode => m_Wrapper.m_Player_SwitchPerspectiveMode;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -274,9 +297,12 @@ namespace Utils.Input
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Toggle.started += instance.OnToggle;
-                @Toggle.performed += instance.OnToggle;
-                @Toggle.canceled += instance.OnToggle;
+                @SwitchCursorState.started += instance.OnSwitchCursorState;
+                @SwitchCursorState.performed += instance.OnSwitchCursorState;
+                @SwitchCursorState.canceled += instance.OnSwitchCursorState;
+                @SwitchPerspectiveMode.started += instance.OnSwitchPerspectiveMode;
+                @SwitchPerspectiveMode.performed += instance.OnSwitchPerspectiveMode;
+                @SwitchPerspectiveMode.canceled += instance.OnSwitchPerspectiveMode;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -290,9 +316,12 @@ namespace Utils.Input
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
-                @Toggle.started -= instance.OnToggle;
-                @Toggle.performed -= instance.OnToggle;
-                @Toggle.canceled -= instance.OnToggle;
+                @SwitchCursorState.started -= instance.OnSwitchCursorState;
+                @SwitchCursorState.performed -= instance.OnSwitchCursorState;
+                @SwitchCursorState.canceled -= instance.OnSwitchCursorState;
+                @SwitchPerspectiveMode.started -= instance.OnSwitchPerspectiveMode;
+                @SwitchPerspectiveMode.performed -= instance.OnSwitchPerspectiveMode;
+                @SwitchPerspectiveMode.canceled -= instance.OnSwitchPerspectiveMode;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -324,7 +353,8 @@ namespace Utils.Input
             void OnMove(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
-            void OnToggle(InputAction.CallbackContext context);
+            void OnSwitchCursorState(InputAction.CallbackContext context);
+            void OnSwitchPerspectiveMode(InputAction.CallbackContext context);
         }
     }
 }
