@@ -3,7 +3,7 @@ using Utils.Management.Pooling;
 
 namespace Utils.Management
 {
-    public class ObjectManager : SingletonGameObject<ObjectManager>
+    public class ObjectPoolingManager : SingletonGameObject<ObjectPoolingManager>
     {
         private ObjectPooling _objectPooling;
         

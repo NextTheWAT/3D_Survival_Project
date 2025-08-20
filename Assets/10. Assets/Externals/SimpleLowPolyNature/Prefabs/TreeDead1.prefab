@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1026458569958187926}
   - component: {fileID: 1026458569959154006}
   - component: {fileID: 4211759954647305901}
+  - component: {fileID: -5306577062794694516}
+  - component: {fileID: -2961749573037736978}
   m_Layer: 0
   m_Name: TreeDead1
   m_TagString: Untagged
@@ -26,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026458569961160598}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1026458569958187926
 MeshFilter:
@@ -107,3 +109,30 @@ CapsuleCollider:
   m_Height: 3.6476793
   m_Direction: 1
   m_Center: {x: -0.020111054, y: 1.8238397, z: -0.019874126}
+--- !u!114 &-5306577062794694516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026458569961160598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: -0.1304346, y: 1.82384, z: -0.3421446}
+  size: {x: 1.864875, y: 3.647679, z: 1.289736}
+--- !u!114 &-2961749573037736978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026458569961160598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5f27204bee0d345a041e0cf5915848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alpha: 0.4

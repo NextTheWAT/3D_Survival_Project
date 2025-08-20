@@ -8,15 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: body
-  m_Shader: {fileID: 4800000, guid: e8e7d781c3155254b9ea8956c5bd1218, type: 3}
+  m_Shader: {fileID: 4800000, guid: aebd33b74ef849a4882b4a8d55f0f0c9, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _EMISSIVE_SIMPLE
+  - _IS_ANGELRING_OFF
   - _OUTLINE_NML
   m_InvalidKeywords:
   - _
-  - _IS_ANGELRING_OFF
   - _IS_CLIPPING_OFF
   - _IS_OUTLINE_CLIPPING_NO
   - _MatCap
@@ -457,8 +457,8 @@ Material:
     - _ZWrite: 1
     - _ZWriteMode: 1
     - _isUnityToonshader: 1
-    - _simpleUI: 0
-    - _utsTechnique: 0
+    - _simpleUI: 2
+    - _utsTechnique: 1
     - _utsVersion: 2.09
     - _utsVersionX: 0
     - _utsVersionY: 8

@@ -203,6 +203,8 @@ namespace Object.Character.Player
 
         public Transform PerspectiveCameraRig => isFirstPersonPerspectiveMode ? _firstPersonCameraVerticalRig : _thirdPersonCameraVerticalRig;
 
+        public Transform FirstPerspectiveCameraRig => _firstPersonCameraVerticalRig;
+
         #region ENUMERATION TYPE API
 
         public enum PerspectiveMode
