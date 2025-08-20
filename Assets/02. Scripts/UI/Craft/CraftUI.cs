@@ -30,41 +30,71 @@ public class CraftUI : BaseUI
         if (closeButton) closeButton.onClick.AddListener(Close);
     }
 
-    public void OpenWith(ItemData input, RecipeData rcp)
+    public void OpenWith(InventorySlotData slot)
     {
-        inputItem = input;
-        recipe = rcp;
+        inputSlot.Bind(slot); // manager가 가진 슬롯 그대로 사용
+        inputItem = slot.itemData;
 
-        // 입력 슬롯 미리보기
-        if (inputSlot)
+        recipe = slot.itemData != null
+            ? TestManager.Instance.inventoryManager.CraftSystem().GetTransformRecipe(slot.itemData.id)
+            : null;
+
+        if (inputNameText) inputNameText.text = inputItem?.name ?? "";
+
+        if (recipe != null)
         {
-            inputSlot.gameObject.SetActive(true);
-            inputSlot.Bind(new InventorySlotData { itemData = inputItem, count = 1 });
+            outputItem = TestManager.Instance.itemDatabase.GetItemById(recipe.outputItemId);
+            outputSlot.Bind(new InventorySlotData(outputItem, 1)); // 출력만 새로 생성
+            outputSlot.gameObject.SetActive(true);
+            if (outputNameText) outputNameText.text = outputItem?.name ?? "가공 불가";
         }
-        if (inputNameText) inputNameText.text = inputItem != null ? inputItem.name : "";
-
-        // 출력 슬롯 미리보기 (레시피 없으면 안전 처리)
-        outputItem = null;
-        if (outputSlot)
+        else
         {
-            if (recipe != null)
-            {
-                outputItem = TestManager.Instance.itemDatabase.GetItemById(recipe.outputItemId);
-                outputSlot.gameObject.SetActive(true);
-                outputSlot.Bind(new InventorySlotData { itemData = outputItem, count = 1 });
-            }
-            else
-            {
-                outputSlot.gameObject.SetActive(false);
-            }
+            outputSlot.gameObject.SetActive(false);
+            if (outputNameText) outputNameText.text = "가공 불가";
         }
-        if (outputNameText) outputNameText.text = (outputItem != null) ? outputItem.name : "가공 불가";
 
-        // 버튼/도움말
-        if (craftButton) craftButton.interactable = (recipe != null);
+        craftButton.interactable = (recipe != null);
 
         Open();
     }
+
+    //헷갈려서 임시 주석 처리
+    //public void OpenWith(ItemData input, RecipeData rcp)
+    //{
+    //    inputItem = input;
+    //    recipe = rcp;
+
+    //    // 입력 슬롯 미리보기
+    //    if (inputSlot)
+    //    {
+    //        inputSlot.gameObject.SetActive(true);
+    //        inputSlot.Bind(new InventorySlotData(inputItem, 1));
+    //    }
+    //    if (inputNameText) inputNameText.text = inputItem != null ? inputItem.name : "";
+
+    //    // 출력 슬롯 미리보기 (레시피 없으면 안전 처리)
+    //    outputItem = null;
+    //    if (outputSlot)
+    //    {
+    //        if (recipe != null)
+    //        {
+    //            outputItem = TestManager.Instance.itemDatabase.GetItemById(recipe.outputItemId);
+    //            outputSlot.gameObject.SetActive(true);
+    //            inputSlot.Bind(new InventorySlotData(inputItem, 1));
+    //        }
+    //        else
+    //        {
+    //            outputSlot.gameObject.SetActive(false);
+    //        }
+    //    }
+    //    if (outputNameText) outputNameText.text = (outputItem != null) ? outputItem.name : "가공 불가";
+
+    //    // 버튼/도움말
+    //    if (craftButton) craftButton.interactable = (recipe != null);
+
+    //    Open();
+    //}
 
     private void OnClickProcess()
     {

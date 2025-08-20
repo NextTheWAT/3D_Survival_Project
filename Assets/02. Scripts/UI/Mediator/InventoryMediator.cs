@@ -125,8 +125,8 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         if (recipe == null) return;
 
         // CraftUI 오픈 처리
-        if (craftUI) 
-            craftUI.OpenWith(slot.itemData, recipe);
+        if (craftUI)
+            craftUI.OpenWith(slot);
         else
             StartCoroutine(craftSystem.CraftCoroutine(recipe)); // CraftUI 없으면 바로 제작
     }
