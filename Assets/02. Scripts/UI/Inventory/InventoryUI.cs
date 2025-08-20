@@ -33,7 +33,8 @@ public class InventoryUI : BaseUI
     public event Action OnCraftClicked;
     public event Action OnDropClicked;
 
-    private int? selectedItemId;
+
+    private int? selectedSlotId;
 
     protected override void Awake()
     {
@@ -79,15 +80,15 @@ public class InventoryUI : BaseUI
         RenderList(initialSlots);
         ClearSelection();
     }
-    
-    public void BindItem(ItemData data)
+
+    public void BindItem(ItemData data, int slotId)
     {
         if (selectedItemName) selectedItemName.text = data.name;
         if (selectedItemDescription) selectedItemDescription.text = data.description;
         if (selectedItemStatName) selectedItemStatName.text = "Stat Name";   // TODO: 실제 스탯 이름 바인딩
         if (selectedItemStatValue) selectedItemStatValue.text = "Stat Value"; // TODO: 실제 스탯 값 바인딩
 
-        SetButtonsActiveByItem(data);
+        SetButtonsActiveByItem(data, slotId); // slotId 전달
     }
 
     public void RenderList(List<InventorySlotData> slotDatas)
@@ -102,13 +103,14 @@ public class InventoryUI : BaseUI
             slots[i].Bind(slotDatas[i]);
 
             var capturedIndex = i;
-            slots[i].onClick = () => SelectItem(slotDatas[capturedIndex].itemData);
+            //slots[i].onClick = () => SelectItem(slotDatas[capturedIndex].itemData);
+            slots[i].onClick = () => SelectItem(slotDatas[capturedIndex].slotId);
         }
     }
     public void ClearSelection()
     {
         //to do: 선택한 아이템 없음 상태.
-        selectedItemId = null;
+        selectedSlotId = null;
         if (selectedItemName) selectedItemName.text = "";
         if (selectedItemDescription) selectedItemDescription.text = "";
         if (selectedItemStatName) selectedItemStatName.text = "";
@@ -123,7 +125,7 @@ public class InventoryUI : BaseUI
         craftButton.gameObject.SetActive(false);
         dropButton.gameObject.SetActive(false);
     }
-    public void SetButtonsActiveByItem(ItemData itemData)
+    public void SetButtonsActiveByItem(ItemData itemData, int slotId)
     {
         //to do:
         //recipe에 1:1 가공 가능한 아이템이 있으면 가공버튼 활성화해야함.
@@ -147,7 +149,7 @@ public class InventoryUI : BaseUI
         else if (itemData is EquipItemData equipItemData)  // 장비면
         {
             useButton.gameObject.SetActive(false);
-            bool isEquipped = TestManager.Instance.inventoryManager.IsEquippedById(equipItemData.id);
+            bool isEquipped = TestManager.Instance.inventoryManager.IsEquippedBySlotId(slotId);
             equipButton.gameObject.SetActive(!isEquipped);
             unEquipButton.gameObject.SetActive(isEquipped);
             craftButton.gameObject.SetActive(canCraft); //??z
@@ -162,10 +164,15 @@ public class InventoryUI : BaseUI
             dropButton.gameObject.SetActive(true);
         }
     }
-    public void SelectItem(ItemData itemData)
+    public void SelectItem(int slotId)
     {
-        selectedItemId = itemData.id;
-        BindItem(itemData);
-        OnItemClicked?.Invoke(itemData.id);
+        selectedSlotId = slotId;
+        var slotData = TestManager.Instance.inventoryManager.GetSlotDatas()
+                         .Find(s => s.slotId == slotId);
+        if (slotData != null)
+        {
+            BindItem(slotData.itemData, slotId);
+            OnItemClicked?.Invoke(slotId);
+        }
     }
 }

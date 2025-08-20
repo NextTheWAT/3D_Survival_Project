@@ -50,42 +50,49 @@ public class CraftSystem
         return false;
     }
 
-    public RecipeData GetTransformRecipe(int id)   // 1:1 변환만 고려
+    public RecipeData GetTransformRecipe(int itemId)
     {
         foreach (var recipe in recipes)
         {
-            if (recipe.resources.Count == 1 && recipe.resources[0].itemId == id)
-            {
+            if (recipe.resources.Count == 1 && recipe.resources[0].itemId == itemId)
                 return recipe;
-            }
         }
-
-        return null; // 해당 레시피 없음
+        return null;
     }
     public IEnumerator CraftCoroutine(RecipeData recipe)
     {
         if (isCrafting)
         {
-            Debug.Log($"Try again after finishing previous crafting.");
-
+            Debug.Log("Try again after finishing previous crafting.");
             yield break;
         }
 
         isCrafting = true;
 
-
         Debug.Log($"Crafting started: output {recipe.outputItemId}");
 
+        // 재료 제거: slot 단위로 제거
         foreach (var resource in recipe.resources)
         {
-            manager.RemoveItem(resource.itemId);
+            // 해당 itemId를 가진 슬롯 중 첫 번째 사용 가능한 슬롯 찾기
+            var slot = manager.GetSlotDatas().Find(s => s.itemData.id == resource.itemId && s.count > 0);
+            if (slot != null)
+            {
+                manager.RemoveOneItemFromSlot(slot.slotId);
+            }
+            else
+            {
+                Debug.LogWarning($"Not enough items for crafting: itemId {resource.itemId}");
+                isCrafting = false;
+                yield break;
+            }
         }
 
         yield return new WaitForSeconds(recipe.processTime);
 
         Debug.Log($"Crafting finished: crafted {recipe.outputItemId}");
-
         manager.CraftFinished(recipe);
+
         isCrafting = false;
     }
 }

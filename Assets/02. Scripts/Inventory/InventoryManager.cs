@@ -3,15 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
+
+
+[Serializable]
 public class InventorySlotData
 {
+    private static int nextId = 1;
+    public int slotId;
     public ItemData itemData;
     public int count;
+
+    public InventorySlotData(ItemData itemData, int count)
+    {
+        this.slotId = nextId++;
+        this.itemData = itemData;
+        this.count = count;
+    }
+    public static void InitId()
+    {
+        nextId = 1;
+    }
 }
 public class InventoryManager : MonoBehaviour
 {
-    private static InventoryModel inventoryModel = new InventoryModel();    //solo player
-    private static EquipmentModel equipmentModel = new EquipmentModel();    //solo player
+    private InventoryModel inventoryModel = new InventoryModel();
+    private EquipmentModel equipmentModel = new EquipmentModel();    //solo player
     private CraftSystem craftSystem;
 
     private IInventoryMediator mediator;
@@ -24,25 +40,10 @@ public class InventoryManager : MonoBehaviour
         craftSystem = new CraftSystem(this);
 
         //testcode
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(1);
-        inventoryModel.AddItem(2);
-        inventoryModel.AddItem(3);
-        inventoryModel.AddItem(4);
-        inventoryModel.AddItem(4);
+        inventoryModel.AddItem(itemDatabase.GetItemById(1), 10);
+        inventoryModel.AddItem(itemDatabase.GetItemById(2), 1);
+        inventoryModel.AddItem(itemDatabase.GetItemById(3), 1);
+        inventoryModel.AddItem(itemDatabase.GetItemById(4), 2);
     }
     
     public void SetMediator(IInventoryMediator mediator)
@@ -50,120 +51,100 @@ public class InventoryManager : MonoBehaviour
         this.mediator = mediator;
     }
 
-    public void AddItem(int itemId)
+    public void AddItem(ItemData itemData, int amount = 1)
     {
-        inventoryModel.AddItem(itemId);
+        inventoryModel.AddItem(itemData, amount);
         mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
     }
-    public void RemoveItem(int itemId)
+    public void RemoveOneItemFromSlot(int slotId)
     {
-        inventoryModel.RemoveItem(itemId);
+        inventoryModel.RemoveOneItemFromSlot(slotId);
         mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
     }
-    public void DropItem(int itemId)
+    public void DropItem(int slotId)
     {
-        if(inventoryModel.GetAmountById(itemId) > 0)
+        var slot = inventoryModel.GetAllSlots().Find(s => s.slotId == slotId);
+        if (slot == null) return;
+
+        if (equipmentModel.IsEquippedBySlotId(slot.slotId))
+            equipmentModel.UnequipItem(slot.itemData as EquipItemData, slotId);
+
+        RemoveOneItemFromSlot(slotId);
+
+        //to do: 실제 드랍 오브젝트 생성
+        Debug.Log($"Dropped 1 {slot.itemData.name} from slot {slotId}");
+    }
+    public void UseItem(int slotId)
+    {
+        var slot = inventoryModel.GetAllSlots().Find(s => s.slotId == slotId);
+        if (slot == null) return;
+
+        RemoveOneItemFromSlot(slotId);
+        Debug.Log($"Used 1 {slot.itemData.name} from slot {slotId}");
+    }
+
+    public void EquipItem(int slotId)
+    {
+        var slot = inventoryModel.GetAllSlots().Find(s => s.slotId == slotId);
+        if (slot == null) return;
+
+        if (slot.itemData is EquipItemData equipItemData)
         {
-            if(equipmentModel.IsEquippedById(itemId))
-                equipmentModel.UnequipItem(itemDatabase.GetItemById(itemId) as EquipItemData);
-            RemoveItem(itemId);
-            mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
-            // to do: instantiate new item. player's drop position. or somewhere.
-            // Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
-            Debug.Log("Dropped: " + itemId);
+            equipmentModel.EquipItem(equipItemData, slotId); // slotId 기반 장착
         }
-        PrintEquippedItems();
     }
-    public void UseItem(int itemId)
+    public void UnequipItem(int slotId)
     {
-        RemoveItem(itemId);
-        Debug.Log($"Used item {itemId}");
-        mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
+        var slot = inventoryModel.GetAllSlots().Find(s => s.slotId == slotId);
+        if (slot == null) return;
 
+        if (slot.itemData is EquipItemData equipItemData)
+        {
+            equipmentModel.UnequipItem(equipItemData, slotId);
+        }
     }
-    public void EquipItem(int itemId)
-    {
-        var itemData = itemDatabase.GetItemById(itemId) as EquipItemData;
-        if (itemData == null) return;
 
-        equipmentModel.EquipItem(itemData);
-
-        //PrintEquippedItems();
-    }
-    public void UnequipItem(int itemId)
-    {
-        var itemData = itemDatabase.GetItemById(itemId) as EquipItemData;
-        if (itemData == null) return;
-
-        equipmentModel.UnequipItem(itemData);
-
-        //PrintEquippedItems();
-    }
     //Test Method
-    public void PrintEquippedItems()
+    //public void PrintEquippedItems()
+    //{
+    //    Debug.Log("--Current equipment List--");
+    //    foreach (var item in equipmentModel.GetEquippedItems())
+    //    {
+    //        Debug.Log(item.Value.name);
+    //    }
+    //}
+    public int GetItemAmount(int itemId)
     {
-        Debug.Log("--Current equipment List--");
-        foreach (var item in equipmentModel.GetEquippedItems())
-        {
-            Debug.Log(item.Value.name);
-        }
+        return inventoryModel.GetAllSlots()
+                             .Where(s => s.itemData.id == itemId)
+                             .Sum(s => s.count);
     }
-    public int GetItemAmount(int itemId) => inventoryModel.GetAmountById(itemId);
-    public List<int> GetAllItemIds() => inventoryModel.GetAllIds();
-    public ItemData GetItemDataById(int itemId) => itemDatabase.GetItemById(itemId);
-    public List<ItemData> GetAllItemData()
-    {
-        return inventoryModel.GetAllIds()
-                    .Select(id => itemDatabase.GetItemById(id))
-                    .ToList();
-    }
+    //public List<int> GetAllItemIds() => inventoryModel.GetAllIds();
+    //public ItemData GetItemDataById(int itemId) => itemDatabase.GetItemById(itemId);
+    //public List<ItemData> GetAllItemData()
+    //{
+    //    return inventoryModel.GetAllIds()
+    //                .Select(id => itemDatabase.GetItemById(id))
+    //                .ToList();
+    //}
     public List<InventorySlotData> GetSlotDatas()
     {
-        Dictionary<int, int> counts = new();
-
-        foreach (var id in inventoryModel.GetAllIds())
-        {
-            if (!counts.ContainsKey(id))
-                counts[id] = 0;
-            counts[id]++;
-        }
-
-        List<InventorySlotData> result = new();
-        foreach (var kvp in counts)
-        {
-            var itemData = itemDatabase.GetItemById(kvp.Key);
-
-            int remaining = kvp.Value;
-
-            while (remaining > 0)
-            {
-                int stackSize = itemData.maxStack > 0 ? Mathf.Min(itemData.maxStack, remaining) : 1;
-
-                result.Add(new InventorySlotData
-                {
-                    itemData = itemData,
-                    count = stackSize
-                });
-
-                remaining -= stackSize;
-            }
-        }
-
-        return result;
+        // slotId 포함된 슬롯 리스트 반환
+        return inventoryModel.GetAllSlots();
     }
 
-    public bool IsEquippedById(int id)
+    public bool IsEquippedBySlotId(int slotId)
     {
-        return equipmentModel.IsEquippedById(id);
+        return equipmentModel.IsEquippedBySlotId(slotId);
     }
+
     public bool CanCraft(List<int> items)
     {
         return craftSystem.CanCraft(items);
     }
     public void CraftFinished(RecipeData recipe)
     {
-        AddItem(recipe.outputItemId);
-        mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
+        AddItem(itemDatabase.GetItemById(recipe.outputItemId));
     }
     public CraftSystem CraftSystem()    //임시 접근
     {

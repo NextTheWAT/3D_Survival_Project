@@ -21,7 +21,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     [SerializeField] private InventoryUI ui;
     [SerializeField] private InventoryManager manager;
 
-    private int? selectedId;
+    private int? selectedSlotId;
 
     private void OnEnable()
     {
@@ -59,23 +59,23 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         }
     }
 
-    private void HandleSelect(int id)
+    private void HandleSelect(int slotId)
     {
-        selectedId = id;
+        selectedSlotId = slotId;
+        var slot = manager.GetSlotDatas().Find(s => s.slotId == slotId);
+        if (slot != null)
+            ui.BindItem(slot.itemData, slotId);
 
-        ui.BindItem(manager.GetItemDataById(selectedId.Value));
-        //var data = manager.GetItemDataById(id);
-        //if (data != null) ui.SelectItem(data);
-        // To do
-        //이거 아님. 이거 아이템 타입에 따라 자동으로 아게끔. InventoryUI 내에서도 바꾸기 SetButtonsActive 말하는 거임.
+        // SetButtonsActiveByItem 등 UI 버튼 활성화도 slot 기반으로 처리
+        ui.SetButtonsActiveByItem(slot?.itemData, slotId);
     }
 
     private void HandleUse()
     {
-        if (selectedId != null)
+        if (selectedSlotId != null)
         {
-            manager.UseItem(selectedId.Value);
-            selectedId = null;
+            manager.UseItem(selectedSlotId.Value);
+            selectedSlotId = null;
             RefreshUI();
         }
         else
@@ -83,65 +83,67 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
             Debug.Log("No item selected");
         }
     }
-
     private void HandleEquip()
     {
-        if (selectedId != null)
+        if (selectedSlotId != null)
         {
-            Debug.Log($"Equip requested for item {selectedId.Value}");
-            manager.EquipItem(selectedId.Value);
+            manager.EquipItem(selectedSlotId.Value);
             RefreshUI();
         }
     }
     private void HandleUnequip()
     {
-        if (selectedId != null)
+        if (selectedSlotId != null)
         {
-            // to do: Inventory Manager에게 장착 요청하기
-            Debug.Log($"Unquip requested for item {selectedId.Value}");
-            manager.UnequipItem(selectedId.Value);
+            manager.UnequipItem(selectedSlotId.Value);
             RefreshUI();
         }
     }
 
     private void HandleCraft()
     {
-        if(manager.GetSlotDatas().Count >= 14)
+        if (manager.GetSlotDatas().Count >= 14)
         {
             Debug.Log("you need at least 1 empty slot in your inventory.");
             return;
         }
-        CraftSystem craftSystem =  manager.CraftSystem();
-        RecipeData recipeData = craftSystem.GetTransformRecipe(selectedId.Value);
-        //현재 단일 아이템 선택 시 진행하는 중..
-        if (selectedId != null && recipeData != null)
+
+        if (selectedSlotId == null) return;
+
+        CraftSystem craftSystem = manager.CraftSystem();
+        var slot = manager.GetSlotDatas().Find(s => s.slotId == selectedSlotId.Value);
+        if (slot == null) return;
+
+        RecipeData recipeData = craftSystem.GetTransformRecipe(slot.itemData.id); // itemId 기준 레시피 조회
+        if (recipeData != null)
         {
-            if (recipeData != null)
-            {
-                // 제작 코루틴 실행
-                StartCoroutine(craftSystem.CraftCoroutine(recipeData));
-            }
+            StartCoroutine(craftSystem.CraftCoroutine(recipeData));
         }
     }
+
     private void HandleDrop()
     {
-        if (selectedId != null)
+        if (selectedSlotId != null)
         {
-            manager.DropItem(selectedId.Value);
-            selectedId = null;
+            manager.DropItem(selectedSlotId.Value);
+            selectedSlotId = null;
             RefreshUI();
         }
     }
 
     private void RefreshUI()
     {
-        if (selectedId != null && manager.GetItemAmount(selectedId.Value) > 0)
+        if (selectedSlotId != null)
         {
-            HandleSelect(selectedId.Value);
+            var slot = manager.GetSlotDatas().Find(s => s.slotId == selectedSlotId.Value);
+            if (slot != null && slot.count > 0)
+            {
+                HandleSelect(selectedSlotId.Value);
+                return;
+            }
         }
-        else
-        {
-            ui.ClearSelection();
-        }
+
+        ui.ClearSelection();
+        selectedSlotId = null;
     }
 }
