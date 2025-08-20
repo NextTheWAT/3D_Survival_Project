@@ -7,6 +7,11 @@ public class NPCDialogue : MonoBehaviour
 
     public DialogueSO Dialogue => dialogue;
 
+    private void Awake()
+    {
+        runner = FindObjectOfType<DialogueRunner>();
+    }
+
     public void StartDialogue()
     {
         if (runner && dialogue) runner.Run(dialogue);
