@@ -17,8 +17,8 @@ MonoBehaviour:
   resourcePrefab: {fileID: 2238610949371264636, guid: 1bb54cfc08cc8a945b298118bdeba40e, type: 3}
   dropItems:
   - itemId: 1
-    dropRate: 0.886
+    dropRate: 0.646
   - itemId: 2
-    dropRate: 0.114
+    dropRate: 0.035
   maxAmount: 10
   respawnTime: 10

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum InventoryEventType
@@ -6,13 +7,14 @@ public enum InventoryEventType
     InventoryChanged,
     ItemDroppRequested,
     ItemEquipRequested,
+    ItemCraftRequested,
     ItemUseRequested
 }
 public interface IInventoryMediator
 {
     void Notify(object sender, InventoryEventType eventType, object data = null);
 }
-/// UI ↔ Model(그리고 Player 규칙) 사이를 가볍게 중재
+/// UI와 Manager를 단방향으로 중재
 public class InventoryMediator : MonoBehaviour, IInventoryMediator
 {
     [Header("Refs")]
@@ -21,23 +23,20 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
 
     private int? selectedId;
 
-    //private void Awake()
-    //{
-    //    // BaseUI 라이프사이클에 맞춰 열릴 때/닫힐 때 처리하고 싶다면:
-    //    ui.OnOpened.AddListener(Open);
-    //    ui.OnClosed.AddListener(Close);
-    //}
-
     private void OnEnable()
     {
         // UI 입력 이벤트
         ui.OnItemClicked += HandleSelect;
         ui.OnUseClicked += HandleUse;
         ui.OnEquipClicked += HandleEquip;
-        //ui.OnUnEquipClicked += HandleUnEquip;
+        ui.OnUnequipClicked += HandleUnequip;
+        ui.OnCraftClicked += HandleCraft;
         ui.OnDropClicked += HandleDrop;
 
         manager.SetMediator(this);
+
+        // 초기 렌더링
+        ui.Init(manager.GetSlotDatas());
     }
 
     private void OnDisable()
@@ -45,114 +44,104 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         ui.OnItemClicked -= HandleSelect;
         ui.OnUseClicked -= HandleUse;
         ui.OnEquipClicked -= HandleEquip;
-        //ui.OnUnEquipClicked -= HandleUnEquip;
+        ui.OnUnequipClicked -= HandleUnequip;
+        ui.OnCraftClicked -= HandleCraft;
         ui.OnDropClicked -= HandleDrop;
     }
 
     public void Notify(object sender, InventoryEventType eventType, object data = null)
     {
-        switch(eventType)
+        switch (eventType)
         {
             case InventoryEventType.InventoryChanged:
-                RefreshList();
+                ui.RenderList(data as List<InventorySlotData>);
                 break;
         }
     }
 
-    //// ===== 라이프사이클 =====
-    //public void Open()
-    //{
-    //    selectedId = null;
-    //    ui.ClearSelection();
-    //    ui.SetButtonsActive(false, false, false, false);
-    //    RefreshList();
-    //}
-    //public void Close() { /* 필요 시 정리 */ }
-
-    // ===== 화면 갱신 =====
-    private void RefreshList()
-    {
-        var itemDatas = manager.GetAllItemData();
-        ui.RenderList(itemDatas); // UI가 스크롤뷰/아이템버튼 렌더링
-    }
-
-    // ===== 입력 처리 =====
     private void HandleSelect(int id)
     {
         selectedId = id;
-        //model.selectedItem = id;
 
-        //var data = model.GetItemById(id);
-        //ui.SetItemDetail(data.displayName, data.description, data.statName, data.statValueText);
-
-        //ui.SetButtonsActive(
-        //    player.CanUse(data),
-        //    player.CanEquip(data),
-        //    player.CanUnEquip(data),
-        //    model.GetAmountById(id) > 0
-        //);
+        ui.BindItem(manager.GetItemDataById(selectedId.Value));
+        //var data = manager.GetItemDataById(id);
+        //if (data != null) ui.SelectItem(data);
+        // To do
+        //이거 아님. 이거 아이템 타입에 따라 자동으로 아게끔. InventoryUI 내에서도 바꾸기 SetButtonsActive 말하는 거임.
     }
 
     private void HandleUse()
     {
-        if (selectedId != null) manager.UseItem(selectedId.Value);
-        //if (selectedId == null) return;
-        //var data = model.GetItemById(selectedId.Value);
-        //if (!player.CanUse(data)) return;
-
-        //player.Use(data);
-        //model.RemoveItem(selectedId.Value); // 1개 소모
-        //PostActionRefresh();
+        if (selectedId != null)
+        {
+            manager.UseItem(selectedId.Value);
+            selectedId = null;
+            RefreshUI();
+        }
+        else
+        {
+            Debug.Log("No item selected");
+        }
     }
 
     private void HandleEquip()
     {
-        if(selectedId !=null)
+        if (selectedId != null)
+        {
+            Debug.Log($"Equip requested for item {selectedId.Value}");
+            manager.EquipItem(selectedId.Value);
+            RefreshUI();
+        }
+    }
+    private void HandleUnequip()
+    {
+        if (selectedId != null)
         {
             // to do: Inventory Manager에게 장착 요청하기
-            Debug.Log($"Equip requested for item {selectedId.Value}");
+            Debug.Log($"Unquip requested for item {selectedId.Value}");
+            manager.UnequipItem(selectedId.Value);
+            RefreshUI();
         }
-        //if (selectedId == null) return;
-        //var data = model.GetItemById(selectedId.Value);
-        //if (!player.CanEquip(data)) return;
-
-        //player.Equip(data);
-        //PostActionRefresh();
     }
 
-    //private void HandleUnEquip()
-    //{
-    //    if (selectedId == null) return;
-    //    var data = model.GetItemById(selectedId.Value);
-    //    if (!player.CanUnEquip(data)) return;
-
-    //    player.UnEquip(data);
-    //    PostActionRefresh();
-    //}
-
+    private void HandleCraft()
+    {
+        if(manager.GetSlotDatas().Count >= 14)
+        {
+            Debug.Log("you need at least 1 empty slot in your inventory.");
+            return;
+        }
+        CraftSystem craftSystem =  manager.CraftSystem();
+        RecipeData recipeData = craftSystem.GetTransformRecipe(selectedId.Value);
+        //현재 단일 아이템 선택 시 진행하는 중..
+        if (selectedId != null && recipeData != null)
+        {
+            if (recipeData != null)
+            {
+                // 제작 코루틴 실행
+                StartCoroutine(craftSystem.CraftCoroutine(recipeData));
+            }
+        }
+    }
     private void HandleDrop()
     {
         if (selectedId != null)
         {
             manager.DropItem(selectedId.Value);
             selectedId = null;
-            ui.ClearSelection();
+            RefreshUI();
         }
-        //if (selectedId == null) return;
-        //model.DropItem(selectedId.Value); // 전량 버림
-        //PostActionRefresh();
-        //selectedId = null;
-        //ui.ClearSelection();
-        //ui.SetButtonsActive(false, false, false, false);
     }
 
-    //private void PostActionRefresh()
-    //{
-    //    RefreshList();
-    //    if (selectedId != null && model.GetAmountById(selectedId.Value) > 0)
-    //    {
-    //        // 상세/버튼 상태 재계산
-    //        HandleSelect(selectedId.Value);
-    //    }
-    //}
+    private void RefreshUI()
+    {
+        if (selectedId != null && manager.GetItemAmount(selectedId.Value) > 0)
+        {
+            HandleSelect(selectedId.Value);
+        }
+        else
+        {
+            ui.ClearSelection();
+        }
+    }
 }
