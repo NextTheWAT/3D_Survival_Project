@@ -16,8 +16,6 @@ public class EnemySpawnTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("들어감0");
-        owner.SpawnMonster(spawnAreaId);
         if (other.CompareTag("Player")) //?
         {
             Debug.Log("들어감");
