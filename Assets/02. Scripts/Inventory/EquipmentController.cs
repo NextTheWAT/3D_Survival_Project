@@ -36,6 +36,11 @@ public class EquipmentController : MonoBehaviour
             rb.isKinematic = true;
             rb.useGravity = false;
         }
+        Collider[] colliders = currentItem.GetComponentsInChildren<Collider>();
+        foreach (Collider col in colliders)
+        {
+            Destroy(col);
+        }
 
         SetEquipptedItemForInteraction(itemData);
         Debug.Log($"{itemData.name} equipped");

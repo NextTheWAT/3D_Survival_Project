@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 [Serializable]
 public class InventoryModel
 {
     private List<InventorySlotData> slots = new List<InventorySlotData>();
+    public int maxSlotCount = 14;
 
-    public void AddItem(ItemData itemData, int amount = 1)
+    public bool AddItem(ItemData itemData, int amount = 1)
     {
         int remaining = amount;
 
@@ -20,17 +22,22 @@ public class InventoryModel
                 int toAdd = Mathf.Min(canAdd, remaining);
                 slot.count += toAdd;
                 remaining -= toAdd;
-                if (remaining <= 0) return;
+                if (remaining <= 0) 
+                    return true;
             }
         }
 
         // 남은 수량은 새 슬롯으로 추가
         while (remaining > 0)
         {
+            if (slots.Count >= maxSlotCount)
+                return false; // 슬롯이 꽉 차서 추가 실패
+
             int stackSize = itemData.maxStack > 0 ? Mathf.Min(itemData.maxStack, remaining) : 1;
             slots.Add(new InventorySlotData(itemData, stackSize));
             remaining -= stackSize;
         }
+        return true;
     }
 
     public void RemoveOneItemFromSlot(int slotId)

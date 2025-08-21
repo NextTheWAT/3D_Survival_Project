@@ -20,7 +20,6 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     [Header("Refs")]
     [SerializeField] private InventoryUI ui;
     [SerializeField] private InventoryManager manager;
-    [SerializeField] private EquipmentController equipmentController;
 
     [SerializeField] private CraftUI craftUI;
 
@@ -100,7 +99,6 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
             if (slot?.itemData is EquipItemData equipItemData)
             {
                 manager.EquipItem(selectedSlotId.Value);      //모델 갱신
-                equipmentController.Equip(equipItemData);        //GrabPoint에 붙이기
             }
             RefreshUI();
         }
@@ -110,7 +108,6 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
         if (selectedSlotId != null)
         {
             manager.UnequipItem(selectedSlotId.Value);
-            equipmentController.Unequip(); // 단순 제거
             RefreshUI();
         }
     }

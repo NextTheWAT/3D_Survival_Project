@@ -118,6 +118,15 @@ namespace Utils.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e795e90-20f5-4192-b012-3a03a76ea55c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -274,6 +283,17 @@ namespace Utils.Input
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a72bf631-f3a2-4c8d-b69c-b44401162c87"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -309,6 +329,7 @@ namespace Utils.Input
             m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
             m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
             m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+            m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -380,6 +401,7 @@ namespace Utils.Input
         private readonly InputAction m_Player_Rotate;
         private readonly InputAction m_Player_Cancel;
         private readonly InputAction m_Player_Interact;
+        private readonly InputAction m_Player_OpenInventory;
         public struct PlayerActions
         {
             private @CharacterControls m_Wrapper;
@@ -394,6 +416,7 @@ namespace Utils.Input
             public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
             public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
             public InputAction @Interact => m_Wrapper.m_Player_Interact;
+            public InputAction @OpenInventory => m_Wrapper.m_Player_OpenInventory;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -433,6 +456,9 @@ namespace Utils.Input
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @OpenInventory.started += instance.OnOpenInventory;
+                @OpenInventory.performed += instance.OnOpenInventory;
+                @OpenInventory.canceled += instance.OnOpenInventory;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -467,6 +493,9 @@ namespace Utils.Input
                 @Interact.started -= instance.OnInteract;
                 @Interact.performed -= instance.OnInteract;
                 @Interact.canceled -= instance.OnInteract;
+                @OpenInventory.started -= instance.OnOpenInventory;
+                @OpenInventory.performed -= instance.OnOpenInventory;
+                @OpenInventory.canceled -= instance.OnOpenInventory;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -505,6 +534,7 @@ namespace Utils.Input
             void OnRotate(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
+            void OnOpenInventory(InputAction.CallbackContext context);
         }
     }
 }

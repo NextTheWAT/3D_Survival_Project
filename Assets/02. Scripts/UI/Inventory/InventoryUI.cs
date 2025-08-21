@@ -132,7 +132,7 @@ public class InventoryUI : BaseUI
         bool canCraft = false;
 
         // 1:1 변환 레시피가 있는지 확인
-        RecipeData recipe = TestManager.Instance.inventoryManager.CraftSystem().GetTransformRecipe(itemData.id);
+        RecipeData recipe = GameManager.Instance.inventoryManager.CraftSystem().GetTransformRecipe(itemData.id);
         if (recipe != null)
         {
             canCraft = true;
@@ -149,7 +149,7 @@ public class InventoryUI : BaseUI
         else if (itemData is EquipItemData equipItemData)  // 장비면
         {
             useButton.gameObject.SetActive(false);
-            bool isEquipped = TestManager.Instance.inventoryManager.IsEquippedBySlotId(slotId);
+            bool isEquipped = GameManager.Instance.inventoryManager.IsEquippedBySlotId(slotId);
             equipButton.gameObject.SetActive(!isEquipped);
             unEquipButton.gameObject.SetActive(isEquipped);
             craftButton.gameObject.SetActive(canCraft); //??z
@@ -167,7 +167,7 @@ public class InventoryUI : BaseUI
     public void SelectItem(int slotId)
     {
         selectedSlotId = slotId;
-        var slotData = TestManager.Instance.inventoryManager.GetSlotDatas()
+        var slotData = GameManager.Instance.inventoryManager.GetSlotDatas()
                          .Find(s => s.slotId == slotId);
         if (slotData != null)
         {

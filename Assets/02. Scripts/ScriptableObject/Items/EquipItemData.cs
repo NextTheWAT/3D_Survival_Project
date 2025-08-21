@@ -11,9 +11,10 @@ public class Enhancement
 [CreateAssetMenu(fileName = "EquipItem", menuName = "Item/New Equip Item")]
 public class EquipItemData : ItemData
 {
-    public GameObject equipPrefab;   // prefab reference
+    //public GameObject equipPrefab;   // prefab reference
 
     [Header("Attributes")]
     public EquipType type;
     public Enhancement[] enhancements;
+    public int damage;
 }
