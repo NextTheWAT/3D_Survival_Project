@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using test.value;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace test.value
-{
-    public interface IValueChangable
-    {
-        float ValueChanged(int amount);
-    }
-}
+//namespace test.value
+//{
+//    public interface IValueChangable
+//    {
+//        float ValueChanged(int amount);
+//    }
+//}
 
-public partial class Enemy : MonoBehaviour, test.value.IValueChangable//Character
+public partial class Enemy : MonoBehaviour, IValueChangable
 {
     [Header("Stats")]
     [SerializeField] private float _moveDistance;
