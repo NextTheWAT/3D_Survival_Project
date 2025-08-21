@@ -30,6 +30,8 @@ public class InventoryManager : MonoBehaviour
     private EquipmentModel equipmentModel = new EquipmentModel();    //solo player
     private CraftSystem craftSystem;
 
+    [SerializeField] private EquipmentController equipmentController;
+
     private IInventoryMediator mediator;
 
     [SerializeField]
@@ -43,7 +45,7 @@ public class InventoryManager : MonoBehaviour
         inventoryModel.AddItem(itemDatabase.GetItemById(1), 10);
         inventoryModel.AddItem(itemDatabase.GetItemById(2), 1);
         inventoryModel.AddItem(itemDatabase.GetItemById(3), 1);
-        inventoryModel.AddItem(itemDatabase.GetItemById(4), 2);
+        inventoryModel.AddItem(itemDatabase.GetItemById(4), 11);
     }
     
     public void SetMediator(IInventoryMediator mediator)
@@ -51,10 +53,14 @@ public class InventoryManager : MonoBehaviour
         this.mediator = mediator;
     }
 
-    public void AddItem(ItemData itemData, int amount = 1)
+    public bool AddItem(ItemData itemData, int amount = 1)
     {
-        inventoryModel.AddItem(itemData, amount);
-        mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
+        if( inventoryModel.AddItem(itemData, amount))
+        {
+            mediator?.Notify(this, InventoryEventType.InventoryChanged, GetSlotDatas());
+            return true;
+        }
+        return false;
     }
     public void RemoveOneItemFromSlot(int slotId)
     {
@@ -74,7 +80,10 @@ public class InventoryManager : MonoBehaviour
 
 
         if (equipmentModel.IsEquippedBySlotId(slot.slotId))
-        equipmentModel.UnequipItem(slot.itemData as EquipItemData, slotId);
+        {
+            equipmentModel.UnequipItem(slot.itemData as EquipItemData, slotId);
+            equipmentController.Unequip(); // 단순 제거
+        }
 
         Vector3 dropPos = GameManager.Instance.playerPosition.position + GameManager.Instance.playerPosition.forward * 1.0f + Vector3.up * 0.5f;
         Instantiate(slot.itemData.inGamePrefab, dropPos, Quaternion.Euler(Vector3.one * UnityEngine.Random.value * 360));
@@ -107,6 +116,7 @@ public class InventoryManager : MonoBehaviour
         if (slot.itemData is EquipItemData equipItemData)
         {
             equipmentModel.EquipItem(equipItemData, slotId); // slotId 기반 장착
+            equipmentController.Equip(equipItemData);        //GrabPoint에 붙이기
         }
     }
     public void UnequipItem(int slotId)
@@ -117,6 +127,7 @@ public class InventoryManager : MonoBehaviour
         if (slot.itemData is EquipItemData equipItemData)
         {
             equipmentModel.UnequipItem(equipItemData, slotId);
+            equipmentController.Unequip(); // 단순 제거
         }
     }
 
