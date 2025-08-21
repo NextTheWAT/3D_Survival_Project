@@ -294,6 +294,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 814277642}
+    - targetCorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 814277648}
   m_SourcePrefab: {fileID: 100100000, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
 --- !u!114 &149544157 stripped
 MonoBehaviour:
@@ -348,6 +351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCondition: {fileID: 149544157}
   playerPosition: {fileID: 320588437}
+  buildingActionController: {fileID: 814277648}
   inventoryManager: {fileID: 1884992782}
   itemDatabase: {fileID: 11400000, guid: 1782fccd9d6bf2f40873627f3a4bb384, type: 2}
   inventoryUI: {fileID: 776711587}
@@ -1057,6 +1061,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 7461183978472559967, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
+      propertyPath: buildButton
+      value: 
+      objectReference: {fileID: 776711585}
     - target: {fileID: 7573506119956590696, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1113,6 +1121,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 705124960}
   m_SourcePrefab: {fileID: 100100000, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
+--- !u!114 &776711585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3748225442892020615, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
+  m_PrefabInstance: {fileID: 776711584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &776711587 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7461183978472559967, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
@@ -1155,6 +1174,27 @@ MonoBehaviour:
     m_Bits: 64
   rayDamage: 100
   attackCooldown: 1
+--- !u!114 &814277648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd89537ae9eb8124e8a2629c04aac7e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  length: 5
+  speed: 0.2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 768
+  prefab: {fileID: 0}
+  material: {fileID: 0}
+  isSimulating: 0
+  isAxisChanged: 0
 --- !u!1001 &850659294
 PrefabInstance:
   m_ObjectHideFlags: 0

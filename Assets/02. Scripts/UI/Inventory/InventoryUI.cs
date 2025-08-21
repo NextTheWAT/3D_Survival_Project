@@ -18,6 +18,7 @@ public class InventoryUI : BaseUI
     [SerializeField] private Button unEquipButton;
     [SerializeField] private Button craftButton;
     [SerializeField] private Button dropButton;
+    [SerializeField] private Button buildButton;
 
     [Header("Slot Setting")]
     [SerializeField] private Transform slotParent;
@@ -32,7 +33,7 @@ public class InventoryUI : BaseUI
     public event Action OnUnequipClicked;
     public event Action OnCraftClicked;
     public event Action OnDropClicked;
-
+    public event Action OnBuildClicked;
 
     private int? selectedSlotId;
 
@@ -40,12 +41,12 @@ public class InventoryUI : BaseUI
     {
         base.Awake();
 
-        // 버튼 이벤트 연결 (현재는 Debug.Log만 출력)
         if (useButton) useButton.onClick.AddListener(() => OnUseClicked?.Invoke());
         if (equipButton) equipButton.onClick.AddListener(() => OnEquipClicked?.Invoke());
         if (unEquipButton) unEquipButton.onClick.AddListener(() => OnUnequipClicked?.Invoke());
         if (craftButton) craftButton.onClick.AddListener(() => OnCraftClicked?.Invoke());
         if (dropButton) dropButton.onClick.AddListener(() => OnDropClicked?.Invoke());
+        if (buildButton) buildButton.onClick.AddListener(() => OnBuildClicked?.Invoke());
 
         // 처음 시작할 때 버튼/텍스트 비활성화
         UnActive();
@@ -124,6 +125,7 @@ public class InventoryUI : BaseUI
         unEquipButton.gameObject.SetActive(false);
         craftButton.gameObject.SetActive(false);
         dropButton.gameObject.SetActive(false);
+        buildButton.gameObject.SetActive(false);
     }
     public void SetButtonsActiveByItem(ItemData itemData, int slotId)
     {
@@ -162,6 +164,8 @@ public class InventoryUI : BaseUI
             unEquipButton.gameObject.SetActive(false);
             craftButton.gameObject.SetActive(canCraft);
             dropButton.gameObject.SetActive(true);
+            buildButton.gameObject.SetActive(itemData.isBuildable);
+
         }
     }
     public void SelectItem(int slotId)

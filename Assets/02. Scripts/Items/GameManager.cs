@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils.Input;
+using Object.Character.Player;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     [Header("Player")]
     public PlayerCondition playerCondition;
     public Transform playerPosition;
+    public BuildingActionController buildingActionController;
 
     [Header("Item Inventory")]
     public InventoryManager inventoryManager;
