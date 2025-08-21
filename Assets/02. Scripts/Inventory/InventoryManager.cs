@@ -76,7 +76,7 @@ public class InventoryManager : MonoBehaviour
         if (equipmentModel.IsEquippedBySlotId(slot.slotId))
         equipmentModel.UnequipItem(slot.itemData as EquipItemData, slotId);
 
-        Vector3 dropPos = TestManager.Instance.playerPosition.position + TestManager.Instance.playerPosition.forward * 1.0f + Vector3.up * 0.5f;
+        Vector3 dropPos = GameManager.Instance.playerPosition.position + GameManager.Instance.playerPosition.forward * 1.0f + Vector3.up * 0.5f;
         Instantiate(slot.itemData.inGamePrefab, dropPos, Quaternion.Euler(Vector3.one * UnityEngine.Random.value * 360));
 
         Debug.Log($"Trying  RemoveOneItemFromSlot(slotId);");

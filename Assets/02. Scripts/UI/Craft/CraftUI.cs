@@ -36,14 +36,14 @@ public class CraftUI : BaseUI
         inputItem = slot.itemData;
 
         recipe = slot.itemData != null
-            ? TestManager.Instance.inventoryManager.CraftSystem().GetTransformRecipe(slot.itemData.id)
+            ? GameManager.Instance.inventoryManager.CraftSystem().GetTransformRecipe(slot.itemData.id)
             : null;
 
         if (inputNameText) inputNameText.text = inputItem?.name ?? "";
 
         if (recipe != null)
         {
-            outputItem = TestManager.Instance.itemDatabase.GetItemById(recipe.outputItemId);
+            outputItem = GameManager.Instance.itemDatabase.GetItemById(recipe.outputItemId);
             outputSlot.Bind(new InventorySlotData(outputItem, 1)); // 출력만 새로 생성
             outputSlot.gameObject.SetActive(true);
             if (outputNameText) outputNameText.text = outputItem?.name ?? "가공 불가";

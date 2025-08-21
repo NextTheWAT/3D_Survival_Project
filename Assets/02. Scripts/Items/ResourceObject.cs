@@ -65,7 +65,7 @@ public class ResourceObject : MonoBehaviour, IInteractable
         if (itemId == 0) return;
 
         // 데이터베이스에서 아이템 정보 가져오기
-        var itemData = TestManager.Instance.itemDatabase.GetItemById(itemId);
+        var itemData = GameManager.Instance.itemDatabase.GetItemById(itemId);
         if (itemData == null)
         {
             Debug.LogWarning($"Item ID {itemId} not found!");

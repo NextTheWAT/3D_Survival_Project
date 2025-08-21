@@ -1,11 +1,11 @@
-﻿using Object.Character.Player;
+﻿#nullable disable
+using Object.Character.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityChan;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Utils.Input;
-
 public class PlayerInteractionController : MonoBehaviour
 {
     private CharacterControls controls;
