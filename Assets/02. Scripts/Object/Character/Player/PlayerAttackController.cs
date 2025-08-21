@@ -76,7 +76,7 @@ public class PlayerAttackController : MonoBehaviour
         Vector3 dir = originT.forward;
 
         // 마스크 미지정이면 전체 레이어 대상으로
-        int mask = (damageMask.value == 0) ? ~0 : damageMask.value;
+        int mask = damageMask.value;
 
         if (Physics.Raycast(position, direction, out var hit, rayRange, mask))
         {
