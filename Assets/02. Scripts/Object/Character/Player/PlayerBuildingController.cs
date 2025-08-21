@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
+using Utils.Extension;
 using Utils.Input;
 using Utils.Management;
 
@@ -12,6 +13,7 @@ namespace Object.Character.Player
         [SerializeField] private float length;
         [Range(0f, 1f)]
         [SerializeField] private float speed;
+        [SerializeField] private LayerMask layerMask;
 
         [Header("Test Settings")]
         [SerializeField] private GameObject prefab;
@@ -25,13 +27,14 @@ namespace Object.Character.Player
 
         private PlayerPerspectiveController _controller;
 
+        private int _origin;
         private CollisionDetector _detector;
         private BuildingSimulationRenderer _renderer;
 
         private float _degree;
 
         private int _groundLayerMask;
-        private int _materialLayerMask;
+        private int _notThroughLayerMask;
 
         private void Awake()
         {
@@ -40,7 +43,7 @@ namespace Object.Character.Player
             _controller = GetComponent<PlayerPerspectiveController>();
 
             _groundLayerMask = 1 << LayerMask.NameToLayer(Layer.Ground);
-            _materialLayerMask = 1 << LayerMask.NameToLayer(Layer.Material);
+            _notThroughLayerMask = 1 << LayerMask.NameToLayer(Layer.NotThroughable);
         }
 
         private void OnEnable()
@@ -99,7 +102,7 @@ namespace Object.Character.Player
             var position = _controller.FirstPerspectiveCameraRig.position;
             var direction = _controller.PerspectiveCameraRig.forward;
 
-            if (Physics.Raycast(position, direction, out var hit, length, _groundLayerMask))
+            if (Physics.Raycast(position, direction, out var hit, length, layerMask))
             {
                 var point = hit.point;
                 var height = isAxisChanged ? Mathf.Abs(_detector.Center.y - _detector.Size.x / 2f) : 0f;
@@ -115,7 +118,8 @@ namespace Object.Character.Player
                     material.transform.position += hit.normal * height;
                 }
 
-                _renderer.SetSimulationColor(_materialLayerMask);
+                _detector.Detect();
+                _renderer.SetSimulationColor(_detector.IsCollisionDetected == false);
 
 #if UNITY_EDITOR
 
@@ -128,10 +132,17 @@ namespace Object.Character.Player
 
         private void Build(InputAction.CallbackContext context)
         {
+            if (_detector.IsCollisionDetected)
+            {
+                return;
+            }
+
             _renderer.SetDefaultColor();
 
             isSimulating = false;
             
+            material.layer = _origin;
+
             _detector = null;
             _renderer = null;
             material = null;
@@ -158,6 +169,8 @@ namespace Object.Character.Player
 
             isSimulating = false;
 
+            material.layer = _origin;
+
             ObjectPoolingManager.Release(material);
 
             _detector = null;
@@ -174,6 +187,9 @@ namespace Object.Character.Player
 
             material = ObjectPoolingManager.Spawn(prefab);
             material.SetActive(true);
+
+            _origin = material.layer;
+            material.SetLayerRecursively(Layer.Simulation);
 
             _detector = material.GetComponent<CollisionDetector>();
             _renderer = material.GetComponent<BuildingSimulationRenderer>();

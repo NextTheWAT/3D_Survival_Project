@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 64062144142584872}
   - component: {fileID: 5934963334731951737}
   - component: {fileID: 6454344955101554028}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rock11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   center: {x: -0.0418123, y: 0.9757117, z: -0.04156907}
-  size: {x: 2.324064, y: 2.121073, z: 0.8537456}
+  size: {x: 2.3240635, y: 2.121073, z: 0.8537456}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &6454344955101554028
 MonoBehaviour:
   m_ObjectHideFlags: 0
