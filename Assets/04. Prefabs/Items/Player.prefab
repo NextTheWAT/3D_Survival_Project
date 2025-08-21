@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 3689287311050261713}
   - component: {fileID: 7681055969659389051}
   - component: {fileID: 9204518389661688031}
+  - component: {fileID: 5059600222022694385}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -408,6 +409,44 @@ MonoBehaviour:
   size: {x: 0.2, y: 0.04, z: 0.2}
   isMoving: 0
   isJumping: 0
+--- !u!114 &5059600222022694385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205076381403356839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6142fe3b30e2ce9459f6a3151aa49186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  minHealth: 0
+  maxHealth: 100
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
+  hunger: 100
+  minHunger: 0
+  maxHunger: 100
+  stamina: 100
+  minStamina: 0
+  maxStamina: 100
+  hungerDecayPerSec: 1
+  staminaRegenPerSec: 10
+  healthRegenPerSec: 1
+  healthStarveDamagePerSec: 2
+  healthRegenHungerThreshold: 60
+  onHungerChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onStaminaChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8281298241538397809
 GameObject:
   m_ObjectHideFlags: 0

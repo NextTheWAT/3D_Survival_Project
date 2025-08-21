@@ -3,35 +3,42 @@ using UnityEngine.Events;
 
 public class PlayerCondition : BaseCondition, IDamagable
 {
-    [Header("Player Stats")]
-    [SerializeField] private Stat hunger = new Stat(100f, 0f, 100f);
-    [SerializeField] private Stat stamina = new Stat(100f, 0f, 100f);
+    [Header("Hunger")]
+    [SerializeField] private float hunger = 100f;
+    [SerializeField] private float minHunger = 0f;
+    [SerializeField] private float maxHunger = 100f;
+
+    [Header("Stamina")]
+    [SerializeField] private float stamina = 100f;
+    [SerializeField] private float minStamina = 0f;
+    [SerializeField] private float maxStamina = 100f;
 
     [Header("Rates (per second)")]
-    [SerializeField] private float hungerDecayPerSec = 1f;       // 허기 초당 감소
-    [SerializeField] private float staminaRegenPerSec = 10f;     // 스태미나 초당 회복(달리지 않을 때)
-    [SerializeField] private float healthRegenPerSec = 1f;       // 허기가 충분할 때 체력 자연 회복
-    [SerializeField] private float healthStarveDamagePerSec = 2f;// 허기 0일 때 체력 감소
+    [SerializeField] private float hungerDecayPerSec = 1f;        // 허기 초당 감소
+    [SerializeField] private float staminaRegenPerSec = 10f;      // (비스프린트) 초당 회복
+    [SerializeField] private float healthRegenPerSec = 1f;        // 허기 충분시 체력 자연회복
+    [SerializeField] private float healthStarveDamagePerSec = 2f; // 허기 0일 때 초당 체력 감소
 
     [Header("Thresholds")]
-    [SerializeField] private float healthRegenHungerThreshold = 60f; // 이 이상이면 체력 자연회복
+    [SerializeField] private float healthRegenHungerThreshold = 60f;
 
     [Header("Events")]
     public UnityEvent<float, float> onHungerChanged;   // (current, normalized)
     public UnityEvent<float, float> onStaminaChanged;  // (current, normalized)
 
-    public float Hunger => hunger.Current;
-    public float Hunger01 => hunger.Normalized;
-    public float Stamina => stamina.Current;
-    public float Stamina01 => stamina.Normalized;
+    public float Hunger => hunger;
+    public float Hunger01 => Normalize01(hunger, minHunger, maxHunger);
+    public float Stamina => stamina;
+    public float Stamina01 => Normalize01(stamina, minStamina, maxStamina);
 
     private bool _isSprinting;
 
     protected override void Awake()
     {
         base.Awake();
-        NotifyHunger();
-        NotifyStamina();
+        // 초기값을 UI에 바로 반영
+        SetHunger(hunger);
+        SetStamina(stamina);
     }
 
     private void Update()
@@ -40,45 +47,30 @@ public class PlayerCondition : BaseCondition, IDamagable
 
         // 1) 허기 자연 감소
         if (!Mathf.Approximately(hungerDecayPerSec, 0f))
-        {
-            hunger.Add(-hungerDecayPerSec * dt);
-            NotifyHunger();
-        }
+            SetHunger(hunger - hungerDecayPerSec * dt);
 
-        // 2) 스태미나 회복(달리지 않을 때만)
-        if (!_isSprinting && stamina.Current < stamina.Max)
-        {
-            stamina.Add(staminaRegenPerSec * dt);
-            NotifyStamina();
-        }
+        // 2) 스태미나 회복(달리지 않을 때)
+        if (!_isSprinting && stamina < maxStamina)
+            SetStamina(stamina + staminaRegenPerSec * dt);
 
         // 3) 허기 상태에 따른 체력 변화
-        if (Mathf.Approximately(hunger.Current, hunger.Min))
+        if (Mathf.Approximately(hunger, minHunger))
         {
-            // 굶주림 데미지
             if (!Mathf.Approximately(healthStarveDamagePerSec, 0f))
                 AddHealth(-healthStarveDamagePerSec * dt);
         }
-        else if (hunger.Current >= healthRegenHungerThreshold && Health < health.Max)
+        else if (hunger >= healthRegenHungerThreshold && Health < maxHealth)
         {
-            // 허기가 충분하면 체력 자연 회복
             if (!Mathf.Approximately(healthRegenPerSec, 0f))
                 AddHealth(healthRegenPerSec * dt);
         }
     }
 
-    public void TakePhysicalDamage(int damageAmount)
+    // ====== 외부에서 쓰는 간단 API ======
+    public void TakePhysicalDamage(int damageAmount)   // IDamagable 규약
     {
         if (damageAmount <= 0) return;
-        AddHealth(-damageAmount); // BaseCondition의 체력 감소 로직 호출
-    }
-
-    // ===== 외부 API (게임 로직에서 호출) =====
-
-    public void TakeDamage(float amount)
-    {
-        if (amount <= 0f) return;
-        AddHealth(-amount);
+        AddHealth(-damageAmount);
     }
 
     public void Heal(float amount)
@@ -90,49 +82,42 @@ public class PlayerCondition : BaseCondition, IDamagable
     public bool TryUseStamina(float amount)
     {
         if (amount <= 0f) return true;
-        if (stamina.Current < amount) return false;
+        if (stamina < amount) return false;
 
-        stamina.Add(-amount);
-        NotifyStamina();
+        SetStamina(stamina - amount);
         return true;
-    }
-
-    public void SetSprinting(bool isSprinting)
-    {
-        _isSprinting = isSprinting;
     }
 
     public void RestoreStamina(float amount)
     {
         if (amount <= 0f) return;
-        stamina.Add(amount);
-        NotifyStamina();
+        SetStamina(stamina + amount);
     }
 
     public void Eat(float hungerGain, float healAmount = 0f)
     {
-        if (hungerGain > 0f)
-        {
-            hunger.Add(hungerGain);
-            NotifyHunger();
-        }
+        if (hungerGain > 0f) SetHunger(hunger + hungerGain);
         if (healAmount > 0f) Heal(healAmount);
     }
 
-    // ===== 이벤트 알림 =====
-    private void NotifyHunger()
+    public void SetSprinting(bool isSprinting) => _isSprinting = isSprinting;
+
+    // ====== 내부 헬퍼 & 이벤트 알림 ======
+    private static float Normalize01(float v, float min, float max)
     {
-        onHungerChanged?.Invoke(hunger.Current, hunger.Normalized);
+        if (max <= min) return 0f;
+        return Mathf.Clamp01((v - min) / (max - min));
     }
 
-    private void NotifyStamina()
+    private void SetHunger(float v)
     {
-        onStaminaChanged?.Invoke(stamina.Current, stamina.Normalized);
+        hunger = Mathf.Clamp(v, minHunger, maxHunger);
+        onHungerChanged?.Invoke(hunger, Hunger01);
     }
 
-    protected override void Die()
+    private void SetStamina(float v)
     {
-        base.Die();
-        // TODO: 사망 처리(리스폰/게임오버 등)
+        stamina = Mathf.Clamp(v, minStamina, maxStamina);
+        onStaminaChanged?.Invoke(stamina, Stamina01);
     }
 }
