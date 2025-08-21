@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1394cb2105de58646a4b3a01afc9cf30, type: 3}
-  m_Name: EquipItem_Ax
+  m_Name: EquipItem_Sword
   m_EditorClassIdentifier: 
-  id: 4
-  displayName: Ax
-  description: Chop Chop
+  id: 10
+  displayName: Sword
+  description: Swish Swish
   maxStack: 0
-  icon: {fileID: 21300000, guid: 06e8d836c76eb494db7ab3784ffcb0eb, type: 3}
-  inGamePrefab: {fileID: 9132997932960029280, guid: c29f4ee19b6cc2b4b9303090a31aa55c, type: 3}
-  type: 0
-  enhancements: []
-  damage: 10
+  icon: {fileID: 21300000, guid: 4f2f320a217307a48a107491b1d17ebb, type: 3}
+  inGamePrefab: {fileID: 9132997932960029280, guid: 2cf62f9ff90334244bb19ab330b04e76, type: 3}
+  type: 1
+  enhancements:
+  - type: 0
+    amount: 10
+  damage: 999

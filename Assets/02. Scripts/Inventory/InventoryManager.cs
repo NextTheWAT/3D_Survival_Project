@@ -45,7 +45,8 @@ public class InventoryManager : MonoBehaviour
         inventoryModel.AddItem(itemDatabase.GetItemById(1), 10);
         inventoryModel.AddItem(itemDatabase.GetItemById(2), 1);
         inventoryModel.AddItem(itemDatabase.GetItemById(3), 1);
-        inventoryModel.AddItem(itemDatabase.GetItemById(4), 11);
+        inventoryModel.AddItem(itemDatabase.GetItemById(4), 1);
+        inventoryModel.AddItem(itemDatabase.GetItemById(10), 1);
     }
     
     public void SetMediator(IInventoryMediator mediator)
