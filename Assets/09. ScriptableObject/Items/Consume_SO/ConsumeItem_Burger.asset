@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442db359f4fc12d4fa2732dd4008a1a3, type: 3}
+  m_Name: ConsumeItem_Burger
+  m_EditorClassIdentifier: 
+  id: 6
+  displayName: Burger
+  description: Taste like Burger
+  maxStack: 12
+  icon: {fileID: 21300000, guid: aae6626add7217043b8939029b7b3c88, type: 3}
+  inGamePrefab: {fileID: 5691964996872191082, guid: 12932be590aef8b4b8f34a234b3f5cf4, type: 3}
+  restorations:
+  - type: 0
+    amount: 0
+  - type: 0
+    amount: 0
