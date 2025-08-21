@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class BaseCondition : MonoBehaviour, IValueChangable
+public abstract class BaseCondition : MonoBehaviour, IValueChangable
 {
     [Header("Health")]
     [SerializeField] protected float health = 100f;
@@ -40,11 +40,7 @@ public class BaseCondition : MonoBehaviour, IValueChangable
     }
 
     // IValueChangable 구현 (int 양/음수로 증감)  ← 인터페이스 시그니처 맞춤
-    public float ValueChanged(int amount)   // returns current after change
-    {
-        AddHealth(amount);
-        return health;
-    }
+    public abstract float ValueChanged(int amount);   // returns current after change
 
     protected virtual void Die()
     {

@@ -20,17 +20,9 @@ public class EnemySpawnArea : MonoBehaviour
 {
     [SerializeField] private List<SpawnAreaData> spawnAreaData = new();
 
-    public void Update()
+    public void Start()
     {
-        //TEST
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnMonster(0);
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            DeSpawnMonster(0);
-        }
+        SpawnCollider();
     }
 
     public void MonsterDeath(int id, GameObject monster)
@@ -39,6 +31,23 @@ public class EnemySpawnArea : MonoBehaviour
         if (data != null && data.spawnedMonster.Contains(monster))
         {
             data.spawnedMonster.Remove(monster);
+        }
+    }
+
+    public void SpawnCollider()
+    {
+        foreach(SpawnAreaData data in spawnAreaData)
+        {
+            GameObject triggerObj = new GameObject($"trigger {data.id}");
+            triggerObj.transform.SetParent(transform);
+            triggerObj.transform.position = data.spawnAreaCenter;
+
+            BoxCollider box = triggerObj.AddComponent<BoxCollider>();
+            box.isTrigger = true;
+            box.size = data.spawnAreaSize;
+
+            EnemySpawnTrigger temp = triggerObj.AddComponent<EnemySpawnTrigger>();
+            temp.Init(this, data.id);
         }
     }
 
