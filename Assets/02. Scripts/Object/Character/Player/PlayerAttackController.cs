@@ -43,6 +43,9 @@ public class PlayerAttackController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
+        if (_equip == null || !_equip.HasItem)
+            return;
+
         if (attackCooldown > 0f && Time.time - _lastAttackTime < attackCooldown) return;
 
         // 1) 장착 아이템 애니메이션 트리거

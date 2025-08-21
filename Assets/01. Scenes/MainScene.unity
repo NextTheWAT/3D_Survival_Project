@@ -228,14 +228,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 814277642}
   m_SourcePrefab: {fileID: 100100000, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
 --- !u!114 &149544157 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5059600222022694385, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
   m_PrefabInstance: {fileID: 149544156}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6142fe3b30e2ce9459f6a3151aa49186, type: 3}
@@ -246,7 +249,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2921278773163451943, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
   m_PrefabInstance: {fileID: 149544156}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9de8ba9c0dd49c94ebde72a474bbf771, type: 3}
@@ -393,6 +396,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
+      propertyPath: spawnAreaData.Array.data[0].spawnAreaSize.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
+      propertyPath: spawnAreaData.Array.data[0].spawnAreaSize.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
+      propertyPath: spawnAreaData.Array.data[0].spawnAreaSize.z
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
       propertyPath: spawnAreaData.Array.data[0].spawnList.Array.data[0]
       value: 
@@ -680,6 +695,32 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5373792326874385621, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
   m_PrefabInstance: {fileID: 776711584}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &814277636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+  m_PrefabInstance: {fileID: 149544156}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &814277642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7babc48d24ea0a7409172e0749dd2b38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackTriggerName: Attack
+  useRayHit: 1
+  rayOrigin: {fileID: 0}
+  rayRange: 2.5
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 64
+  rayDamage: 50
+  attackCooldown: 1
 --- !u!1001 &928492571
 PrefabInstance:
   m_ObjectHideFlags: 0
