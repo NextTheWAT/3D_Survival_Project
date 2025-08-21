@@ -445,15 +445,15 @@ MonoBehaviour:
   health:
     fillImage: {fileID: 1135681048}
     widthBar: {fileID: 1719839440}
-    widthBarMax: 250
+    widthBarMax: 265
   hunger:
     fillImage: {fileID: 1469690463}
     widthBar: {fileID: 795087386}
-    widthBarMax: 250
+    widthBarMax: 265
   stamina:
     fillImage: {fileID: 1378644187}
     widthBar: {fileID: 1924462077}
-    widthBarMax: 250
+    widthBarMax: 265
 --- !u!1001 &776711584
 PrefabInstance:
   m_ObjectHideFlags: 0
