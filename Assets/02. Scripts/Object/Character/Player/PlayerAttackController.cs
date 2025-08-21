@@ -64,6 +64,9 @@ public class PlayerAttackController : MonoBehaviour
 
     private void TryRayHit()
     {
+        var position = _perspective.FirstPerspectiveCameraRig.position;
+        var direction = _perspective.PerspectiveCameraRig.forward;
+
         // 원래 상호작용과 동일한 기준: 카메라 리그 → 메인카메라 → 자기 transform
         Transform originT = rayOrigin
                             ? rayOrigin
@@ -75,8 +78,7 @@ public class PlayerAttackController : MonoBehaviour
         // 마스크 미지정이면 전체 레이어 대상으로
         int mask = (damageMask.value == 0) ? ~0 : damageMask.value;
 
-        // 근접 관용성 높이기: SphereCast(+ 트리거도 맞춤)
-        if (Physics.SphereCast(origin, 0.2f, dir, out var hit, rayRange, mask, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(position, direction, out var hit, rayRange, mask))
         {
             // 자기 자신/자식은 무시
             if (hit.collider.transform.IsChildOf(transform)) return;
@@ -94,9 +96,9 @@ public class PlayerAttackController : MonoBehaviour
                 return;
             }
         }
-
+        
 #if UNITY_EDITOR
-        Debug.DrawRay(origin, dir * rayRange, Color.red, 0.25f);
+        Debug.DrawRay(position, position + dir * rayRange, Color.red);
 #endif
     }
 }
