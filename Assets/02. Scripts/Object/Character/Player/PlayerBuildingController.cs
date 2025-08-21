@@ -142,6 +142,9 @@ namespace Object.Character.Player
             isSimulating = false;
             
             material.layer = _origin;
+            var rigidbody = material.GetComponent<Rigidbody>();
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
 
             _detector = null;
             _renderer = null;
@@ -178,14 +181,11 @@ namespace Object.Character.Player
             material = null;
         }
 
-#if UNITY_EDITOR
-
-        [ContextMenu("Test/Simulate")]
-        private void TestSimulating()
+        public void Simulate(GameObject instance)
         {
             isSimulating = true;
 
-            material = ObjectPoolingManager.Spawn(prefab);
+            material = ObjectPoolingManager.Spawn(instance);
             material.SetActive(true);
 
             _origin = material.layer;
@@ -194,8 +194,6 @@ namespace Object.Character.Player
             _detector = material.GetComponent<CollisionDetector>();
             _renderer = material.GetComponent<BuildingSimulationRenderer>();
         }
-
-#endif
 
         public void SetMatertial(GameObject instance)
         {

@@ -69,4 +69,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public void EnterBuildingMode()
+    {
+        var id = inventoryUI.selectedSlotId.Value;
+        var instance = inventoryManager.GetSlotBySlotId(id).itemData.inGamePrefab;
+
+        Debug.Log(id);
+
+        Debug.Log(instance);
+
+        buildingActionController.Simulate(instance);
+    }
 }

@@ -1013,6 +1013,18 @@ PrefabInstance:
       propertyPath: m_PreserveAspect
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3748225442892020615, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 166080797}
+    - target: {fileID: 3748225442892020615, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EnterBuildingMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 3748225442892020615, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5228129766698145002, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

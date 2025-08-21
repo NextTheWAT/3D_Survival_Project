@@ -35,7 +35,7 @@ public class InventoryUI : BaseUI
     public event Action OnDropClicked;
     public event Action OnBuildClicked;
 
-    private int? selectedSlotId;
+    public int? selectedSlotId;
 
     protected override void Awake()
     {

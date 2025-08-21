@@ -22,7 +22,7 @@ namespace Object
 
         private void Awake()
         {
-            _renderer = GetComponent<Renderer>();
+            _renderer = GetComponentInChildren<Renderer>();
             _materials = _renderer.materials;
 
             _detector = GetComponent<CollisionDetector>();
