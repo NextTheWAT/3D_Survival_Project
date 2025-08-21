@@ -102,7 +102,23 @@ public class InventoryManager : MonoBehaviour
         if (slot.itemData is ConsumeItemData consumeItem)
         {
             foreach (var restore in consumeItem.restorations)
-                Debug.Log($"{restore.type}(이)가 {restore.amount}만큼 회복했다.");
+            {
+                switch (restore.type)
+                {
+                    case ConsumeType.Health:
+                        GameManager.Instance.playerCondition.Heal(restore.amount);
+                        Debug.Log($"Health restored {restore.amount}");
+                        break;
+                    case ConsumeType.Hunger:
+                        GameManager.Instance.playerCondition.Eat(restore.amount);
+                        Debug.Log($"Hunger restored {restore.amount}");
+                        break;
+                    case ConsumeType.Stamina:
+                        GameManager.Instance.playerCondition.RestoreStamina(restore.amount);
+                        Debug.Log($"Stamina restored {restore.amount}");
+                        break;
+                }
+            }
         }
 
         RemoveOneItemFromSlot(slotId);
