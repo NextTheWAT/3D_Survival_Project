@@ -23,8 +23,7 @@ public class PlayerConditionUI : MonoBehaviour
     {
         if (!target)
         {
-            Debug.LogError("[PlayerConditionUI] target(PlayerCondition)이 비어있습니다.");
-            return;
+            target = FindObjectOfType<PlayerCondition>();
         }
 
         // 이벤트 구독

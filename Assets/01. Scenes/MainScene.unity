@@ -448,7 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d17a59a256c8744bddd3f85b660022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 149544157}
+  target: {fileID: 0}
   health:
     fillImage: {fileID: 1135681048}
     widthBar: {fileID: 1719839440}
