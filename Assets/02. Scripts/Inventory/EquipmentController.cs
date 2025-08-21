@@ -7,6 +7,7 @@ public class EquipmentController : MonoBehaviour
     [SerializeField] private Transform grabPoint;
 
     private GameObject currentItem;
+    private PlayerInteractionController playerInteractionController;
     private Animator currentItemAnimator;
 
     public Transform GrabPoint => grabPoint;
@@ -14,24 +15,42 @@ public class EquipmentController : MonoBehaviour
     public Animator CurrentItemAnimator => currentItemAnimator;
     public bool HasItem => currentItem != null;
 
+    private void Awake()
+    {
+        playerInteractionController = GetComponent<PlayerInteractionController>();
+    }
+
     /// <summary>
     /// 현재 장착 아이템을 해제하고, 새 프리팹을 GrabPoint 밑에 장착.
     /// </summary>
-    public void Equip(GameObject itemPrefab)
+    public void Equip(EquipItemData itemData)
     {
-        if (itemPrefab == null)
-        {
-            Debug.LogWarning("[EquipmentController] Equip failed: prefab is null");
-            return;
-        }
+        if (itemData == null || itemData.inGamePrefab == null) return;
 
         Unequip();
 
-        currentItem = Instantiate(itemPrefab, grabPoint);
+        currentItem = Instantiate(itemData.inGamePrefab, grabPoint);
         currentItem.transform.localPosition = Vector3.zero;
         currentItem.transform.localRotation = Quaternion.identity;
         currentItem.transform.localScale = Vector3.one;
 
+
+        Rigidbody rb = currentItem.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+        Collider[] colliders = currentItem.GetComponentsInChildren<Collider>();
+        foreach (Collider col in colliders)
+        {
+            Destroy(col);
+        }
+
+        SetEquipptedItemForInteraction(itemData);
+
+
+        Debug.Log($"{itemData.name} equipped");
         // 장착 프리팹(또는 자식)에서 Animator 캐시
         currentItemAnimator = currentItem.GetComponentInChildren<Animator>();
         if (currentItemAnimator == null)
@@ -48,6 +67,11 @@ public class EquipmentController : MonoBehaviour
             Destroy(currentItem);
             currentItem = null;
             currentItemAnimator = null;
+            SetEquipptedItemForInteraction(null);
         }
+    }
+    private void SetEquipptedItemForInteraction(EquipItemData? equipItemData)
+    {
+        playerInteractionController.SetEquipptedItem(equipItemData);
     }
 }

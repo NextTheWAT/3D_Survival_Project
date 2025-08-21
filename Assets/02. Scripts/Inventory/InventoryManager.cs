@@ -133,7 +133,7 @@ public class InventoryManager : MonoBehaviour
         if (slot.itemData is EquipItemData equipItemData)
         {
             equipmentModel.EquipItem(equipItemData, slotId); // slotId 기반 장착
-            equipmentController.Equip(equipItemData.inGamePrefab);      //수정
+            equipmentController.Equip(equipItemData);      //수정
         }
     }
     public void UnequipItem(int slotId)
