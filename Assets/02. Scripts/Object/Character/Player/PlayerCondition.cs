@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerCondition : BaseCondition
+public class PlayerCondition : BaseCondition, IDamagable
 {
     [Header("Player Stats")]
     [SerializeField] private Stat hunger = new Stat(100f, 0f, 100f);
@@ -67,7 +67,14 @@ public class PlayerCondition : BaseCondition
         }
     }
 
+    public void TakePhysicalDamage(int damageAmount)
+    {
+        if (damageAmount <= 0) return;
+        AddHealth(-damageAmount); // BaseCondition의 체력 감소 로직 호출
+    }
+
     // ===== 외부 API (게임 로직에서 호출) =====
+
     public void TakeDamage(float amount)
     {
         if (amount <= 0f) return;
