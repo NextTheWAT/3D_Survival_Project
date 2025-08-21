@@ -31,6 +31,8 @@ public class ResourceObject : MonoBehaviour, IInteractable
     {
         // To do
         // Called when the player interacts with this resource object.
+        Debug.Log($"{data.name} 맞음!");
+        TryHarvestAndSpawn();
     }
     public bool TryHarvestAndSpawn()
     {

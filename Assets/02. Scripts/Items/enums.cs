@@ -1,7 +1,7 @@
 ﻿public enum EquipType
 {
-    Hand,
-    Head
+    Tool,
+    Weapon
 }
 public enum EnhanceType
 {
