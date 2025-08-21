@@ -9,6 +9,7 @@ public class ItemData : ScriptableObject
     public string displayName;
     public string description;
     public int maxStack;
+    public bool isBuildable;
 
     [Header("Source")]
     public Sprite icon;
