@@ -20,6 +20,6 @@ MonoBehaviour:
   inGamePrefab: {fileID: 6892782543699382920, guid: 1a5f6b1cebf549a4caa46f61f16c5f19, type: 3}
   restorations:
   - type: 0
-    amount: 0
-  - type: 0
-    amount: 0
+    amount: 30
+  - type: 2
+    amount: 100
