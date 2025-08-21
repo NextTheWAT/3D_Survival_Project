@@ -1,19 +1,20 @@
 ﻿using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HitFlash : MonoBehaviour
 {
     [Header("Flash")]
-    private MeshRenderer _mesh;
+    private SkinnedMeshRenderer _mesh;
     private Color _originColor;
-    private float flashTime = 0.15f;
+    private float flashTime = 0.2f;
     private Enemy _owner;
 
     void Awake()
     {
-        _mesh = GetComponentInChildren<MeshRenderer>();
+        _mesh = GetComponentInChildren<SkinnedMeshRenderer>();
         _originColor = _mesh.material.color;
         _owner = GetComponent<Enemy>();
     }

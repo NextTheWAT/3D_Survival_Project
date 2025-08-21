@@ -1041,6 +1041,7 @@ GameObject:
   - component: {fileID: 8273381458638563943}
   - component: {fileID: 916537969072893626}
   - component: {fileID: 3512304904608630161}
+  - component: {fileID: 2096658494531725284}
   - component: {fileID: 6445004911415186870}
   m_Layer: 6
   m_Name: TestEnemy
@@ -1179,6 +1180,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2096658494531725284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4851400718584287520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5e65e36a2fb108499efd7d7fd127066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &6445004911415186870
 BoxCollider:
   m_ObjectHideFlags: 0
