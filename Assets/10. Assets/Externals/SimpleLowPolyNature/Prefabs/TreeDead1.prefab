@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4211759954647305901}
   - component: {fileID: -5306577062794694516}
   - component: {fileID: -2961749573037736978}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TreeDead1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,8 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: -0.1304346, y: 1.82384, z: -0.3421446}
-  size: {x: 1.864875, y: 3.647679, z: 1.289736}
+  center: {x: -0.13043463, y: 1.8238397, z: -0.3421446}
+  size: {x: 1.8648748, y: 3.6476793, z: 1.289736}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &-2961749573037736978
 MonoBehaviour:
   m_ObjectHideFlags: 0

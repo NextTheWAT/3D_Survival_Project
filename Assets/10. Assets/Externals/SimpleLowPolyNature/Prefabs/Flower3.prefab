@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2831074819201659017}
   - component: {fileID: 2831074819202953385}
   - component: {fileID: 2831074819203953257}
+  - component: {fileID: 4699418036392574931}
   - component: {fileID: -4596924207369506989}
   - component: {fileID: 6967745059551568601}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flower3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,6 +87,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4699418036392574931
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2831074819202018473}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.25399166, y: 0.46199435, z: 0.27143228}
+  m_Center: {x: -0.009933598, y: 0.23099717, z: 0.032678727}
 --- !u!114 &-4596924207369506989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,8 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38f226e3367ba4894d03fc6a0a1ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: -0.009933598, y: 0.2309972, z: 0.03267873}
-  size: {x: 0.2539917, y: 0.4619943, z: 0.2714323}
+  center: {x: -0.009933598, y: 0.23099717, z: 0.032678727}
+  size: {x: 0.25399166, y: 0.46199435, z: 0.27143228}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &6967745059551568601
 MonoBehaviour:
   m_ObjectHideFlags: 0
