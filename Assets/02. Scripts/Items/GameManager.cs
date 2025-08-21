@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Utils.Input;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,18 +18,6 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     [Header("Player")]
     public PlayerCondition playerCondition;
@@ -38,23 +28,43 @@ public class GameManager : MonoBehaviour
     public ItemDatabase itemDatabase;
     public InventoryUI inventoryUI;
 
-    void Update()
+    [Header("InputAction")]
+    private CharacterControls controls;
+
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (instance == null)
         {
-            inventoryUI.Open();
-            Debug.Log("Activate UI");
+            instance = this;
+            DontDestroyOnLoad(gameObject); 
+            
+            controls = new CharacterControls();
+            controls.Player.OpenInventory.performed += OnOpenInventoryPerformed;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
-    //void ResourceHarvestTest(ResourceObject resourceObject)
-    //{
-    //    if (resourceObject.TryHarvestAndSpawn())
-    //    {
-    //        Debug.Log("Spawned the resource.");
-    //    }
-    //    else
-    //    { 
-    //        Debug.Log("Out of resource");
-    //    }
-    //}
+
+    private void OnEnable() => controls?.Enable();
+    private void OnDisable() => controls?.Disable();
+    private void OnDestroy() => controls.Player.OpenInventory.performed -= OnOpenInventoryPerformed;
+
+    public CharacterControls Controls => controls;
+
+    private void OnOpenInventoryPerformed(InputAction.CallbackContext context)
+    {
+        if (inventoryUI != null)
+        {
+            if (inventoryUI.gameObject.activeSelf) // 열린 상태면 닫기
+            {
+                inventoryUI.Close();
+            }
+            else // 닫혀있으면 열기
+            {
+                inventoryUI.Open();
+            }
+        }
+    }
 }

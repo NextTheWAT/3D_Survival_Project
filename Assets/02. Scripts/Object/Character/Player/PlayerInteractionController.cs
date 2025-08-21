@@ -15,13 +15,10 @@ public class PlayerInteractionController : MonoBehaviour
 
     private void Awake()
     {
-        controls = new CharacterControls();
+        controls = GameManager.Instance.Controls;
         controller = GetComponent<PlayerPerspectiveController>();
         controls.Player.Interact.performed += OnInteractPerformed;
     }
-
-    private void OnEnable() => controls.Enable();
-    private void OnDisable() => controls.Disable();
 
     private void OnDestroy()
     {
