@@ -1139,7 +1139,7 @@ MonoBehaviour:
   _walkSpeed: 2
   _runSpeed: 5
   _waitDuration: 3
-  _damage: 1
+  _damage: 20
   _attackRate: 3
   _attackDistance: 3
   hitbox:
@@ -1147,7 +1147,7 @@ MonoBehaviour:
   - {fileID: 5996310233947874493}
   - {fileID: 3372176350856695695}
   - {fileID: 5996310233947874493}
-  hitboxSize: {x: 1, y: 1, z: 1}
+  hitboxSize: {x: 2, y: 2, z: 2}
   _hittedTarget: []
   target: {fileID: 0}
   radius: 10
