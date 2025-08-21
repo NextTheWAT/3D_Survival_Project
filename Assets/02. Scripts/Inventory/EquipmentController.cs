@@ -27,13 +27,15 @@ public class EquipmentController : MonoBehaviour
     {
         if (itemData == null || itemData.inGamePrefab == null) return;
 
+        //기존 장착 아이템 제거
+        if (currentItem != null)
+            Destroy(currentItem);
         Unequip();
 
         currentItem = Instantiate(itemData.inGamePrefab, grabPoint);
         currentItem.transform.localPosition = Vector3.zero;
         currentItem.transform.localRotation = Quaternion.identity;
         currentItem.transform.localScale = Vector3.one;
-
 
         Rigidbody rb = currentItem.GetComponent<Rigidbody>();
         if (rb != null)
@@ -48,8 +50,7 @@ public class EquipmentController : MonoBehaviour
         }
 
         SetEquipptedItemForInteraction(itemData);
-
-
+        
         Debug.Log($"{itemData.name} equipped");
         // 장착 프리팹(또는 자식)에서 Animator 캐시
         currentItemAnimator = currentItem.GetComponentInChildren<Animator>();
@@ -66,6 +67,7 @@ public class EquipmentController : MonoBehaviour
         {
             Destroy(currentItem);
             currentItem = null;
+            SetEquipptedItemForInteraction(null);
             currentItemAnimator = null;
             SetEquipptedItemForInteraction(null);
         }

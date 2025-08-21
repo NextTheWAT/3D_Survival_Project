@@ -49,6 +49,7 @@ public class PlayerInteractionController : MonoBehaviour
         Ray ray = new Ray(origin, direction);
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
         {
+            Debug.Log("인터렉션");
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable != null)
             {
