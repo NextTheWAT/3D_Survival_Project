@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-[DisallowMultipleComponent]
-public class EquipmentController : MonoBehaviour
+public class Test : MonoBehaviour
 {
+    [SerializeField]
+    private Transform handGrabPoint;
     [Header("Where to parent the equipped item")]
     [SerializeField] private Transform grabPoint;
 
@@ -12,6 +16,7 @@ public class EquipmentController : MonoBehaviour
 
     public Transform GrabPoint => grabPoint;
     public GameObject CurrentItem => currentItem;
+    public Transform HandGrabPoint => handGrabPoint;
     public Animator CurrentItemAnimator => currentItemAnimator;
     public bool HasItem => currentItem != null;
 
@@ -19,11 +24,11 @@ public class EquipmentController : MonoBehaviour
     {
         playerInteractionController = GetComponent<PlayerInteractionController>();
     }
-
+    //장착
     /// <summary>
     /// 현재 장착 아이템을 해제하고, 새 프리팹을 GrabPoint 밑에 장착.
     /// </summary>
-    public void Equip(EquipItemData itemPrefab)
+    public void Equip(GameObject itemPrefab)
     {
         if (itemData == null || itemData.inGamePrefab == null) return;
         if (itemPrefab == null)
@@ -64,6 +69,7 @@ public class EquipmentController : MonoBehaviour
             Debug.LogWarning("[EquipmentController] Equipped item has no Animator.");
     }
 
+    //장착 해제
     /// <summary>
     /// 현재 장착 아이템 파괴 및 캐시 해제.
     /// </summary>
@@ -77,6 +83,7 @@ public class EquipmentController : MonoBehaviour
             currentItemAnimator = null;
         }
     }
+
     private void SetEquipptedItemForInteraction(EquipItemData? equipItemData)
     {
         playerInteractionController.SetEquipptedItem(equipItemData);
