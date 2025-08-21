@@ -237,6 +237,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6142fe3b30e2ce9459f6a3151aa49186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &149544158 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2921278773163451943, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+  m_PrefabInstance: {fileID: 149544156}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de8ba9c0dd49c94ebde72a474bbf771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &166080796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,7 +1076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5befffe46bd3b5148a871014989d7013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipmentController: {fileID: 0}
+  equipmentController: {fileID: 149544158}
   itemDatabase: {fileID: 11400000, guid: 1782fccd9d6bf2f40873627f3a4bb384, type: 2}
 --- !u!224 &1924462077 stripped
 RectTransform:
