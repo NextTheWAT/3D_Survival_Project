@@ -177,6 +177,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2921278773163451943, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+      propertyPath: grabPoint
+      value: 
+      objectReference: {fileID: 1743062926}
     - target: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -227,8 +231,30 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1493009917}
+      addedObject: {fileID: 814277642}
   m_SourcePrefab: {fileID: 100100000, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+--- !u!114 &149544157 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5059600222022694385, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+  m_PrefabInstance: {fileID: 149544156}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6142fe3b30e2ce9459f6a3151aa49186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &149544158 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2921278773163451943, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+  m_PrefabInstance: {fileID: 149544156}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de8ba9c0dd49c94ebde72a474bbf771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &166080796
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,12 +284,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24bc26277994689458a5df217b40a113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatabase: {fileID: 11400000, guid: 1782fccd9d6bf2f40873627f3a4bb384, type: 2}
-  resourceObject: {fileID: 1334142816}
-  resourceObject2: {fileID: 928492575}
+  playerCondition: {fileID: 149544157}
   playerPosition: {fileID: 320588437}
-  inventoryUI: {fileID: 776711587}
   inventoryManager: {fileID: 1884992782}
+  itemDatabase: {fileID: 11400000, guid: 1782fccd9d6bf2f40873627f3a4bb384, type: 2}
+  inventoryUI: {fileID: 776711587}
 --- !u!4 &166080798
 Transform:
   m_ObjectHideFlags: 0
@@ -372,6 +397,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
+      propertyPath: spawnAreaData.Array.data[0].spawnAreaSize.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
+      propertyPath: spawnAreaData.Array.data[0].spawnAreaSize.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
+      propertyPath: spawnAreaData.Array.data[0].spawnAreaSize.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5105721420337060663, guid: 35e6634fee574f64fb1b7819a0b27b05, type: 3}
       propertyPath: spawnAreaData.Array.data[0].spawnList.Array.data[0]
       value: 
       objectReference: {fileID: 4851400718584287520, guid: 1e8cffb3b6a971b4bb13bfb54daeba3f, type: 3}
@@ -441,7 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d17a59a256c8744bddd3f85b660022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1493009917}
+  target: {fileID: 0}
   health:
     fillImage: {fileID: 1135681048}
     widthBar: {fileID: 1719839440}
@@ -658,6 +695,32 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5373792326874385621, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
   m_PrefabInstance: {fileID: 776711584}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &814277636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+  m_PrefabInstance: {fileID: 149544156}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &814277642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814277636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7babc48d24ea0a7409172e0749dd2b38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackTriggerName: Attack
+  useRayHit: 1
+  rayOrigin: {fileID: 0}
+  rayRange: 2.5
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 64
+  rayDamage: 50
+  attackCooldown: 1
 --- !u!1001 &928492571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -720,17 +783,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7582544329757316603, guid: 886ebd7c0cbe32d48961cd39de8f6fc5, type: 3}
   m_PrefabInstance: {fileID: 928492571}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &928492575 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4789363704162044869, guid: 886ebd7c0cbe32d48961cd39de8f6fc5, type: 3}
-  m_PrefabInstance: {fileID: 928492571}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc60b5c4c4c50a24e99f65aa409c95c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &957754378
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -967,17 +1019,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7582544329757316603, guid: 1bb54cfc08cc8a945b298118bdeba40e, type: 3}
   m_PrefabInstance: {fileID: 1334142814}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1334142816 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4789363704162044869, guid: 1bb54cfc08cc8a945b298118bdeba40e, type: 3}
-  m_PrefabInstance: {fileID: 1334142814}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc60b5c4c4c50a24e99f65aa409c95c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1378644187 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2935538279266288227, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
@@ -1000,52 +1041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1493009912 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5205076381403356839, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
-  m_PrefabInstance: {fileID: 149544156}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1493009917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493009912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6142fe3b30e2ce9459f6a3151aa49186, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health:
-    current: 100
-    min: 0
-    max: 100
-  onHealthChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  onDied:
-    m_PersistentCalls:
-      m_Calls: []
-  hunger:
-    current: 100
-    min: 0
-    max: 100
-  stamina:
-    current: 100
-    min: 0
-    max: 100
-  hungerDecayPerSec: 1
-  staminaRegenPerSec: 10
-  healthRegenPerSec: 1
-  healthStarveDamagePerSec: 2
-  healthRegenHungerThreshold: 60
-  onHungerChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  onStaminaChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!224 &1719839440 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8948101160564987755, guid: 147f91b8d5728ec4a9bf1bd280ecd889, type: 3}
@@ -1082,6 +1077,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 166080798}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1743062926 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 204829234409982963, guid: 7ec8c27e19d129244bc9c223f1920a9f, type: 3}
+  m_PrefabInstance: {fileID: 149544156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1884992779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5befffe46bd3b5148a871014989d7013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipmentController: {fileID: 149544158}
   itemDatabase: {fileID: 11400000, guid: 1782fccd9d6bf2f40873627f3a4bb384, type: 2}
 --- !u!224 &1924462077 stripped
 RectTransform:

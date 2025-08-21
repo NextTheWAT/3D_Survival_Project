@@ -20,6 +20,7 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     [Header("Refs")]
     [SerializeField] private InventoryUI ui;
     [SerializeField] private InventoryManager manager;
+
     [SerializeField] private CraftUI craftUI;
 
     private int? selectedSlotId;
@@ -94,7 +95,11 @@ public class InventoryMediator : MonoBehaviour, IInventoryMediator
     {
         if (selectedSlotId != null)
         {
-            manager.EquipItem(selectedSlotId.Value);
+            var slot = manager.GetSlotBySlotId(selectedSlotId.Value);
+            if (slot?.itemData is EquipItemData equipItemData)
+            {
+                manager.EquipItem(selectedSlotId.Value);      //모델 갱신
+            }
             RefreshUI();
         }
     }

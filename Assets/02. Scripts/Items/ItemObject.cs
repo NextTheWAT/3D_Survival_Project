@@ -16,5 +16,14 @@ public class ItemObject : MonoBehaviour, IInteractable
     {
         // To do
         // Called when the player interacts with this resource object.
+        if(GameManager.Instance.inventoryManager.AddItem(data, 1))
+        {
+            Destroy(gameObject);
+            Debug.Log($"{data.id} 상호작용됨!");
+        }
+        else
+        {
+            Debug.Log("아이템 가득 참");
+        }
     }
 }

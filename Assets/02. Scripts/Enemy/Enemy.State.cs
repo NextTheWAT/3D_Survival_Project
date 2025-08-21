@@ -167,9 +167,10 @@ public partial class Enemy
         {
             Component._agent.isStopped = true;
             Component._agent.ResetPath();
-            Component._agent.enabled = false;
+            //Component._agent.enabled = false;
 
             Component._anim.SetBool(EnemyAnimParam.Death, true);
+            Destroy(Component.gameObject, 5f); // 5초 후 제거 (애니메이션 재생 시간에 맞춰 조정 가능)
         }
 
         public override void Update()
