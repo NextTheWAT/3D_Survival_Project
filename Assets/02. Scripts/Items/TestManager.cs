@@ -30,7 +30,8 @@ public class TestManager : MonoBehaviour
     }
     public ItemDatabase itemDatabase;
     public ResourceObject resourceObject;
-    public Transform dropPosition;
+    public ResourceObject resourceObject2;
+    public Transform playerPosition;
     public InventoryUI inventoryUI;
     public InventoryManager inventoryManager;
 
@@ -38,7 +39,11 @@ public class TestManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ResourceHarvestTest();
+            ResourceHarvestTest(resourceObject);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            ResourceHarvestTest(resourceObject2);
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -46,13 +51,11 @@ public class TestManager : MonoBehaviour
             Debug.Log("Activate UI");
         }
     }
-    void ResourceHarvestTest()
+    void ResourceHarvestTest(ResourceObject resourceObject)
     {
-        int id = 0;
-        if (resourceObject.TryHarvest(out id))
+        if (resourceObject.TryHarvestAndSpawn())
         {
-            Instantiate(itemDatabase.GetItemById(id).inGamePrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
-            Debug.Log("TryHarvest: " + id);
+            Debug.Log("Spawned the resource.");
         }
         else
         { 
