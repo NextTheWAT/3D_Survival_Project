@@ -4,15 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-//namespace test.value
-//{
-//    public interface IValueChangable
-//    {
-//        float ValueChanged(int amount);
-//    }
-//}
-
-public partial class Enemy : MonoBehaviour, IValueChangable
+public partial class Enemy : BaseCondition, IValueChangable
 {
     [Header("Stats")]
     [SerializeField] private float _moveDistance;
@@ -102,9 +94,12 @@ public partial class Enemy : MonoBehaviour, IValueChangable
             _fsm.ChangeTo(3);
         }
     }
-    public float ValueChanged(int amount)
+
+    public override float ValueChanged(int amount)
     {
         damageFlash?.Invoke();
+        AddHealth(amount);
+
         return amount;
     }
 
