@@ -52,6 +52,8 @@ public partial class Enemy : MonoBehaviour, test.value.IValueChangable//Characte
     private EnemySpawnArea _spawnOwner;
     private int _spawnOwnerId;
 
+    public event Action damageFlash;
+
     private void Awake()
     {
         _anim = GetComponent<Animator>();
@@ -103,7 +105,8 @@ public partial class Enemy : MonoBehaviour, test.value.IValueChangable//Characte
     }
     public float ValueChanged(int amount)
     {
-        throw new NotImplementedException();
+        damageFlash?.Invoke();
+        return amount;
     }
 
     public void OnEnableAttack()
