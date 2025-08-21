@@ -22,12 +22,4 @@ public class EnemySpawnTrigger : MonoBehaviour
             owner.SpawnMonster(spawnAreaId);
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            owner.DeSpawnMonster(spawnAreaId);
-        }
-    }
 }
