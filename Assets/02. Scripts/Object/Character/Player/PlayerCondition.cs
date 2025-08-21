@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerCondition : BaseCondition, IDamagable
+public class PlayerCondition : BaseCondition
 {
     [Header("Hunger")]
     [SerializeField] private float hunger = 100f;
@@ -64,6 +64,17 @@ public class PlayerCondition : BaseCondition, IDamagable
             if (!Mathf.Approximately(healthRegenPerSec, 0f))
                 AddHealth(healthRegenPerSec * dt);
         }
+    }
+
+    // IValueChangable 구현 (int 양/음수로 증감)  ← 인터페이스 시그니처 맞춤
+    public override float ValueChanged(int amount)
+    {
+        if (amount > 0)
+            AddHealth(amount);
+        else
+            TakePhysicalDamage(-amount); // 음수는 피해로 간주
+
+        return health; // 변경 후 현재 체력 반환
     }
 
     // ====== 외부에서 쓰는 간단 API ======
