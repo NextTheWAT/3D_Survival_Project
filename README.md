@@ -202,7 +202,8 @@ Version Control: Git
 <img width="1000" height="555" alt="image" src="https://github.com/user-attachments/assets/1080a3b8-2573-4b15-981b-aa9133282c55" />
 <img width="1000" height="548" alt="image" src="https://github.com/user-attachments/assets/222cd14b-e478-484b-84dc-8fe5aec59699" />
 <img width="1000" height="530" alt="image" src="https://github.com/user-attachments/assets/28428c86-443e-4bcc-8a26-319fb6534016" />
-<img width="1000" height="401" alt="image" src="https://github.com/user-attachments/assets/e76bd565-6b0c-42f7-abe6-10d92f26b2ac" />
+<img width="1000" height="428" alt="image" src="https://github.com/user-attachments/assets/10a1f614-2998-4a4d-be1c-66617d0d699b" />
+
 
 
   
