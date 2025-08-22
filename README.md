@@ -12,7 +12,18 @@
   - 인벤토리 & 제작 시스템  
   - ScriptableObject 기반 아이템/레시피 관리  
   - FSM 기반 몬스터 AI   
-  - NPC 대화 시스템  
+  - NPC 대화 시스템
+
+## 조작법
+
+- **WASD**: 캐릭터 이동
+- **F1**: 커서 모드 변경
+- **F2**: 1인칭/3인칭 변경
+- **Tab**: UI 켜기/끄기
+- **Enter**: 건축물 설치
+- **Mouse Scroll**: 건축물 회전
+- **Q**: 건축물 축 변경
+- **Mouse Right Click**: 건축 취소 명령
 
 ## 📸 게임 플레이 영상 / Gif
 ![Animation](https://github.com/user-attachments/assets/5760978c-d968-4368-a36c-8080adf4601f)
