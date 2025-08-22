@@ -46,73 +46,112 @@ NPC 대화 시스템
 아이템 사용 / 버리기 기능  
 장비 착용 시 능력치 반영  
   
-## 📂 프로젝트 구조
-02.Scripts
-├─ Condition
-│  └─ BaseCondition.cs              # HP/허기/스태미나 등 공통 상태 기반
-├─ Enemy
-│  ├─ Enemy.cs / Enemy.State.cs     # FSM 기반 적 AI(대기/이동/공격/사망)
-│  ├─ EnemyAnimParam.cs             # Animator 파라미터 해시 관리
-│  ├─ EnemyDetect.cs                # 시야/감지 로직
-│  ├─ EnemySpawnArea.cs             # 스폰 구역 설정
-│  ├─ EnemySpawnTrigger.cs          # 트리거 기반 스폰
-│  ├─ FieldOfViewDraw.cs            # 시야 범위 디버그 그리기
-│  └─ HitFlash.cs                   # 피격 시 시각 효과
-├─ Interface
-│  ├─ IDamagable.cs                 # 데미지 수신 인터페이스
-│  ├─ IState.cs                     # 상태 공통 인터페이스(Start/Update/End)
-│  └─ IValueChangable.cs            # 수치 변화 공통 인터페이스
-├─ Inventory
-│  ├─ EquipmentController.cs / EquipmentModel.cs
-│  ├─ InventoryManager.cs / InventoryModel.cs
-│  └─ (UI는 아래 UI/Inventory에 위치)
-├─ Items
-│  ├─ CraftSystem.cs                # 제작 로직
-│  ├─ enums.cs                      # 아이템/타입 열거형
-│  ├─ GameManager.cs                # 전반적인 게임 흐름(진입/상태) 관리
-│  ├─ IInteractable.cs              # 상호작용 대상 공통 인터페이스
-│  ├─ ItemObject.cs                 # 필드에 떨어진 아이템
-│  ├─ ResourceContainer.cs          # 자원 리스폰/드랍 관리
-│  └─ ResourceObject.cs             # 채집 가능한 자원 오브젝트
-├─ Object
-│  ├─ Character/Player
-│  │  ├─ PlayerAttackController.cs
-│  │  ├─ PlayerBuildingController.cs
-│  │  ├─ PlayerCondition.cs
-│  │  ├─ PlayerInteractionController.cs
-│  │  ├─ PlayerMovementController.cs
-│  │  └─ PlayerPerspectiveController.cs
-│  ├─ BuildingSimulationRenderer.cs # 건축 미리보기/충돌 가시화
-│  └─ CollisionDetector.cs
-├─ ScriptableObject
-│  ├─ Items
-│  │  ├─ ConsumeItemData.cs / EquipItemData.cs
-│  │  ├─ ItemData.cs / ItemDataBase.cs
-│  │  ├─ RecipeData.cs
-│  │  └─ ResourceData.cs
-│  └─ NPC
-│     └─ DialogueSO.cs
-├─ State
-│  ├─ BaseState.cs
-│  └─ FiniteStateMachine.cs         # 공통 FSM 러너
-├─ UI
-│  ├─ Craft/CraftUI.cs
-│  ├─ Inventory/InventoryUI.cs / InventorySlotUI.cs
-│  ├─ Mediator/InventoryMediator.cs
-│  ├─ NPC/DialogueViewUI.cs / NPCDialogue.cs / NPCNameTag.cs
-│  ├─ Player/PlayerConditionUI.cs
-│  └─ Runner/DialogueRunner.cs / BaseUI.cs
-├─ Utils
-│  ├─ Attribute/AliasAttribute.cs
-│  ├─ Editor/AliasDrawer.cs
-│  ├─ Extension/GameObject.Extension.cs
-│  ├─ Input/CharacterControls.cs     # New Input System 액션 자산
-│  └─ Management
-│     ├─ Pooling/{Clone,Container,ObjectPooling}.cs
-│     ├─ ApplicationManager.cs / DataManager.cs
-│     ├─ ObjectPoolingManager.cs / SoundManager.cs
-│     ├─ Singleton.cs / SingletonBehavior.cs / SingletonGameObject.cs
-│     └─ Layer.cs
+## 📂 프로젝트 구조  
+02. Scripts   
+├─ Condition  
+│  └─ BaseCondition.cs  
+├─ Enemy  
+│  ├─ Enemy.cs  
+│  ├─ Enemy.State.cs   
+│  ├─ EnemyAnimParam.cs  
+│  ├─ EnemyDetect.cs   
+│  ├─ EnemySpawnArea.cs  
+│  ├─ EnemySpawnTrigger.cs   
+│  ├─ FieldOfViewDraw.cs  
+│  └─ HitFlash.cs   
+├─ Interface   
+│  ├─ IDamagable.cs  
+│  ├─ IState.cs  
+│  └─ IValueChangable.cs    
+├─ Inventory 
+│  ├─ EquipmentController.cs   
+│  ├─ EquipmentModel.cs  
+│  ├─ InventoryManager.cs  
+│  └─ InventoryModel.cs  
+├─ Items  
+│  ├─ CraftSystem.cs 
+│  ├─ enums.cs  
+│  ├─ GameManager.cs  
+│  ├─ IInteractable.cs    
+│  ├─ ItemObject.cs   
+│  ├─ ResourceContainer.cs  
+│  └─ ResourceObject.cs 
+├─ Object   
+│  ├─ Character   
+│  │  └─ Player  
+│  │     ├─ Weapon/                        
+│  │     ├─ PlayerAttackController.cs   
+│  │     ├─ PlayerBuildingController.cs  
+│  │     ├─ PlayerCondition.cs   
+│  │     ├─ PlayerInteractionController.cs  
+│  │     ├─ PlayerMovementController.cs   
+│  │     └─ PlayerPerspectiveController.cs  
+│  ├─ BuildingSimulationRenderer.cs     
+│  └─ CollisionDetector.cs  
+├─ ScriptableObject  
+│  ├─ Items   
+│  │  ├─ ConsumeItemData.cs  
+│  │  ├─ EquipItemData.cs   
+│  │  ├─ ItemData.cs    
+│  │  ├─ ItemDataBase.cs  
+│  │  ├─ RecipeData.cs  
+│  │  └─ ResourceData.cs  
+│  └─ NPC  
+│     └─ DialogueSO.cs  
+├─ State   
+│  ├─ BaseState.cs   
+│  └─ FiniteStateMachine.cs   
+├─ UI  
+│  ├─ Craft   
+│  │  └─ CraftUI.cs   
+│  ├─ Inventory  
+│  │  ├─ InventorySlotUI.cs  
+│  │  └─ InventoryUI.cs  
+│  ├─ Mediator  
+│  │  └─ InventoryMediator.cs  
+│  ├─ NPC     
+│  │  ├─ DialogueViewUI.cs  
+│  │  ├─ NPCDialogue.cs  
+│  │  └─ NPCNameTag.cs  
+│  ├─ Player  
+│  │  └─ PlayerConditionUI.cs   
+│  └─ Runner   
+│     ├─ DialogueRunner.cs 
+│     └─ BaseUI.cs   
+└─ Utils   
+   ├─ Attribute   
+   │  └─ AliasAttribute.cs   
+   ├─ Editor  
+   │  └─ AliasDrawer.cs    
+   ├─ Extension   
+   │  └─ GameObject.Extension.cs  
+   ├─ Input  
+   │  └─ CharacterControls.cs  
+   ├─ Management  
+   │  ├─ Pooling  
+   │  │  ├─ Clone.cs  
+   │  │  ├─ Container.cs  
+   │  │  └─ ObjectPooling.cs  
+   │  ├─ ApplicationManager.cs  
+   │  ├─ DataManager.cs  
+   │  ├─ ObjectPoolingManager.cs  
+   │  ├─ Singleton.cs  
+   │  ├─ SingletonBehavior.cs   
+   │  ├─ SingletonGameObject.cs   
+   │  ├─ SoundManager.cs   
+   │  └─ Layer.cs   
+### 📂폴더 한 줄 설명  
+Condition: 플레이어/엔티티 공통 상태 기반.  
+Enemy: 적 AI, 감지·스폰, 피격 이펙트.  
+Interface: 데미지/상태/FSM 공통 인터페이스.  
+Inventory: 인벤토리·장비 데이터/로직.  
+Items: 제작, 상호작용, 자원·아이템 오브젝트.  
+Object: 플레이어 컨트롤러와 빌딩 시뮬.  
+ScriptableObject: 아이템/레시피/자원/NPC 대화 데이터.    
+State: 공통 FSM 베이스.  
+UI: Craft/Inventory/NPC/Player UI와 러너.  
+Utils: Attribute/Extension/Input/Managers/Pooling/Layer 유틸.  
+   
 
   
 ## 📌 프로젝트 수행 경과  
