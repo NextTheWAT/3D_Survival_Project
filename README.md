@@ -23,6 +23,13 @@
   - **Q**: 건축물 축 변경
   - **Mouse Right Click**: 건축 취소 명령
 
+## 📸 다이어그램
+<img width="1000" height="755" alt="image" src="https://github.com/user-attachments/assets/88e9488d-4010-4e99-a6b4-e88728f7e150" />
+<img width="1000" height="563" alt="image" src="https://github.com/user-attachments/assets/afda30aa-97e5-4334-98bd-de6b16ad4e1b" />
+<img width="1000" height="538" alt="image" src="https://github.com/user-attachments/assets/4fd328f3-2526-46cb-8a36-6b4c2952f4eb" />
+<img width="600" height="330" alt="image" src="https://github.com/user-attachments/assets/948c8883-05f5-45d3-b052-dc24886674a2" />
+
+
 ## 📸 게임 플레이 영상 / Gif
 ![Animation](https://github.com/user-attachments/assets/5760978c-d968-4368-a36c-8080adf4601f)
 - https://youtu.be/pPr7Np8qwy8
