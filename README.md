@@ -17,11 +17,13 @@
 ScriptableObject 기반 아이템/레시피 관리  
 FSM 기반 몬스터 AI   
 NPC 대화 시스템  
+
+## 📸 게임 플레이 영상
+- 
   
 ## 🛠️ 기술 스택
-- Unity 버전
+- Unity(2022.3.17f), Github
 - 사용 언어 (C# 등)
-- 주요 라이브러리/패키지
 
 ## 🚀 주요 기능  
 🎮 플레이어 시스템  
@@ -45,17 +47,107 @@ NPC 대화 시스템
 장비 착용 시 능력치 반영  
   
 ## 📂 프로젝트 구조
-- Scripts, Prefabs, Scenes, UI 등 주요 폴더 및 역할 설명
+02.Scripts
+├─ Condition
+│  └─ BaseCondition.cs              # HP/허기/스태미나 등 공통 상태 기반
+├─ Enemy
+│  ├─ Enemy.cs / Enemy.State.cs     # FSM 기반 적 AI(대기/이동/공격/사망)
+│  ├─ EnemyAnimParam.cs             # Animator 파라미터 해시 관리
+│  ├─ EnemyDetect.cs                # 시야/감지 로직
+│  ├─ EnemySpawnArea.cs             # 스폰 구역 설정
+│  ├─ EnemySpawnTrigger.cs          # 트리거 기반 스폰
+│  ├─ FieldOfViewDraw.cs            # 시야 범위 디버그 그리기
+│  └─ HitFlash.cs                   # 피격 시 시각 효과
+├─ Interface
+│  ├─ IDamagable.cs                 # 데미지 수신 인터페이스
+│  ├─ IState.cs                     # 상태 공통 인터페이스(Start/Update/End)
+│  └─ IValueChangable.cs            # 수치 변화 공통 인터페이스
+├─ Inventory
+│  ├─ EquipmentController.cs / EquipmentModel.cs
+│  ├─ InventoryManager.cs / InventoryModel.cs
+│  └─ (UI는 아래 UI/Inventory에 위치)
+├─ Items
+│  ├─ CraftSystem.cs                # 제작 로직
+│  ├─ enums.cs                      # 아이템/타입 열거형
+│  ├─ GameManager.cs                # 전반적인 게임 흐름(진입/상태) 관리
+│  ├─ IInteractable.cs              # 상호작용 대상 공통 인터페이스
+│  ├─ ItemObject.cs                 # 필드에 떨어진 아이템
+│  ├─ ResourceContainer.cs          # 자원 리스폰/드랍 관리
+│  └─ ResourceObject.cs             # 채집 가능한 자원 오브젝트
+├─ Object
+│  ├─ Character/Player
+│  │  ├─ PlayerAttackController.cs
+│  │  ├─ PlayerBuildingController.cs
+│  │  ├─ PlayerCondition.cs
+│  │  ├─ PlayerInteractionController.cs
+│  │  ├─ PlayerMovementController.cs
+│  │  └─ PlayerPerspectiveController.cs
+│  ├─ BuildingSimulationRenderer.cs # 건축 미리보기/충돌 가시화
+│  └─ CollisionDetector.cs
+├─ ScriptableObject
+│  ├─ Items
+│  │  ├─ ConsumeItemData.cs / EquipItemData.cs
+│  │  ├─ ItemData.cs / ItemDataBase.cs
+│  │  ├─ RecipeData.cs
+│  │  └─ ResourceData.cs
+│  └─ NPC
+│     └─ DialogueSO.cs
+├─ State
+│  ├─ BaseState.cs
+│  └─ FiniteStateMachine.cs         # 공통 FSM 러너
+├─ UI
+│  ├─ Craft/CraftUI.cs
+│  ├─ Inventory/InventoryUI.cs / InventorySlotUI.cs
+│  ├─ Mediator/InventoryMediator.cs
+│  ├─ NPC/DialogueViewUI.cs / NPCDialogue.cs / NPCNameTag.cs
+│  ├─ Player/PlayerConditionUI.cs
+│  └─ Runner/DialogueRunner.cs / BaseUI.cs
+├─ Utils
+│  ├─ Attribute/AliasAttribute.cs
+│  ├─ Editor/AliasDrawer.cs
+│  ├─ Extension/GameObject.Extension.cs
+│  ├─ Input/CharacterControls.cs     # New Input System 액션 자산
+│  └─ Management
+│     ├─ Pooling/{Clone,Container,ObjectPooling}.cs
+│     ├─ ApplicationManager.cs / DataManager.cs
+│     ├─ ObjectPoolingManager.cs / SoundManager.cs
+│     ├─ Singleton.cs / SingletonBehavior.cs / SingletonGameObject.cs
+│     └─ Layer.cs
 
-## 📌 프로젝트 수행 경과
-- (1) 기술적 의사결정
-- (2) 구현 과정
-- (3) 트러블슈팅
-- (4) 성과 및 개선점
+  
+## 📌 프로젝트 수행 경과  
+(1) 기술적 의사결정 
+FSM 구조: IState/BaseState/FiniteStateMachine으로 AI와 UI 흐름을 모듈화  
+데이터 중심 설계: 아이템/레시피/자원/대화를 전부 ScriptableObject로 관리  
+UI 구조: InventoryModel ↔ InventoryMediator ↔ InventoryUI로 역할 분리(Mediator 패턴)   
+인터페이스 일원화: IDamagable(피해), IInteractable(상호작용), IValueChangable(수치 변화)로 공통 행위 통합 
+인프라(설계만): ObjectPoolingManager, DataManager, SoundManager, 3종 Singleton 베이스를 준비  
+  
+(2) 구현 과정  
+플레이어: 이동/시점/공격/상호작용/건축/상태(HP·허기·스태미나) 일체 구현  
+적 AI: 감지→이동→공격→사망의 상태 전환과 스폰(영역/트리거) 구현, 피격 피드백(HitFlash) 연동  
+인벤토리·장비: 획득/소비/장착 동작, 슬롯/스택 관리, UI 갱신  
+제작(Craft): RecipeData 기반 제작 가능 여부 검증→결과 아이템 지급  
+NPC 대화: DialogueSO 데이터 기반 출력, Runner로 진행 제어, 이름표/대화창 UI  
+  
+(3) 트러블슈팅  
+공격 판정 범위: Overlap/Raycast 타이밍 불일치 → 애니메이션 이벤트/쿨다운으로 보정  
+인벤토리 슬롯 동기화: 모델/뷰 불일치 → InventoryMediator에서 단일 진입점으로만 UI 업데이트  
+자원 드랍 위치: 충돌/지면 끼임 → CollisionDetector 보정 및 드랍 오프셋 적용  
+병합 이슈: 다중 브랜치 통합 시 Prefab 참조 깨짐 → 프리팹 루트 기준의 일괄 재참조 규칙 문서화  
+  
+(4) 성과 및 개선점  
+성과: FSM·Mediator·SO 도입으로 확장성과 협업 효율 확보, 핵심 게임루프(탐색→채집/전투→제작/건축) 완성  
+개선 예정:  
+ObjectPooling 실제 적용(스폰/이펙트/드랍)  
+DataManager로 인벤토리/설정 저장·로드 구현  
+SoundManager 이벤트 연동(BGM/효과음)  
+Singleton 방식 통일(불필요 베이스 정리)  
 
-## 📸 스크린샷 / 데모
-- 게임 실행 화면
-- 기능별 캡처
 
 ## 👥 팀원 소개
-- 이름 / 역할 / 담당 기능
+- 팀장 : 이재은 - NPC & 대화 시스템, UI(Anim)
+- 팀원 : 이형권 - 전투 & 적 AI 파트
+- 팀원 : 오경민 - 건축 & 기지 구축 파트 및 프로젝트 구조
+- 팀원 : 유형준 - 생존 관리 시스템 파트
+- 팀원 : 진영아 - 자원 수집,시스템 & 가공 시스템 파트
