@@ -151,8 +151,7 @@ ScriptableObject: 아이템/레시피/자원/NPC 대화 데이터.
 State: 공통 FSM 베이스.  
 UI: Craft/Inventory/NPC/Player UI와 러너.  
 Utils: Attribute/Extension/Input/Managers/Pooling/Layer 유틸.  
-   
-
+  
   
 ## 📌 프로젝트 수행 경과  
 (1) 기술적 의사결정 
