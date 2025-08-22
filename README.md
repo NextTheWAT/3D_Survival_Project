@@ -169,7 +169,14 @@ Version Control: Git
 - **State**: 공통 FSM 베이스.  
 - **UI**: Craft/Inventory/NPC/Player UI와 러너.  
 - **Utils**: Attribute/Extension/Input/Managers/Pooling/Layer 유틸.  
-  
+
+## 👥 팀원 소개
+
+- **팀장** : 이재은 - NPC & 대화 시스템, UI(Anim)
+- **팀원** : 이형권 - 전투 & 적 AI 파트
+- **팀원** : 오경민 - 건축 & 기지 구축 파트 및 프로젝트 구조
+- **팀원** : 유형준 - 생존 관리 시스템 파트
+- **팀원** : 진영아 - 자원 수집,시스템 & 가공 시스템 파트
   
 ## 📌 프로젝트 수행 경과  
 
@@ -190,11 +197,14 @@ Version Control: Git
 - **NPC 대화**: DialogueSO 데이터 기반 출력, Runner로 진행 제어, 이름표/대화창 UI  
   
 ### 트러블슈팅  
+<img width="1000" height="522" alt="image" src="https://github.com/user-attachments/assets/811ded3e-bb2a-41e6-b7ee-3d68adced88f" />
+<img width="1000" height="495" alt="image" src="https://github.com/user-attachments/assets/12a07596-3381-4148-adc8-f2535206b52d" />
+<img width="1000" height="555" alt="image" src="https://github.com/user-attachments/assets/1080a3b8-2573-4b15-981b-aa9133282c55" />
+<img width="1000" height="548" alt="image" src="https://github.com/user-attachments/assets/222cd14b-e478-484b-84dc-8fe5aec59699" />
+<img width="1000" height="530" alt="image" src="https://github.com/user-attachments/assets/28428c86-443e-4bcc-8a26-319fb6534016" />
+<img width="1000" height="401" alt="image" src="https://github.com/user-attachments/assets/e76bd565-6b0c-42f7-abe6-10d92f26b2ac" />
 
-- **공격 판정 범위**: Overlap/Raycast 타이밍 불일치 → 애니메이션 이벤트/쿨다운으로 보정  
-- **인벤토리 슬롯 동기화**: 모델/뷰 불일치 → InventoryMediator에서 단일 진입점으로만 UI 업데이트  
-- **자원 드랍 위치**: 충돌/지면 끼임 → CollisionDetector 보정 및 드랍 오프셋 적용  
-- **병합 이슈**: 다중 브랜치 통합 시 Prefab 참조 깨짐 → 프리팹 루트 기준의 일괄 재참조 규칙 문서화  
+
   
 ### 성과 및 개선점
 
@@ -204,11 +214,3 @@ Version Control: Git
   - DataManager로 인벤토리/설정 저장·로드 구현  
   - SoundManager 이벤트 연동(BGM/효과음)  
   - Singleton 방식 통일(불필요 베이스 정리)  
-
-## 👥 팀원 소개
-
-- **팀장** : 이재은 - NPC & 대화 시스템, UI(Anim)
-- **팀원** : 이형권 - 전투 & 적 AI 파트
-- **팀원** : 오경민 - 건축 & 기지 구축 파트 및 프로젝트 구조
-- **팀원** : 유형준 - 생존 관리 시스템 파트
-- **팀원** : 진영아 - 자원 수집,시스템 & 가공 시스템 파트
