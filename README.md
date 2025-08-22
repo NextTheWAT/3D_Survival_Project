@@ -14,8 +14,9 @@
   - FSM 기반 몬스터 AI   
   - NPC 대화 시스템  
 
-## 📸 게임 플레이 영상
-- 
+## 📸 게임 플레이 영상 / Gif
+![Animation](https://github.com/user-attachments/assets/5760978c-d968-4368-a36c-8080adf4601f)
+- https://youtu.be/pPr7Np8qwy8
   
 ## 🛠️ 기술 스택
 
